@@ -1,0 +1,192 @@
+<?php
+$server = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fkpark";
+
+// Create connection
+$conn = mysqli_connect($server, $username, $password);
+
+// Check connection
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Create database if not exists
+if (mysqli_query($conn, "CREATE DATABASE IF NOT EXISTS $dbname")) {
+    echo "Database created successfully or already exists.<br>";
+} else {
+    die("Error creating database: " . mysqli_error($conn));
+}
+
+// Select database
+mysqli_select_db($conn, $dbname) or die(mysqli_error($conn));
+
+//MODULE 1 
+//TABLE : USER
+$createUserTableQuery = "CREATE TABLE IF NOT EXISTS user (
+    u_id INT AUTO_INCREMENT PRIMARY KEY,
+    u_email VARCHAR(100) NOT NULL UNIQUE,
+    u_password VARCHAR(25) NOT NULL,
+    r_id INT,
+    FOREIGN KEY (r_id) REFERENCES roles (r_id)
+)";
+
+if (mysqli_query($conn, $createUserTableQuery)) {
+    echo "User table created successfully or already exists.<br>";
+} else {
+    die("Error creating user table: " . mysqli_error($conn));
+}
+
+//TABLE: ROLES
+$createTableQuery = "CREATE TABLE IF NOT EXISTS roles(
+    r_id INT AUTO_INCREMENT PRIMARY KEY,
+    r_typeName ENUM('Unit Keselamatan Staff','Administrators','Student') NOT NULL
+)";
+if (mysqli_query($conn, $createProfileTableQuery)) {
+    echo "Profile table created successfully or already exists.<br>";
+} else {
+    die("Error creating profile table: " . mysqli_error($conn));
+}
+
+//TABLE:PROFILE
+$createProfileTableQuery = "CREATE TABLE IF NOT EXISTS profiles (
+    p_id INT AUTO_INCREMENT PRIMARY KEY,
+    p_name VARCHAR(100) NOT NULL,
+    p_course ENUM('SOFTWARE ENGINEERING', 'NETWORKING', 'GRAPHIC DESIGN') DEFAULT NULL,
+    p_faculty VARCHAR(100) DEFAULT NULL,
+    p_icNumber VARCHAR(15) NOT NULL,
+    p_address VARCHAR(100) DEFAULT NULL,
+    p_postCode VARCHAR(10) DEFAULT NULL,
+    p_country VARCHAR(50) DEFAULT NULL,
+    p_state VARCHAR(50) DEFAULT NULL,
+    p_department VARCHAR(100) DEFAULT NULL,
+    p_bodyNumber VARCHAR(10) DEFAULT NULL,
+    u_id INT,
+    FOREIGN KEY (u_id) REFERENCES user (u_id)
+)";
+
+if (mysqli_query($conn, $createProfileTableQuery)) {
+    echo "Profile table created successfully or already exists.<br>";
+} else {
+    die("Error creating profile table: " . mysqli_error($conn));
+}
+
+//TABLE:VEHICLE
+$createProfileTableQuery = "CREATE TABLE IF NOT EXISTS vehicle (
+    v_id INT AUTO_INCREMENT PRIMARY KEY,
+    v_type ENUM('MOTORCYCLE','CAR') NOT NULL,
+    v_brand VARCHAR(50) NOT NULL,
+    v_roadTaxValidDate DATE NOT NULL,
+    v_licenceValidDate DATE NOT NULL,
+    v_phoneNum INT NOT NULL,
+    v_vehicleGrant BLOB NOT NULL,
+    v_approvalStatus ENUM('Reject','Approve') NOT NULL,
+    v_remarks TEXT DEFAULT NULL,
+    v_qrCode VARCHAR(500) NOT NULL,
+    v_model VARCHAR(50) NOT NULL
+    u_id INT,
+    FOREIGN KEY (u_id) REFERENCES user (u_id)
+)";
+
+if (mysqli_query($conn, $createProfileTableQuery)) {
+    echo "Profile table created successfully or already exists.<br>";
+} else {
+    die("Error creating profile table: " . mysqli_error($conn));
+}
+//MODULE 2
+//TABLE: PARKSPACE
+$createTableQuery = "CREATE TABLE IF NOT EXISTS parkSpace(
+    ps_id VARCHAR(10) PRIMARY KEY,
+    ps_area VARCHAR(10) NOT NULL,
+    ps_category VARCHAR(10) NOT NULL,
+    ps_date DATE NOT NULL,
+    ps_time TIME NOT NULL,
+    ps_typeEvent VARCHAR(50) DEFAULT NULL,
+    ps_descriptionEvent INT DEFAULT NULL,
+    ps_durationEvent INT DEFAULT NULL
+    )";
+
+if (mysqli_query($conn, $createProfileTableQuery)) {
+    echo "Profile table created successfully or already exists.<br>";
+} else {
+    die("Error creating profile table: " . mysqli_error($conn));
+}
+//MODULE 3
+//TABLE: BOOKINFO
+$createTableQuery = "CREATE TABLE IF NOT EXISTS bookInfo(
+    b_id VARCHAR(10) PRIMARY KEY,
+    u_id INT,
+    b_date DATE NOT NULL,
+    b_time TIME NOT NULL,
+    b_parkStart TIME DEFAULT NULL,
+    b_duration INT DEFAULT NULL,
+    b_status VARCHAR(10),
+    b_QRid VARCHAR(255) NOT NULL,
+    v_id INT ,
+    ps_id VARCHAR(10),
+    FOREIGN KEY (u_id) REFERENCES user(u_id),
+    FOREIGN KEY (v_id) REFERENCES vehicle(v_id),
+    FOREIGN KEY (ps_id) REFERENCES parkSpace(ps_id),
+    
+    )";
+
+if (mysqli_query($conn, $createProfileTableQuery)) {
+    echo "Profile table created successfully or already exists.<br>";
+} else {
+    die("Error creating profile table: " . mysqli_error($conn));
+}
+//MODULE 4 
+//TABLE : SUMMON
+$createProfileTableQuery = "CREATE TABLE IF NOT EXISTS summon (
+    sum_id INT AUTO_INCREMENT PRIMARY KEY,
+    sum_date DATE DEFAULT NULL,
+    sum_status VARCHAR(200) DEFAULT NULL,
+    sum_QR VARCHAR(200) DEFAULT NULL,
+    vt_id INT,
+    v_id INT,
+    ps_id VARCHAR(10),
+    p_id INT,
+    FOREIGN KEY (vt_id) REFERENCES violationType (vt_id),
+    FOREIGN KEY (v_id) REFERENCES vehicle(v_id),
+    FOREIGN KEY (ps_id) REFERENCES parkSpace(ps_id),
+    FOREIGN KEY (p_id) REFERENCES patrol(p_id),
+    
+)";
+
+if (mysqli_query($conn, $createProfileTableQuery)) {
+    echo "Profile table created successfully or already exists.<br>";
+} else {
+    die("Error creating profile table: " . mysqli_error($conn));
+}
+//TABLE :PATROL
+$createProfileTableQuery = "CREATE TABLE IF NOT EXISTS patrol (
+    p_id INT AUTO_INCREMENTED PRIMARY KEY,
+    p_datePatrol DATE NOT NULL,
+    p_timePatrol TIME NOT NULL,
+    p_location VARCHAR(200) NOT NULL
+    
+)";
+
+if (mysqli_query($conn, $createProfileTableQuery)) {
+    echo "Profile table created successfully or already exists.<br>";
+} else {
+    die("Error creating profile table: " . mysqli_error($conn));
+}
+
+//TABLE :VIOLATION TYPE
+$createProfileTableQuery = "CREATE TABLE IF NOT EXISTS violationType (
+    vt_id INT AUTO_INCREMENT PRIMARY KEY,
+    vt_name VARCHAR(200) NOT NULL,
+    vt_demeritPoints INT NOT NULL,
+    
+)";
+
+if (mysqli_query($conn, $createProfileTableQuery)) {
+    echo "Profile table created successfully or already exists.<br>";
+} else {
+    die("Error creating profile table: " . mysqli_error($conn));
+}
+
+mysqli_close($conn);
+?>
