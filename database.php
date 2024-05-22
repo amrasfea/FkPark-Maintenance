@@ -22,8 +22,19 @@ if (mysqli_query($conn, "CREATE DATABASE IF NOT EXISTS $dbname")) {
 // Select database
 mysqli_select_db($conn, $dbname) or die(mysqli_error($conn));
 
-//MODULE 1 
-//TABLE : USER
+// MODULE 1
+// TABLE: ROLES
+$createTableQuery = "CREATE TABLE IF NOT EXISTS roles(
+    r_id INT AUTO_INCREMENT PRIMARY KEY,
+    r_typeName ENUM('Unit Keselamatan Staff','Administrators','Student') NOT NULL
+)";
+if (mysqli_query($conn, $createTableQuery)) {
+    echo "Roles table created successfully or already exists.<br>";
+} else {
+    die("Error creating roles table: " . mysqli_error($conn));
+}
+
+// TABLE: USER
 $createUserTableQuery = "CREATE TABLE IF NOT EXISTS user (
     u_id INT AUTO_INCREMENT PRIMARY KEY,
     u_email VARCHAR(100) NOT NULL UNIQUE,
@@ -38,18 +49,8 @@ if (mysqli_query($conn, $createUserTableQuery)) {
     die("Error creating user table: " . mysqli_error($conn));
 }
 
-//TABLE: ROLES
-$createTableQuery = "CREATE TABLE IF NOT EXISTS roles(
-    r_id INT AUTO_INCREMENT PRIMARY KEY,
-    r_typeName ENUM('Unit Keselamatan Staff','Administrators','Student') NOT NULL
-)";
-if (mysqli_query($conn, $createProfileTableQuery)) {
-    echo "Profile table created successfully or already exists.<br>";
-} else {
-    die("Error creating profile table: " . mysqli_error($conn));
-}
 
-//TABLE:PROFILE
+// TABLE: PROFILE
 $createProfileTableQuery = "CREATE TABLE IF NOT EXISTS profiles (
     p_id INT AUTO_INCREMENT PRIMARY KEY,
     p_name VARCHAR(100) NOT NULL,
@@ -72,8 +73,8 @@ if (mysqli_query($conn, $createProfileTableQuery)) {
     die("Error creating profile table: " . mysqli_error($conn));
 }
 
-//TABLE:VEHICLE
-$createProfileTableQuery = "CREATE TABLE IF NOT EXISTS vehicle (
+// TABLE: VEHICLE
+$createVehicleTableQuery = "CREATE TABLE IF NOT EXISTS vehicle (
     v_id INT AUTO_INCREMENT PRIMARY KEY,
     v_type ENUM('MOTORCYCLE','CAR') NOT NULL,
     v_brand VARCHAR(50) NOT NULL,
@@ -84,19 +85,20 @@ $createProfileTableQuery = "CREATE TABLE IF NOT EXISTS vehicle (
     v_approvalStatus ENUM('Reject','Approve') NOT NULL,
     v_remarks TEXT DEFAULT NULL,
     v_qrCode VARCHAR(500) NOT NULL,
-    v_model VARCHAR(50) NOT NULL
+    v_model VARCHAR(50) NOT NULL,
     u_id INT,
     FOREIGN KEY (u_id) REFERENCES user (u_id)
 )";
 
-if (mysqli_query($conn, $createProfileTableQuery)) {
-    echo "Profile table created successfully or already exists.<br>";
+if (mysqli_query($conn, $createVehicleTableQuery)) {
+    echo "Vehicle table created successfully or already exists.<br>";
 } else {
-    die("Error creating profile table: " . mysqli_error($conn));
+    die("Error creating vehicle table: " . mysqli_error($conn));
 }
-//MODULE 2
-//TABLE: PARKSPACE
-$createTableQuery = "CREATE TABLE IF NOT EXISTS parkSpace(
+
+// MODULE 2
+// TABLE: PARKSPACE
+$createParkSpaceTableQuery = "CREATE TABLE IF NOT EXISTS parkSpace(
     ps_id VARCHAR(10) PRIMARY KEY,
     ps_area VARCHAR(10) NOT NULL,
     ps_category VARCHAR(10) NOT NULL,
@@ -107,14 +109,15 @@ $createTableQuery = "CREATE TABLE IF NOT EXISTS parkSpace(
     ps_durationEvent INT DEFAULT NULL
     )";
 
-if (mysqli_query($conn, $createProfileTableQuery)) {
-    echo "Profile table created successfully or already exists.<br>";
+if (mysqli_query($conn, $createParkSpaceTableQuery)) {
+    echo "ParkSpace table created successfully or already exists.<br>";
 } else {
-    die("Error creating profile table: " . mysqli_error($conn));
+    die("Error creating ParkSpace table: " . mysqli_error($conn));
 }
-//MODULE 3
-//TABLE: BOOKINFO
-$createTableQuery = "CREATE TABLE IF NOT EXISTS bookInfo(
+
+// MODULE 3
+// TABLE: BOOKINFO
+$createBookInfoTableQuery = "CREATE TABLE IF NOT EXISTS bookInfo(
     b_id VARCHAR(10) PRIMARY KEY,
     u_id INT,
     b_date DATE NOT NULL,
@@ -127,18 +130,45 @@ $createTableQuery = "CREATE TABLE IF NOT EXISTS bookInfo(
     ps_id VARCHAR(10),
     FOREIGN KEY (u_id) REFERENCES user(u_id),
     FOREIGN KEY (v_id) REFERENCES vehicle(v_id),
-    FOREIGN KEY (ps_id) REFERENCES parkSpace(ps_id),
-    
-    )";
+    FOREIGN KEY (ps_id) REFERENCES parkSpace(ps_id)
+)";
 
-if (mysqli_query($conn, $createProfileTableQuery)) {
-    echo "Profile table created successfully or already exists.<br>";
+if (mysqli_query($conn, $createBookInfoTableQuery)) {
+    echo "BookInfo table created successfully or already exists.<br>";
 } else {
-    die("Error creating profile table: " . mysqli_error($conn));
+    die("Error creating BookInfo table: " . mysqli_error($conn));
 }
-//MODULE 4 
-//TABLE : SUMMON
-$createProfileTableQuery = "CREATE TABLE IF NOT EXISTS summon (
+
+// MODULE 4 
+// TABLE: PATROL
+$createPatrolTableQuery = "CREATE TABLE IF NOT EXISTS patrol (
+    p_id INT AUTO_INCREMENT PRIMARY KEY,
+    p_datePatrol DATE NOT NULL,
+    p_timePatrol TIME NOT NULL,
+    p_location VARCHAR(200) NOT NULL
+)";
+
+if (mysqli_query($conn, $createPatrolTableQuery)) {
+    echo "Patrol table created successfully or already exists.<br>";
+} else {
+    die("Error creating Patrol table: " . mysqli_error($conn));
+}
+
+//TABLE :VIOLATION TYPE
+$createViolationTypeTableQuery = "CREATE TABLE IF NOT EXISTS violationType (
+    vt_id INT AUTO_INCREMENT PRIMARY KEY,
+    vt_name VARCHAR(200) NOT NULL,
+    vt_demeritPoints INT NOT NULL
+)";
+
+if (mysqli_query($conn, $createViolationTypeTableQuery)) {
+    echo "ViolationType table created successfully or already exists.<br>";
+} else {
+    die("Error creating ViolationType table: " . mysqli_error($conn));
+}
+
+// TABLE: SUMMON
+$createSummonTableQuery = "CREATE TABLE IF NOT EXISTS summon (
     sum_id INT AUTO_INCREMENT PRIMARY KEY,
     sum_date DATE DEFAULT NULL,
     sum_status VARCHAR(200) DEFAULT NULL,
@@ -150,42 +180,13 @@ $createProfileTableQuery = "CREATE TABLE IF NOT EXISTS summon (
     FOREIGN KEY (vt_id) REFERENCES violationType (vt_id),
     FOREIGN KEY (v_id) REFERENCES vehicle(v_id),
     FOREIGN KEY (ps_id) REFERENCES parkSpace(ps_id),
-    FOREIGN KEY (p_id) REFERENCES patrol(p_id),
-    
+    FOREIGN KEY (p_id) REFERENCES patrol(p_id)
 )";
 
-if (mysqli_query($conn, $createProfileTableQuery)) {
-    echo "Profile table created successfully or already exists.<br>";
+if (mysqli_query($conn, $createSummonTableQuery)) {
+    echo "Summon table created successfully or already exists.<br>";
 } else {
-    die("Error creating profile table: " . mysqli_error($conn));
-}
-//TABLE :PATROL
-$createProfileTableQuery = "CREATE TABLE IF NOT EXISTS patrol (
-    p_id INT AUTO_INCREMENTED PRIMARY KEY,
-    p_datePatrol DATE NOT NULL,
-    p_timePatrol TIME NOT NULL,
-    p_location VARCHAR(200) NOT NULL
-    
-)";
-
-if (mysqli_query($conn, $createProfileTableQuery)) {
-    echo "Profile table created successfully or already exists.<br>";
-} else {
-    die("Error creating profile table: " . mysqli_error($conn));
-}
-
-//TABLE :VIOLATION TYPE
-$createProfileTableQuery = "CREATE TABLE IF NOT EXISTS violationType (
-    vt_id INT AUTO_INCREMENT PRIMARY KEY,
-    vt_name VARCHAR(200) NOT NULL,
-    vt_demeritPoints INT NOT NULL,
-    
-)";
-
-if (mysqli_query($conn, $createProfileTableQuery)) {
-    echo "Profile table created successfully or already exists.<br>";
-} else {
-    die("Error creating profile table: " . mysqli_error($conn));
+    die("Error creating Summon table: " . mysqli_error($conn));
 }
 
 mysqli_close($conn);
