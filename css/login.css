@@ -19,6 +19,10 @@ body {
       opacity: 1; /* Firefox */
       font-size:14px!important;
   }
+
+  .box{
+    align-items: center;
+  }
   .form-login {
       background-color: #ffffffa7;
       padding-top: 10px;

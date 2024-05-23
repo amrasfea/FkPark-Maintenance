@@ -38,8 +38,8 @@
 
 <!-- Page Content -->
 <div class="container">
-    <div class="row">
-        <div class="col-md-offset-4 col-md-4 text-center">
+    <!-- <div class="row"> -->
+        <div class="box">
             <!--<h1 class='text-white'>LOGIN</h1>-->
               <div class="form-login"></br>
                 <h4>LOGIN</h4>
@@ -55,7 +55,7 @@
                 </div>
             </div>
         </div>
-    </div>
+  <!--  </div> -->
     </br></br></br>
     <!--footer-->
     <div class="footer text-black text-center">
