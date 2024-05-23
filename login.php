@@ -48,6 +48,11 @@
                 </br></br>
                 <input type="text" id="userPassword" class="form-control input-sm chat-input" placeholder="password"/>
                 </br></br>
+                <select id="userType" class="form-control">
+                    <option value="Admin">Admin</option>
+                    <option value="Unit Keselamatan Staff">Unit Keselamatan Staff</option>
+                    <option value="Student">Student</option>
+                </select>
                 <div class="wrapper">
                         <span class="group-btn">
                             <a href="#" class="btn btn-danger btn-md">login <i class="fa fa-sign-in"></i></a>
