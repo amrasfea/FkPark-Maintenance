@@ -63,3 +63,8 @@ body {
   .footer p{
       font-size: 18px;
   }
+  
+  .logo img{
+    align-items: center;
+    display: flex;
+  }
