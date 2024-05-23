@@ -226,15 +226,9 @@
     </a>
     <ul id="progressDropdown" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">Add here</a>
+            <a href="../staff/summon.php" class="sidebar-link">Summon ticket</a>
         </li>
        
-        <li class="sidebar-item">
-            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#weeklyFocusDropdown" aria-expanded="false" aria-controls="weeklyFocusDropdown">
-                Weekly Focus
-            </a>
-        </li>
     </ul>
 </li>                
             </ul>
