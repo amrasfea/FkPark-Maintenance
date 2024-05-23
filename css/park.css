@@ -82,57 +82,48 @@ h2 {
 
 
 /* Specific Button Styling */
-.button-group button[name="newForm"] {
+.button-group button {
+    padding: 8px 16px; /* Adjusted padding for consistent button size */
+    min-width: 80px; /* Set a minimum width for consistency */
+    border: none;
+    color: white;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-group button[name="newForm"],
+.button-group button[name="save"] {
     background-color: #007bff;
     margin-right: auto;
 }
 
-.button-group button[name="newForm"]:hover {
-    background-color: #0056b3;
-}
-
-.button-group button[name="cancel"] {
-    background-color: #dc3545;
-    font-size: 14px;
-    padding: 8px 16px;
-    margin-right: 5px;
-}
-
-.button-group button[name="cancel"]:hover {
-    background-color: #c82333;
-}
-
-.button-group button[name="delete"] {
-    background-color: #dc3545;
-    font-size: 14px;
-    padding: 8px 16px;
-    margin-right: 5px;
-}
-
-.button-group button[name="delete"]:hover {
-    background-color: #c82333;
-}
-
-.button-group button[name="edit"] {
-    background-color: #007bff;
-    font-size: 14px;
-    padding: 8px 16px;
-    margin-left: 5px;
-}
-
-.button-group button[name="edit"]:hover {
-    background-color: #0056b3;
-}
-
-.button-group button[name="save"] {
-    background-color: #007bff;
-    font-size: 14px;
-    padding: 8px 16px;
-    margin-left: 5px;
-}
-
+.button-group button[name="newForm"]:hover,
 .button-group button[name="save"]:hover {
     background-color: #0056b3;
+}
+
+.button-group button[name="cancel"],
+.button-group button[name="delete"] {
+    background-color: #dc3545;
+    margin-right: 5px;
+}
+
+.button-group button[name="cancel"]:hover,
+.button-group button[name="delete"]:hover{
+    background-color: #c82333;
+}
+
+.button-group button[name="update"] {
+    background-color: #28a745; /* Green color for update button */
+    font-size: 14px;
+    padding: 8px 16px;
+    margin-left: 5px; /* Adjust margin to separate from other buttons */
+}
+
+.button-group button[name="update"]:hover {
+    background-color: #218838; /* Darker shade of green on hover */
 }
 
 /* Table Styling */

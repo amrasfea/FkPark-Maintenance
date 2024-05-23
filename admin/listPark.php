@@ -47,7 +47,7 @@
                     <td>2024-05-24 18:00</td>
                     <td>
                         <button type="submit" name="edit" class="edit-button">Edit</button>
-                        <button type="submit" name="delete" class="delete-button">Delete</button>
+                        <button type="submit" name="delete" class="delete-button" onclick="alert('Database deleted')">Delete</button>
                     </td>
                 </tr>
                 <!-- Additional rows go here -->
