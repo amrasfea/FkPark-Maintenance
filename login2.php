@@ -5,7 +5,7 @@
   <title>Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--EXTERNAL LINK-->
-  <link rel="stylesheet" href="css/login2.css">
+  <link rel="stylesheet" href="./css/login2.css">
 </head>
 
 <body>
@@ -22,7 +22,7 @@
                 <form action="" method="post" name="login" id="login">
                     <div class="row">
                         <div class="col mb-3">
-                            Username: <input type="text" name="username" placeholder="Username" required />
+                            Email: <input type="email" name="email" placeholder="Email" required />
                         </div>
                     </div>
                     <div class="row">
@@ -34,9 +34,9 @@
                         <div class="col mb-3">
                             <label for="user">User:</label>
                             <select name="user" id="user">
-                            <option value="admin">Administrators</option>
-                            <option value="student">Student</option>
-                            <option value="staff">Unit Keselamatan Staff</option>
+                                <option value="admin">Administrators</option>
+                                <option value="student">Student</option>
+                                <option value="staff">Unit Keselamatan Staff</option>
                             </select>
                         </div>
                     </div>
