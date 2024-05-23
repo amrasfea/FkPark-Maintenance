@@ -225,7 +225,7 @@
             <a href="../admin/addPark.php" class="sidebar-link">New Parking Spaces</a>
         </li>
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">List Parking Spaces</a>
+            <a href="../admin/listPark.php" class="sidebar-link">List Parking Spaces</a>
         </li>
     </ul>
 </li>
