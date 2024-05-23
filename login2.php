@@ -4,7 +4,7 @@
 <head>
   <title>Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!--EXTERNAL CSS-->
+  <!--EXTERNAL LINK-->
   <link rel="stylesheet" href="css/login2.css">
 </head>
 
@@ -17,17 +17,27 @@
             <h1 class="title"><i>FKPark Management System</i></h1>
             <div class="content">
                 <div class="row">
-                    <p>Login to your Account</p>
+                    <h2>LOGIN</h2>
                 </div>
-                <form action="functions/submitLogin.php" method="post" name="login" id="login">
+                <form action="" method="post" name="login" id="login">
                     <div class="row">
                         <div class="col mb-3">
-                            Your Username: <input type="text" name="username" placeholder="Username" required />
+                            Username: <input type="text" name="username" placeholder="Username" required />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col mb-3">
-                            Your Password: <input type="password" name="password" placeholder="Password" required />
+                            Password: <input type="password" name="password" placeholder="Password" required />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="user">User:</label>
+                            <select name="user" id="user">
+                            <option value="admin">Administrators</option>
+                            <option value="student">Student</option>
+                            <option value="staff">Unit Keselamatan Staff</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">

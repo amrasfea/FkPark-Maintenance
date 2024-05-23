@@ -1,6 +1,7 @@
-/* General body styles */
+
 body {
-    background: url('img/ump.jpg') ;
+    background: url('img/ump.jpg');
+    background-color: #0f9ee0;
     background-size: cover;
     display: flex;
     justify-content: center;
@@ -10,7 +11,6 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-/* Container for centering elements */
 .container {
     background-color: rgba(255, 255, 255, 0.9);
     padding: 30px;
@@ -21,21 +21,35 @@ body {
     text-align: center;
 }
 
-/* Centering logo image */
 img {
     display: block;
     margin: 0 auto 20px;
 }
 
-/* Form title */
 .title {
     margin-bottom: 20px;
     color: #333;
+    font-size: 24px; /* Adjust font size */
 }
 
-/* Styling for form rows and inputs */
 .row {
     margin-bottom: 15px;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: white;
+    color: #333;
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 50%;
+    padding: 10px;
+    padding-right: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
 input[type="text"], input[type="password"] {
@@ -45,6 +59,7 @@ input[type="text"], input[type="password"] {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
+    font-size: 16px; /* Adjust font size */
 }
 
 input[type="submit"] {
@@ -62,7 +77,11 @@ input[type="submit"]:hover {
     background-color: #0056b3;
 }
 
-/* Responsive design */
+/* Hover effect */
+input[type="text"]:hover, input[type="password"]:hover, select:hover {
+    border-color: #999; /* Change border color on hover */
+}
+
 @media (max-width: 400px) {
     .container {
         padding: 20px;
