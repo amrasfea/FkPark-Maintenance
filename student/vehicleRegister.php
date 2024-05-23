@@ -10,35 +10,6 @@
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
     <style>
         /* Custom styles for the registration form */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            font-weight: 600;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        @media (max-width: 576px) {
-            .container {
-                padding: 10px;
-            }
-        }
     </style>
 </head>
 <body>
