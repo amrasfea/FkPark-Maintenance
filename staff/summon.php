@@ -6,8 +6,13 @@
     <title>Summon</title>
     <!--EXTERNAL CSS-->
     <link rel="stylesheet" href="../css/summon.css">
-    <link rel="icon" type="image/x-icon" href="../img/logo.png">
     <!--FAVICON-->
+    <link rel="icon" type="image/x-icon" href="../img/logo.png">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <?php include('../navigation/staffNav.php'); ?>
@@ -15,12 +20,12 @@
         <h2>Ticket Summon Form</h2>
         <form method="post" action="">
             <div class="button-group">
-                <button type="submit" name="newForm">New Form</button>
+                <button type="button" id="newFormBtn">New Form</button>
                 <button type="button" onclick="alert('Database deleted')">Delete</button>
                 <input type="date" name="summonDate">
                 <input type="time" name="summonTime">
             </div>
-            <div class="form-group">
+            <div id="formFields" class="form-group hidden">
                 <label for="vType">Vehicle type:</label>
                 <select name="vType" id="vType">
                     <option value="car">Car</option>
@@ -47,8 +52,9 @@
                 </select>
             </div>
             <div class="button-group">
-                <button type="submit" name="guide">Traffic Violation Guide and Demerit</button>
+                <button type="button" id="guideBtn">Traffic Violation Guide and Demerit</button>
             </div>
+
             <div class="button-group">
                 <button type="submit" name="noti">Send Notification</button>
                 <button type="submit" name="print">Print Receipt</button>
@@ -57,5 +63,7 @@
             </div>
         </form>
     </div>
+
+    <script src="../js/staff.js"></script>
 </body>
 </html>
