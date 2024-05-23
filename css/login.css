@@ -12,6 +12,7 @@ body {
   
   .container {
       padding: 200px;
+      max-width: 100%;
   }
   ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
       color: #000000!important;
@@ -29,6 +30,7 @@ body {
       border-width: 10px;
       color:rgb(0, 0, 0);
       box-shadow:0 1px 0 #cfcfcf;
+      margin-top: 10px;
   }
   .form-control{
       background:transparent!important;
