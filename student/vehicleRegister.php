@@ -7,7 +7,7 @@
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="../img/logo.png">
     <style>
         /* Custom styles for the registration form */
         .container {
@@ -78,21 +78,6 @@
         <div class="mb-3">
             <label for="v_vehicleGrant" class="form-label">Vehicle Grant</label>
             <input type="file" class="form-control" id="v_vehicleGrant" name="v_vehicleGrant" required>
-        </div>
-        <div class="mb-3">
-            <label for="v_qrCode" class="form-label">QR Code</label>
-            <input type="text" class="form-control" id="v_qrCode" name="v_qrCode" required>
-        </div>
-        <div class="mb-3">
-            <label for="v_approvalStatus" class="form-label">Approval Status</label>
-            <select class="form-select" id="v_approvalStatus" name="v_approvalStatus" required>
-                <option value="Reject">Reject</option>
-                <option value="Approve">Approve</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="v_remarks" class="form-label">Remarks</label>
-            <textarea class="form-control" id="v_remarks" name="v_remarks"></textarea>
         </div>
         <input type="hidden" name="u_id" value="<?php echo $_SESSION['u_id']; ?>">
         <button type="submit" class="btn btn-primary">Submit</button>

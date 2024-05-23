@@ -8,11 +8,10 @@
     <link rel="stylesheet" href="../css/summon.css">
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
     <!--FAVICON-->
-
 </head>
 <body>
-<?php include('../navigation/staffNav.php'); ?>
-    <div class="main p-3">
+    <?php include('../navigation/staffNav.php'); ?>
+    <div class="container mt-5">
         <h2>Ticket Summon Form</h2>
         <form method="post" action="">
             <div class="button-group">
@@ -26,19 +25,19 @@
                 <select name="vType" id="vType">
                     <option value="car">Car</option>
                     <option value="motorcycle">Motorcycle</option>
-                </select><br>
+                </select>
 
                 <label for="vModel">Vehicle Model:</label>
-                <input type="text" class="form-control" id="vModel" name="vModel"><br>
+                <input type="text" class="form-control" id="vModel" name="vModel">
 
                 <label for="vBrand">Vehicle Brand:</label>
-                <input type="text" class="form-control" id="vBrand" name="vBrand"><br>
+                <input type="text" class="form-control" id="vBrand" name="vBrand">
 
                 <label for="vPlate">Vehicle Plate Number:</label>
-                <input type="text" class="form-control" id="vPlate" name="vPlate"><br>
+                <input type="text" class="form-control" id="vPlate" name="vPlate">
 
                 <label for="parkLoc">Parking Location:</label>
-                <input type="text" class="form-control" id="parkLoc" name="parkLoc"><br>
+                <input type="text" class="form-control" id="parkLoc" name="parkLoc">
 
                 <label for="violation">Violation type:</label>
                 <select name="violation" id="violation">
@@ -46,18 +45,17 @@
                     <option value="2">Not comply in campus traffic regulations</option>
                     <option value="3">Caused accidents</option>
                 </select>
-                <div class="button-group">
-                    <button type="submit" name="guide">Traffic Violation Guide and Demerit</button>
-                </div>
-                <div class="button-group">
-                    <button type="submit" name="noti" href="">Send Notification</button>
-                    <button type="submit" name="print" alert=>Print Receipt</button>
-                    <button type="submit" name="edit">Edit</button>
-                    <button type="submit" name="save">Save</button>
-                </div>
+            </div>
+            <div class="button-group">
+                <button type="submit" name="guide">Traffic Violation Guide and Demerit</button>
+            </div>
+            <div class="button-group">
+                <button type="submit" name="noti">Send Notification</button>
+                <button type="submit" name="print">Print Receipt</button>
+                <button type="submit" name="edit">Edit</button>
+                <button type="submit" name="save">Save</button>
             </div>
         </form>
     </div>
-
 </body>
 </html>
