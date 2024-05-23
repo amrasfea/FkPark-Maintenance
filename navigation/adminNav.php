@@ -33,6 +33,11 @@
 
         body {
             font-family: 'Poppins', sans-serif;
+            overflow-y: auto; /* Ensure body can scroll */
+            min-height: 100vh; /* Ensure body takes full height */
+            margin: 0;
+            padding: 0;
+            
         }
 
         .wrapper {
@@ -43,9 +48,10 @@
         .main {
             min-height: 100vh;
             width: 100%;
-            overflow: hidden;
+            overflow: auto;
             transition: all 0.35s ease-in-out;
             background-color: #fafbfe;
+            flex-grow: 1;
         }
 
         #sidebar {
