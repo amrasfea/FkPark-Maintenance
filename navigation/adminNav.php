@@ -222,7 +222,7 @@
     </a>
     <ul id="publicationDropdown" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">New Parking Spaces</a>
+            <a href="../admin/addPark.php" class="sidebar-link">New Parking Spaces</a>
         </li>
         <li class="sidebar-item">
             <a href="#" class="sidebar-link">List Parking Spaces</a>
