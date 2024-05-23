@@ -205,7 +205,7 @@
     </a>
     <ul id="expertDomainDropdown" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">New Registration</a>
+            <a href="../admin/registerStudent.php" class="sidebar-link">New Registration</a>
         </li>
         <li class="sidebar-item">
             <a href="#" class="sidebar-link">List Registered User</a>

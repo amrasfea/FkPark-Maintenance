@@ -217,7 +217,7 @@
     </a>
     <ul id="vehicleDropDown" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">Apply Vehicle Registration</a>
+            <a href="../student/vehicleRegister.php" class="sidebar-link">Apply Vehicle Registration</a>
         </li>
         <li class="sidebar-item">
             <a href="#" class="sidebar-link">Status Application</a>
