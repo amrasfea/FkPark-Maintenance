@@ -63,6 +63,7 @@ $createProfileTableQuery = "CREATE TABLE IF NOT EXISTS profiles (
     p_state VARCHAR(50) DEFAULT NULL,
     p_department VARCHAR(100) DEFAULT NULL,
     p_bodyNumber VARCHAR(10) DEFAULT NULL,
+    p_position VARCHAR(100) DEFAULT NULL,
     u_id INT,
     FOREIGN KEY (u_id) REFERENCES user (u_id)
 )";
@@ -76,15 +77,17 @@ if (mysqli_query($conn, $createProfileTableQuery)) {
 // TABLE: VEHICLE
 $createVehicleTableQuery = "CREATE TABLE IF NOT EXISTS vehicle (
     v_id INT AUTO_INCREMENT PRIMARY KEY,
-    v_type ENUM('MOTORCYCLE','CAR') NOT NULL,
+    v_vehicleType ENUM('MOTORCYCLE','CAR') NOT NULL,
     v_brand VARCHAR(50) NOT NULL,
     v_roadTaxValidDate DATE NOT NULL,
     v_licenceValidDate DATE NOT NULL,
+    v_licenceClass VARCHAR(5) NOT NULL,
     v_phoneNum INT NOT NULL,
     v_vehicleGrant BLOB NOT NULL,
-    v_approvalStatus ENUM('Reject','Approve') NOT NULL,
+    v_approvalStatus ENUM('Reject','Approve') DEFAULT NULL,
     v_remarks TEXT DEFAULT NULL,
-    v_qrCode VARCHAR(500) NOT NULL,
+    v_qrCode VARCHAR(500) DEFAULT NULL,
+    v_plateNum VARCHAR(10) NOT NULL,
     v_model VARCHAR(50) NOT NULL,
     u_id INT,
     FOREIGN KEY (u_id) REFERENCES user (u_id)
@@ -105,8 +108,8 @@ $createParkSpaceTableQuery = "CREATE TABLE IF NOT EXISTS parkSpace(
     ps_date DATE NOT NULL,
     ps_time TIME NOT NULL,
     ps_typeEvent VARCHAR(50) DEFAULT NULL,
-    ps_descriptionEvent INT DEFAULT NULL,
-    ps_durationEvent INT DEFAULT NULL
+    ps_descriptionEvent VARCHAR(50) DEFAULT NULL,
+    ps_availableStat VARCHAR(10) DEFAULT NULL
     )";
 
 if (mysqli_query($conn, $createParkSpaceTableQuery)) {
