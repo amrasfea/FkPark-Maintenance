@@ -174,7 +174,7 @@
             <ul class="sidebar-nav">
 
             <li class="sidebar-item">
-                    <a href="/StaffHome" class="sidebar-link">
+                    <a href="/staffHome" class="sidebar-link">
                         <i class="lni lni-agenda"></i>
                         <span>Dashboard</span>
                     </a>

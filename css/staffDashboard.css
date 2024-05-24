@@ -1,0 +1,39 @@
+.dashboard {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.statistics {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.statistic {
+    flex-basis: calc(25% - 20px);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.statistic h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.statistic-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
