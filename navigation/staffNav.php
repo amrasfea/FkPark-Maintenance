@@ -174,7 +174,7 @@
             <ul class="sidebar-nav">
 
             <li class="sidebar-item">
-                    <a href="/staffHome" class="sidebar-link">
+                    <a href="../staff/staffHome.php" class="sidebar-link">
                         <i class="lni lni-agenda"></i>
                         <span>Dashboard</span>
                     </a>
