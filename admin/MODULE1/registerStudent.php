@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="../css/studentRegister.css">
 </head>
 <body>
-    <?php include('../navigation/adminNav.php'); ?>
+
+
+
     <div class="container">
         <h2>Register Student</h2>
         <form action="register_student.php" method="POST">
