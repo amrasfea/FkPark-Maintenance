@@ -204,7 +204,7 @@
                     </ul>
                         </li>
                         <li class="sidebar-item">
-                            <a href="" class="sidebar-link">Personal</a>
+                            <a href="../staff/staffsection.php" class="sidebar-link">Personal</a>
                         </li>
                        
                     </ul>
@@ -219,7 +219,7 @@
     </a>
     <ul id="registrationDropdown" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
         <li class="sidebar-item">
-            <a href="/newRegister" class="sidebar-link">List Student Application</a>
+            <a href="../staff/listVehicleApplication.php" class="sidebar-link">List Vehicle Application</a>
         </li>
     </ul>
 </li>
@@ -235,7 +235,7 @@
             <a href="../staff/summon.php" class="sidebar-link">Summon ticket</a>
         </li>
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">Summon list</a>
+            <a href="../staff/summonList.php" class="sidebar-link">Summon list</a>
         </li>
     </ul>
 </li>                

@@ -54,6 +54,18 @@
         .btn-primary:hover {
             background-color: #0056b3;
         }
+        .back-button{
+         background-color: #007bff; /* Background color for the view button */
+         margin-right: 5px; /* Adjust margin if needed */
+        padding: 8px 16px; /* Adjusted padding for consistent button size */
+        min-width: 80px; /* Set a minimum width for consistency */
+         border: none;
+         color: white;
+         font-size: 14px;
+        border-radius: 4px;
+         cursor: pointer;
+         transition: background-color 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -90,6 +102,7 @@
                 <input type="text" id="p_country" name="p_country" required>
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
+            <a href="listRegistration.php" class="back-button">Back</a>
         </form>
     </div>
 </body>

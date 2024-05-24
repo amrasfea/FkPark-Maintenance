@@ -63,6 +63,7 @@
         </div>
         <input type="hidden" name="u_id" value="<?php echo $_SESSION['u_id']; ?>">
         <button type="submit" class="btn btn-primary">Submit</button>
+       
     </form>
 </div>
 
