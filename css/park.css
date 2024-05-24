@@ -66,16 +66,14 @@ h2 {
 }
 
 .search-button {
-    padding: 10px;
-    border: 2px solid #007bff;
+    padding: 5px 10px; /* Reduced padding for smaller button */
+    border: none;
     background-color: #007bff;
     color: white;
-    font-size: 14px;
+    font-size: 14px; /* Adjusted font size for smaller button */
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    width: 100%; /* Set width to 100% to match the input field */
-    box-sizing: border-box; /* Ensure padding is included in width */
+    transition: background-color 0.3s ease;
 }
 
 .search-button:hover {
@@ -172,7 +170,8 @@ h2 {
 }
 
 /* Action Buttons in Table */
-.table td .view-button {
+.table td .view-button ,
+.back-button{
     background-color: #007bff; /* Background color for the view button */
     margin-right: 5px; /* Adjust margin if needed */
     padding: 8px 16px; /* Adjusted padding for consistent button size */
@@ -206,26 +205,22 @@ h2 {
 .table td .delete-button:hover {
     background-color: #c82333;
 }
-
-/*student view*/
-.input-group {
+/*SummonList css*/
+.summon-list .form-group {
     display: flex;
     align-items: center;
-    gap: 10px;
 }
 
-.label-inline {
-    margin-bottom: 0; /* Remove bottom margin to align with input */
+.summon-list .search-input-group {
+    display: flex;
+    align-items: center;
 }
 
-.input-group .form-control,
-.input-group .search-button {
-    flex: 1;
-    margin-bottom: 0;
+.summon-list .form-control {
+    padding: 8px; /* Adjust padding as needed */
 }
 
-.input-group input[type="date"],
-.input-group input[type="time"] {
-    width: auto;
-    flex: none;
+.summon-list .search-button {
+    margin-left: 10px; /* Adjust margin as needed */
+    padding: 8px 15px; /* Adjust padding as needed */
 }
