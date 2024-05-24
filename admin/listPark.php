@@ -1,3 +1,23 @@
+<?php
+// Simulated data for demonstration purposes
+$parkingSpaces = [
+    ['area' => 'A1', 'totalSpace' => 50, 'id' => 'A1-S22', 'status' => 'Available', 'typeEvent' => 'Concert', 'description' => 'Reserved for concert attendees', 'time' => '8:00 AM - 6:00 PM'],
+    ['area' => 'B2', 'totalSpace' => 30, 'id' => 'B2-S30', 'status' => 'Occupied', 'typeEvent' => 'Covered', 'description' => 'Shaded area', 'time' => '9:00 AM - 5:00 PM'],
+    // Add more parking spaces as needed
+];
+
+// Check if search query is set
+if(isset($_POST['search'])) {
+    $searchArea = $_POST['searchArea'];
+    // Filter parking spaces by area A1
+    $filteredSpaces = array_filter($parkingSpaces, function($space) use ($searchArea) {
+        return $space['area'] === $searchArea;
+    });
+} else {
+    // If search query is not set, display all parking spaces
+    $filteredSpaces = $parkingSpaces;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,22 +55,36 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Example row, you should dynamically generate these rows with PHP from your database -->
-                <tr>
-                    <td>Area 1</td>
-                    <td>50</td>
-                    <td>1234</td>
-                    <td>Available</td>
-                    <td>Concert</td>
-                    <td>Reserved for concert attendees</td>
-                    <td>
-                        <button type="submit" name="edit" class="edit-button">Edit</button>
-                        <button type="submit" name="delete" class="delete-button" onclick="alert('Database deleted')">Delete</button>
-                    </td>
-                </tr>
+                <!-- Dynamic generation of rows from filtered data -->
+                <?php foreach ($filteredSpaces as $space): ?>
+                    <tr id="<?php echo $space['id']; ?>">
+                        <td><?php echo $space['area']; ?></td>
+                        <td><?php echo $space['totalSpace']; ?></td>
+                        <td><?php echo $space['id']; ?></td>
+                        <td><?php echo $space['status']; ?></td>
+                        <td><?php echo $space['typeEvent']; ?></td>
+                        <td><?php echo $space['description']; ?></td>
+                        <td>
+                            <button type="submit" name="edit" class="edit-button" onclick="window.location.href='editPark.php?pID=<?php echo $space['id']; ?>'">Edit</button>
+                            <button type="submit" name="delete" class="delete-button" onclick="confirmDelete('<?php echo $space['id']; ?>')">Delete</button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
                 <!-- Additional rows go here -->
             </tbody>
         </table>
     </div>
+
+    <script>
+        function confirmDelete(parkingID) {
+            if (confirm('Are you sure you want to delete this parking space?')) {
+                // Remove the row from the table
+                var row = document.getElementById(parkingID);
+                row.parentNode.removeChild(row);
+                // Delete the data or perform any other action here
+                alert('Data deleted successfully!');
+            }
+        }
+    </script>
 </body>
 </html>

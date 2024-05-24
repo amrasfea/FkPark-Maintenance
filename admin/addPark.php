@@ -13,9 +13,9 @@
     <?php include('../navigation/adminNav.php'); ?>
     <div class="container mt-5">
         <h2>Parking Space Form</h2>
-        <form method="post" action="">
+        <form id="parkingForm" method="post" action="">
             <div class="button-group">
-                <button type="submit" name="newForm">New Form</button>
+                <button type="button" name="newForm" onclick="newForm()">New Form</button>
             </div>
             <div class="form-group">
                 
@@ -34,10 +34,28 @@
                 
             </div>
             <div class="button-group">
-                <button type="submit" name="cancel">Cancel</button>
-                <button type="submit" name="save">Save</button>
+                <button type="button" name="cancel" onclick="clearForm()">Cancel</button>
+                <button type="button" name="save" onclick="saveForm()">Save</button>
             </div>
         </form>
     </div>
+    <script>
+         function clearForm() {
+            document.getElementById("parkingForm").reset();
+            document.getElementById("successMessage").style.display = "none";
+        }
+
+        function saveForm() {
+            // Display alert message
+            alert("Successfully saved!");
+            // Optionally, you can also display the success message in the form
+            document.getElementById("successMessage").style.display = "block";
+        }
+
+        function newForm() {
+            clearForm();
+            document.getElementById("pArea").focus(); // Set focus to the first input field to indicate a new form is ready to be filled.
+        }
+    </script>
 </body>
 </html>
