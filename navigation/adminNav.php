@@ -180,20 +180,9 @@
                         <i class="lni lni-protection"></i>
                         <span>Profile</span>
                     </a>
-                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                
                         <li class="sidebar-item">
-                        <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                data-bs-target="#multi-two" aria-expanded="false" aria-controls="multi-two">
-                                My Profile
-                            </a>
-                        </li>
-                    </ul>
-
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Personal</a>
+                            <a href="../admin/adminsection.php" class="sidebar-link">Personal</a>
                         </li>
                     </ul>
                 </li>
