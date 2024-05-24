@@ -49,6 +49,7 @@ $conn->close();
     <title>Edit Student</title>
 </head>
 <body>
+    <?php include('../navigation/adminNav.php'); ?>
     <div class="container mt-5">
         <h2>Edit Student</h2>
         <form action="edit_student.php" method="post">
