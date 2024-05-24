@@ -176,7 +176,7 @@
             <li class="sidebar-item">
                     <a href="/StaffHome" class="sidebar-link">
                         <i class="lni lni-agenda"></i>
-                        <span>Home</span>
+                        <span>Dashboard</span>
                     </a>
                 </li>
 
@@ -234,6 +234,7 @@
         <li class="sidebar-item">
             <a href="../staff/summon.php" class="sidebar-link">Summon ticket</a>
         </li>
+        
        
     </ul>
 </li>                
