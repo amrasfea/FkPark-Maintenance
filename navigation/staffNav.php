@@ -235,7 +235,7 @@
             <a href="../staff/summon.php" class="sidebar-link">Summon ticket</a>
         </li>
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">Summon list</a>
+            <a href="../staff/summonList.php" class="sidebar-link">Summon list</a>
         </li>
     </ul>
 </li>                
