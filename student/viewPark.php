@@ -48,6 +48,9 @@
             });
             // Display the filtered park spaces
             if (!empty($filteredSpaces)) { // Only display if there are filtered spaces
+                // Count total spaces
+                $totalSpaces = count($filteredSpaces);
+                echo "<p>Total Spaces in $searchArea: $totalSpaces</p>";
                 foreach ($filteredSpaces as $space) {
                     echo '<div class="park-item">';
                     // Display parking ID and status in one line
@@ -67,4 +70,3 @@
     </div>
 </body>
 </html>
-
