@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List Park Space</title>
+    <title>Park Space Details</title>
     <!-- EXTERNAL CSS -->
     <link rel="stylesheet" href="../css/park.css">
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
@@ -13,16 +13,15 @@
     <?php include('../navigation/studentNav.php'); ?>
 
     <?php
-    // Fetch park space details based on the provided id
-    $id = isset($_GET['id']) ? $_GET['id'] : null;
-
-    // You would fetch park space details from the database based on the provided id
-    // For demonstration purposes, let's use a simulated data array
+    // Simulated data for demonstration purposes
     $parkingSpaces = [
-        ['area' => 'A1', 'id' => 1, 'status' => 'available', 'type' => 'Open', 'description' => 'Near entrance'],
-        ['area' => 'B2', 'id' => 2, 'status' => 'occupied', 'type' => 'Covered', 'description' => 'Shaded area'],
+        ['area' => 'A1', 'id' => 'A1-S22', 'status' => 'available', 'type' => 'Open', 'description' => 'Near entrance', 'time' => '8:00 AM - 6:00 PM'],
+        ['area' => 'B2', 'id' => 'B2-S30', 'status' => 'occupied', 'type' => 'Covered', 'description' => 'Shaded area', 'time' => '9:00 AM - 5:00 PM'],
         // Add more parking spaces as needed
     ];
+
+    // Fetch park space details based on the provided id
+    $id = isset($_GET['id']) ? $_GET['id'] : null;
 
     // Find the park space with the provided id
     $parkSpace = null;
@@ -43,8 +42,9 @@
                 <p>Parking area: <?php echo $parkSpace['area']; ?></p>
                 <p>Parking ID: <?php echo $parkSpace['id']; ?></p>
                 <p>Status: <?php echo ucfirst($parkSpace['status']); ?></p>
-                <p>Type event: <?php echo $parkSpace['type']; ?></p>
+                <p>Type: <?php echo $parkSpace['type']; ?></p>
                 <p>Description: <?php echo $parkSpace['description']; ?></p>
+                <!-- Add any other details you want to display -->
             </div>
         </div>
         <?php else: ?>

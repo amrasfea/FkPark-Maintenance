@@ -28,18 +28,27 @@
             </div>
         </form>
 
-        <div class="container mt-3"> <!-- Example of hardcoded park spaces -->
-            <h3>Park Spaces</h3>
-            <div class="park-list">
-                <?php
-                // Simulated data for demonstration purposes
-                $parkingSpaces = [
-                    ['area' => 'A1', 'id' => 'A1-S22', 'status' => 'available', 'type' => 'Open', 'description' => 'Near entrance', 'time' => '8:00 AM - 6:00 PM'],
-                    ['area' => 'B2', 'id' => 'B2-S30', 'status' => 'occupied', 'type' => 'Covered', 'description' => 'Shaded area', 'time' => '9:00 AM - 5:00 PM'],
-                    // Add more parking spaces as needed
-                ];
-
-                foreach ($parkingSpaces as $space) {
+        <?php
+        // Check if form is submitted and searchArea is set and not empty
+        if (isset($_POST['search']) && isset($_POST['searchArea']) && !empty(trim($_POST['searchArea']))) {
+            $searchArea = $_POST['searchArea'];
+            // Display park spaces only if searchArea is provided
+            echo '<div class="container mt-3">';
+            echo '<h3>Park Spaces</h3>';
+            echo '<div class="park-list">';
+            // Simulated data for demonstration purposes
+            $parkingSpaces = [
+                ['area' => 'A1', 'id' => 'A1-S22', 'status' => 'available', 'type' => 'Open', 'description' => 'Near entrance', 'time' => '8:00 AM - 6:00 PM'],
+                ['area' => 'B2', 'id' => 'B2-S30', 'status' => 'occupied', 'type' => 'Covered', 'description' => 'Shaded area', 'time' => '9:00 AM - 5:00 PM'],
+                // Add more parking spaces as needed
+            ];
+            // Filter parking spaces based on the entered park area
+            $filteredSpaces = array_filter($parkingSpaces, function($space) use ($searchArea) {
+                return $space['area'] == $searchArea;
+            });
+            // Display the filtered park spaces
+            if (!empty($filteredSpaces)) { // Only display if there are filtered spaces
+                foreach ($filteredSpaces as $space) {
                     echo '<div class="park-item">';
                     // Display parking ID and status in one line
                     echo '<div class="park-info">';
@@ -48,9 +57,14 @@
                     echo '</div>';
                     echo '</div>';
                 }
-                ?>
-            </div>
-        </div>
+            } else {
+                echo '<p>No park spaces available in the specified area.</p>';
+            }
+            echo '</div>'; // closing park-list div
+            echo '</div>'; // closing container div
+        }
+        ?>
     </div>
 </body>
 </html>
+
