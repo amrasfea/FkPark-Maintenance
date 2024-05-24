@@ -44,11 +44,13 @@
                 <input type="text" class="form-control" id="parkLoc" name="parkLoc">
 
                 <label for="violation">Violation type:</label>
-                <select name="violation" id="violation">
-                    <option value="1">Parking Violation</option>
-                    <option value="2">Not comply in campus traffic regulations</option>
-                    <option value="3">Caused accidents</option>
+                <select name="violation" id="violation" onchange="fillDemerit()">
+                    <option value="Parking">Parking Violation</option>
+                    <option value="Traffic">Not comply in campus traffic regulations</option>
+                    <option value="Accident">Caused accidents</option>
                 </select>
+                <label for="demerit">Demerit:</label>
+                <input type="text" class="form-control" id="demerit" name="demerit">
             </div>
             <div class="button-group">
                 <button type="button" id="guideBtn">Traffic Violation Guide and Demerit</button>
@@ -62,6 +64,27 @@
         </form>
     </div>
 
+    <script>
+        function fillDemerit() {
+            var violationType = document.getElementById("violation").value;
+            var demeritInput = document.getElementById("demerit");
+            // Set demerit points based on violation type
+            switch (violationType) {
+                case "Parking":
+                    demeritInput.value = 10;
+                    break;
+                case "Traffic":
+                    demeritInput.value = 15;
+                    break;
+                case "Accident":
+                    demeritInput.value = 20;
+                    break;
+                default:
+                    demeritInput.value = "";
+                    break;
+            }
+        }
+    </script>
     <script src="../js/staff.js"></script>
 </body>
 </html>

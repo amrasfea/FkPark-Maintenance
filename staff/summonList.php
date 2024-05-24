@@ -45,7 +45,9 @@
                         <td>
                             <button type="submit" name="edit" class="edit-button">Edit</button>
                             <button type="submit" name="delete" class="delete-button" onclick="alert('Database deleted')">Delete</button>
-                            <button type="submit" name="edit" class="edit-button">View</button>
+                            <a href="../staff/receipt.php">
+                            <button type="submit" name="edit" class="edit-button" >View</button>
+                            </a>
                         </td>
                     </tr>
                 </tbody>

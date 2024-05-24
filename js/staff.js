@@ -4,3 +4,5 @@ document.getElementById('newFormBtn').addEventListener('click', function() {
 document.getElementById('guideBtn').addEventListener('click', function() {
 window.location.href = 'violation.php';
 });
+
+
