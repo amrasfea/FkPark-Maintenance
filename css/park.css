@@ -170,7 +170,8 @@ h2 {
 }
 
 /* Action Buttons in Table */
-.table td .view-button {
+.table td .view-button ,
+.back-button{
     background-color: #007bff; /* Background color for the view button */
     margin-right: 5px; /* Adjust margin if needed */
     padding: 8px 16px; /* Adjusted padding for consistent button size */
