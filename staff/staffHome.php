@@ -12,23 +12,23 @@
 <body>
 <?php include('../navigation/staffNav.php'); ?>
     <div class="dashboard">
-        <h1>Dashboard</h1>
+        <h1>Unit Keselmatan Staff Dashboard</h1>
         <div class="statistics">
             <div class="statistic">
-                <h2>Total Users</h2>
+                <h2>Summon Issued</h2>
                 <p class="statistic-value">1000</p>
             </div>
             <div class="statistic">
-                <h2>Active Users</h2>
+                <h2>Action Taken</h2>
                 <p class="statistic-value">800</p>
             </div>
             <div class="statistic">
-                <h2>Inactive Users</h2>
+                <h2>Registered Vehicle</h2>
                 <p class="statistic-value">200</p>
             </div>
             <div class="statistic">
-                <h2>Total Revenue</h2>
-                <p class="statistic-value">$50,000</p>
+                <h2>Pending Approval</h2>
+                <p class="statistic-value">50</p>
             </div>
         </div>
     </div>

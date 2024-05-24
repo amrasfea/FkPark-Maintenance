@@ -176,6 +176,7 @@ $createSummonTableQuery = "CREATE TABLE IF NOT EXISTS summon (
     sum_date DATE DEFAULT NULL,
     sum_status VARCHAR(200) DEFAULT NULL,
     sum_QR VARCHAR(200) DEFAULT NULL,
+    
     vt_id INT,
     v_id INT,
     ps_id VARCHAR(10),
