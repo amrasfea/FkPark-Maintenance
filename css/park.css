@@ -1,5 +1,4 @@
-
-
+/* General Container */
 .container {
     max-width: 50%;
     margin: 0 auto;
@@ -8,12 +7,15 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
+
+/* Header Style */
 h2 {
     text-align: center;
     margin-bottom: 20px;
     font-weight: 600;
 }
 
+/* Form Group Styling */
 .form-group {
     margin-bottom: 15px;
 }
@@ -33,34 +35,142 @@ h2 {
     margin-bottom: 10px;
 }
 
-.button-group {
+/* Search Form Styling */
+.search-form {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    justify-content: flex-start; /* Align search form to the left */
 }
 
-.button-group button {
-    flex: 1;
-    padding: 10px 20px;
+.search-input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 600px; /* Adjusted maximum width */
+}
+
+.search-input-group label {
+    margin-right: 10px; /* Space between label and input */
+    font-weight: 500;
+    white-space: nowrap; /* Prevent label from breaking into multiple lines */
+}
+
+.search-input-group .form-control {
+    flex-grow: 1;
+    padding: 5px 10px; /* Reduced padding for smaller input */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px; /* Adjusted font size for smaller input */
+}
+
+.search-button {
+    padding: 5px 10px; /* Reduced padding for smaller button */
     border: none;
     background-color: #007bff;
     color: white;
-    font-size: 16px;
+    font-size: 14px; /* Adjusted font size for smaller button */
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.button-group button:hover {
+.search-button:hover {
     background-color: #0056b3;
 }
 
-.button-group button:nth-child(2) {
+
+/* Specific Button Styling */
+.button-group button {
+    padding: 8px 16px; /* Adjusted padding for consistent button size */
+    min-width: 80px; /* Set a minimum width for consistency */
+    border: none;
+    color: white;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-group button[name="newForm"],
+.button-group button[name="save"] {
+    background-color: #007bff;
+    margin-right: auto;
+}
+
+.button-group button[name="newForm"]:hover,
+.button-group button[name="save"]:hover {
+    background-color: #0056b3;
+}
+
+.button-group button[name="cancel"],
+.button-group button[name="delete"] {
+    background-color: #dc3545;
+    margin-right: 5px;
+}
+
+.button-group button[name="cancel"]:hover,
+.button-group button[name="delete"]:hover{
+    background-color: #c82333;
+}
+
+.button-group button[name="update"] {
+    background-color: #28a745; /* Green color for update button */
+    font-size: 14px;
+    padding: 8px 16px;
+    margin-left: 5px; /* Adjust margin to separate from other buttons */
+}
+
+.button-group button[name="update"]:hover {
+    background-color: #218838; /* Darker shade of green on hover */
+}
+
+/* Table Styling */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table th,
+.table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+.table th {
+    background-color: #f8f8f8;
+    font-weight: 600;
+}
+
+/* Action Buttons in Table */
+.table td .edit-button,
+.table td .delete-button {
+    padding: 8px 16px; /* Adjusted padding for consistent button size */
+    min-width: 80px; /* Set a minimum width for consistency */
+    border: none;
+    color: white;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.table td .edit-button {
+    background-color: #007bff;
+    margin-right: 5px;
+}
+
+.table td .edit-button:hover {
+    background-color: #0056b3;
+}
+
+.table td .delete-button {
     background-color: #dc3545;
 }
 
-.button-group button:nth-child(2):hover {
+.table td .delete-button:hover {
     background-color: #c82333;
 }
