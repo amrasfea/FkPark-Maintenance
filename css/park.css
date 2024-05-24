@@ -175,3 +175,22 @@ h2 {
 .table td .delete-button:hover {
     background-color: #c82333;
 }
+/*SummonList css*/
+.summon-list .form-group {
+    display: flex;
+    align-items: center;
+}
+
+.summon-list .search-input-group {
+    display: flex;
+    align-items: center;
+}
+
+.summon-list .form-control {
+    padding: 8px; /* Adjust padding as needed */
+}
+
+.summon-list .search-button {
+    margin-left: 10px; /* Adjust margin as needed */
+    padding: 8px 15px; /* Adjust padding as needed */
+}
