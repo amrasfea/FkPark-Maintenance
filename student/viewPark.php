@@ -28,26 +28,3 @@
     </div>
 </body>
 </html>
-
-/*student view*/
-.input-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.label-inline {
-    margin-bottom: 0; /* Remove bottom margin to align with input */
-}
-
-.input-group .form-control,
-.input-group .search-button {
-    flex: 1;
-    margin-bottom: 0;
-}
-
-.input-group input[type="date"],
-.input-group input[type="time"] {
-    width: auto;
-    flex: none;
-}
