@@ -15,11 +15,13 @@
         <h2>List Park Space</h2>
         <form method="post" action="" class="search-form">
             <div class="form-group">
-                <label for="searchArea">Park Area:</label>
-                <div class="search-input-group">
-                    <input type="text" class="form-control" id="searchArea" name="searchArea">
-                    <button type="submit" name="search" class="search-button">Search</button>
+                <div class="button-group">
+                    <input type="date" name="parkDate">
+                    <input type="time" name="parkTime">
+                    <label for="searchArea">Park Area:</label>
+                    <div class="search-input-group">
+                        <input type="text" class="form-control" id="searchArea" name="searchArea">
+                        <button type="submit" name="search" class="search-button">Search</button>
+                    </div>
                 </div>
-                <input type="date" name="summonDate">
-                <input type="time" name="summonTime">
             </div>

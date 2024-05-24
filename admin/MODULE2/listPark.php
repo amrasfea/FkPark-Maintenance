@@ -31,7 +31,6 @@
                     <th>Status</th>
                     <th>Type Event</th>
                     <th>Description</th>
-                    <th>Time</th>
                     <th>Action</th> <!-- Added Action column -->
                 </tr>
             </thead>
@@ -44,7 +43,6 @@
                     <td>Available</td>
                     <td>Concert</td>
                     <td>Reserved for concert attendees</td>
-                    <td>2024-05-24 18:00</td>
                     <td>
                         <button type="submit" name="edit" class="edit-button">Edit</button>
                         <button type="submit" name="delete" class="delete-button" onclick="alert('Database deleted')">Delete</button>
