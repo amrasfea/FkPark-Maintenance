@@ -44,6 +44,16 @@
             <input type="date" class="form-control" id="v_licenceValidDate" name="v_licenceValidDate" required>
         </div>
         <div class="mb-3">
+            <label for="v_licenceClass" class="form-label">License Class</label>
+            <select class="form-select" id="v_licenceClass" name="v_licenceClas" required>
+                <option value="B">B</option>
+                <option value="B1">B1</option>
+                <option value="B2">B2</option>
+                <option value="D">D</option>
+                <option value="DA">DA</option>
+            </select>
+        </div>
+        <div class="mb-3">
             <label for="v_phoneNum" class="form-label">Phone Number</label>
             <input type="text" class="form-control" id="v_phoneNum" name="v_phoneNum" required>
         </div>
