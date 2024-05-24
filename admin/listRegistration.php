@@ -1,57 +1,25 @@
-<?php
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "fkpark";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $p_name = $_POST['p_name'];
-    $p_course = $_POST['p_course'];
-    $p_faculty = $_POST['p_faculty'];
-    $p_icNumber = $_POST['p_icNumber'];
-    $p_address = $_POST['p_address'];
-    $p_postCode = $_POST['p_postCode'];
-    $p_country = $_POST['p_country'];
-    $p_state = $_POST['p_state'];
-    $p_department = $_POST['p_department'];
-    $p_bodyNumber = $_POST['p_bodyNumber'];
-    $u_id = $_POST['u_id'];
-
-    $sql = "INSERT INTO profiles (p_name, p_course, p_faculty, p_icNumber, p_address, p_postCode, p_country, p_state, p_department, p_bodyNumber, u_id)
-            VALUES ('$p_name', '$p_course', '$p_faculty', '$p_icNumber', '$p_address', '$p_postCode', '$p_country', '$p_state', '$p_department', '$p_bodyNumber', '$u_id')";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-}
-
-// Fetch records to display
-$sql = "SELECT * FROM profiles";
-$result = $conn->query($sql);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registered Students</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <title>List Registered User</title>
+    <link rel="stylesheet" href="../css/park.css">
+    <link rel="icon" type="image/x-icon" href="../img/logo.png">
 </head>
 <body>
     <?php include('../navigation/adminNav.php'); ?>
     <div class="container mt-5">
-        <h2>Registered Students</h2>
-        <table class="table table-striped">
+        <h2>List Registration</h2>
+        <form method="post" action="" class="search-form">
+            <div class="form-group">
+                <div class="search-input-group">
+                    <input type="text" class="form-control" id="searchArea" name="searchArea">
+                    <button type="submit" name="search" class="search-button">Search</button>
+                </div>
+            </div>
+        </form>
+        <table class="table mt-4">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -59,31 +27,24 @@ $result = $conn->query($sql);
                     <th>Course</th>
                     <th>Faculty</th>
                     <th>IC Number</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Action</th> <!-- Added Action column -->
                 </tr>
             </thead>
             <tbody>
-                <?php
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        echo "<tr>
-                            <td>{$row['p_id']}</td>
-                            <td>{$row['p_name']}</td>
-                            <td>{$row['p_course']}</td>
-                            <td>{$row['p_faculty']}</td>
-                            <td>{$row['p_icNumber']}</td>
-                            <td>
-                                <a href='edit_student.php?id={$row['p_id']}' class='btn btn-warning btn-sm'>Edit</a>
-                                <a href='delete_student.php?id={$row['p_id']}' class='btn btn-danger btn-sm'>Delete</a>
-                            </td>
-                        </tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='7'>No records found</td></tr>";
-                }
-                $conn->close();
-                ?>
+                <!-- Example row, you should dynamically generate these rows with PHP from your database -->
+                <tr>
+                    <td>CB22040</td>
+                    <td>Nur Amira Sofea Binti Othman</td>
+                    <td>BCS Software</td>
+                    <td>FKOMP</td>
+                    <td>021007031014</td>
+                    <td>
+                    <button type="submit" name="view" class="view-button">View</button>
+                        <button type="submit" name="edit" class="edit-button">Edit</button>
+                        <button type="submit" name="delete" class="delete-button" onclick="alert('Database deleted')">Delete</button>
+                    </td>
+                </tr>
+                <!-- Additional rows go here -->
             </tbody>
         </table>
     </div>

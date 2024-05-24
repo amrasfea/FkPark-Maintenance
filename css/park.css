@@ -159,6 +159,25 @@ h2 {
     transition: background-color 0.3s ease;
 }
 
+/* Action Buttons in Table */
+.table td .view-button {
+    background-color: #007bff; /* Background color for the view button */
+    margin-right: 5px; /* Adjust margin if needed */
+    padding: 8px 16px; /* Adjusted padding for consistent button size */
+    min-width: 80px; /* Set a minimum width for consistency */
+    border: none;
+    color: white;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.table td .view-button:hover {
+    background-color: #0056b3; /* Darker shade of blue on hover */
+}
+
+
 .table td .edit-button {
     background-color: #007bff;
     margin-right: 5px;

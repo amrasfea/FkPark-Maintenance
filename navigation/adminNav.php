@@ -60,7 +60,7 @@
             height: 100%;
             z-index: 1000;
             transition: all .25s ease-in-out;
-            background-color:darkgreen;
+            background-color:#2E8B57;
             display: flex;
             flex-direction: column;
         }
