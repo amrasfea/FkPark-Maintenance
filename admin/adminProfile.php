@@ -33,9 +33,9 @@
                      <!-- BEGIN profile-header-info -->
                      <div class="profile-header-info">
                         <h4 class="m-t-10 m-b-5">Aliya ilyas</h4>
-                        <p class="m-b-10">Administrator</p>
+                        <p class="m-b-10" style="color: black;">Administrator</p>
                         <!-- Change here: added href attribute with the URL of editProfileStudent.php -->
-                        <a href="../admin/editAdminProfile.php" class="btn btn-sm btn-info mb-2">Edit Profile</a>
+                        <a href="../admin/editAdminProfile.php" class="btn btn-sm btn-info mb-2" style="background-color: green; color:white;">Edit Profile</a>
                      </div>
                      <!-- END profile-header-info -->
                   </div>

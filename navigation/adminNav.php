@@ -180,7 +180,7 @@
                         <i class="lni lni-protection"></i>
                         <span>Profile</span>
                     </a>
-                
+                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
                             <a href="../admin/adminsection.php" class="sidebar-link">Personal</a>
                         </li>
@@ -227,7 +227,7 @@
     </a>
             <ul id="dashboardDropdown" class="sidebar-dropdown list-unstyled collapse">
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">blabla</a>
+                    <a href="../admin/adminDashboard.php" class="sidebar-link">Registration Dashboard</a>
                 </li>
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link">kk</a>
