@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Park</title>
     <!--EXTERNAL CSS-->
-    <link rel="stylesheet" href="../css/park.css">
-    <link rel="icon" type="image/x-icon" href="../img/logo.png">
+    <link rel="stylesheet" href=".../css/park.css">
+    <link rel="icon" type="image/x-icon" href=".../img/logo.png">
     <!--FAVICON-->
 </head>
 <body>
-    <?php include('../navigation/adminNav.php'); ?>
+    <?php include('.../navigation/adminNav.php'); ?>
     <div class="container mt-5">
         <h2>Parking Space Form</h2>
         <form method="post" action="">
