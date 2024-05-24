@@ -48,16 +48,7 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<?php
-$navPath = __DIR__ . '..../navigation/adminNav.php';
-if (file_exists($navPath)) {
-    include($navPath);
-} else {
-    echo "Navigation file not found.";
-}
-?>
-
-
+    <?php include('../navigation/adminNav.php'); ?>
     <div class="container mt-5">
         <h2>Registered Students</h2>
         <table class="table table-striped">
