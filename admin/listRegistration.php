@@ -39,7 +39,7 @@
                     <td>FKOMP</td>
                     <td>021007031014</td>
                     <td>
-                    <button type="submit" name="view" class="view-button">View</button>
+                    <button type="submit" name="view" class="view-button" href="">View</button>
                         <button type="submit" name="edit" class="edit-button">Edit</button>
                         <button type="submit" name="delete" class="delete-button" onclick="alert('Database deleted')">Delete</button>
                     </td>
