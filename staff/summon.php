@@ -21,7 +21,6 @@
         <form method="post" action="">
             <div class="button-group">
                 <button type="button" id="newFormBtn">New Form</button>
-                <button type="button" onclick="alert('Database deleted')">Delete</button>
                 <input type="date" name="summonDate">
                 <input type="time" name="summonTime">
             </div>
@@ -58,7 +57,6 @@
             <div class="button-group">
                 <button type="submit" name="noti">Send Notification</button>
                 <button type="submit" name="print">Print Receipt</button>
-                <button type="submit" name="edit">Edit</button>
                 <button type="submit" name="save">Save</button>
             </div>
         </form>
