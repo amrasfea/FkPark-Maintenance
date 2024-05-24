@@ -82,6 +82,16 @@ h2 {
 
 
 /* Specific Button Styling */
+.button-group {
+    display: flex;
+    align-items: center;
+}
+
+.button-group input[type="date"],
+.button-group input[type="time"],
+.button-group .search-input-group {
+    margin-right: 2rem;
+}
 
 .button-group button {
     padding: 8px 16px; /* Adjusted padding for consistent button size */
