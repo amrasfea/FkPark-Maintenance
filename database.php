@@ -128,7 +128,7 @@ $createBookInfoTableQuery = "CREATE TABLE IF NOT EXISTS bookInfo(
     b_parkStart TIME DEFAULT NULL,
     b_duration INT DEFAULT NULL,
     b_status VARCHAR(10),
-    b_QRid VARCHAR(255) NOT NULL,
+    b_QRid VARCHAR(255),
     v_id INT ,
     ps_id VARCHAR(10),
     FOREIGN KEY (u_id) REFERENCES user(u_id),
