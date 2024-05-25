@@ -33,6 +33,10 @@
                 <input type="text" id="p_icNumber" name="p_icNumber" required>
             </div>
             <div class="form-group">
+                <label for="p_email">IC Number</label>
+                <input type="email" id="p_email" name="p_email" required>
+            </div>
+            <div class="form-group">
                 <label for="p_address">Address</label>
                 <input type="text" id="p_address" name="p_address">
             </div>
