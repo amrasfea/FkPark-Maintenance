@@ -245,15 +245,8 @@
     </a>
             <ul id="progressDropdown" class="sidebar-dropdown list-unstyled collapse">
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">Booking Form </a>
+                    <a href="../student/bookForm.php" class="sidebar-link">Booking Form </a>
                 </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">QR</a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">Checkout</a>
-                </li>
-
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link">Booking List</a>
                 </li>
