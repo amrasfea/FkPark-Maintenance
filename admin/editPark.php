@@ -6,8 +6,8 @@ $parkingSpaces = [
     // Add more parking spaces as needed
 ];
 
-// Get the Parking ID from the URL
-$pID = $_GET['pID'];
+// Get the Parking ID from the POST data
+$pID = $_POST['pID'] ?? $_GET['pID']; // Updated to handle both POST and GET
 
 // Find the parking space with the given ID
 $selectedSpace = null;
@@ -40,7 +40,7 @@ if ($selectedSpace === null) {
     <?php include('../navigation/adminNav.php'); ?>
     <div class="container mt-5">
         <h2>Edit Parking Space</h2>
-        <form id="editForm" method="post" action="#">
+        <form id="editForm" method="post" action="updateParking.php">
             <div class="form-group">
                 <label for="pArea">Parking Area:</label>
                 <input type="text" class="form-control" id="pArea" name="pArea" value="<?php echo $selectedSpace['area']; ?>">
@@ -66,7 +66,7 @@ if ($selectedSpace === null) {
             </div>
             <div class="button-group">
                 <button type="button" name="cancel" onclick="cancelEdit()">Cancel</button>
-                <button type="button" name="save" onclick="saveData()">Save</button>
+                <button type="submit" name="save">Save</button>
             </div>
         </form>
     </div>
@@ -75,14 +75,6 @@ if ($selectedSpace === null) {
         function cancelEdit() {
             // Redirect back to the list page
             window.location.href = 'listPark.php';
-        }
-
-        function saveData() {
-            // Perform AJAX request to updateParking.php or your backend endpoint
-            // On success, show an alert message and redirect to the list page
-            // For demonstration, I'm showing an alert directly here
-            alert('Data saved successfully!');
-            window.location.href = 'listPark.php'; // Redirect to the list page
         }
     </script>
 </body>
