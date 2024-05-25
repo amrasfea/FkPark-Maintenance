@@ -7,10 +7,10 @@ $parkingSpaces = [
 ];
 
 // Check if search query is set
-if(isset($_POST['search'])) {
+if (isset($_POST['search'])) {
     $searchArea = $_POST['searchArea'];
-    // Filter parking spaces by area A1
-    $filteredSpaces = array_filter($parkingSpaces, function($space) use ($searchArea) {
+    // Filter parking spaces by area
+    $filteredSpaces = array_filter($parkingSpaces, function ($space) use ($searchArea) {
         return $space['area'] === $searchArea;
     });
 } else {
@@ -65,8 +65,11 @@ if(isset($_POST['search'])) {
                         <td><?php echo $space['typeEvent']; ?></td>
                         <td><?php echo $space['description']; ?></td>
                         <td>
-                            <button type="submit" name="edit" class="edit-button" onclick="window.location.href='editPark.php?pID=<?php echo $space['id']; ?>'">Edit</button>
-                            <button type="submit" name="delete" class="delete-button" onclick="confirmDelete('<?php echo $space['id']; ?>')">Delete</button>
+                            <form method="post" action="editPark.php" style="display:inline;">
+                                <input type="hidden" name="pID" value="<?php echo $space['id']; ?>">
+                                <button type="submit" name="edit" class="edit-button">Edit</button>
+                            </form>
+                            <button type="button" name="delete" class="delete-button" onclick="confirmDelete('<?php echo $space['id']; ?>')">Delete</button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
