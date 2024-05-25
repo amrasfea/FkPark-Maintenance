@@ -57,6 +57,7 @@ $createProfileTableQuery = "CREATE TABLE IF NOT EXISTS profiles (
     p_course ENUM('SOFTWARE ENGINEERING', 'NETWORKING', 'GRAPHIC DESIGN') DEFAULT NULL,
     p_faculty VARCHAR(100) DEFAULT NULL,
     p_icNumber VARCHAR(15) NOT NULL,
+    p_email VARCHAR(100) NOT NULL,
     p_address VARCHAR(100) DEFAULT NULL,
     p_postCode VARCHAR(10) DEFAULT NULL,
     p_country VARCHAR(50) DEFAULT NULL,
