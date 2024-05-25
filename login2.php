@@ -57,9 +57,6 @@
     $password = $_POST["password"];
     $user = $_POST["user"];
 
-    // You might want to add actual authentication logic here (e.g., check against the database)
-    // For now, we're just redirecting based on the selected user type
-
     if ($user === "admin") {
       header("Location: ./admin/adminDashboard.php");
       exit();
