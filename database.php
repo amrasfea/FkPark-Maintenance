@@ -38,7 +38,7 @@ if (mysqli_query($conn, $createTableQuery)) {
 $createUserTableQuery = "CREATE TABLE IF NOT EXISTS user (
     u_id INT AUTO_INCREMENT PRIMARY KEY,
     u_email VARCHAR(100) NOT NULL UNIQUE,
-    u_password VARCHAR(25) NOT NULL,
+    u_password VARCHAR(255) NOT NULL,
     r_id INT,
     FOREIGN KEY (r_id) REFERENCES roles (r_id)
 )";
