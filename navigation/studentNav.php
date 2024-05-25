@@ -225,14 +225,11 @@
     <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
         data-bs-target="#SummonDropdown" aria-expanded="false" aria-controls="publicationDropdown">
         <i class="lni lni-layout"></i>
-        <span>Summon</span>
+        <span>Inbox</span>
     </a>
     <ul id="SummonDropdown" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">Summon Ticket</a>
-        </li>
-        <li class="sidebar-item">
-            <a href="#" class="sidebar-link">Demerit Points</a>
+            <a href="../student/inboxSum.php" class="sidebar-link">Summon</a>
         </li>
     </ul>
 </li>
