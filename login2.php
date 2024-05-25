@@ -10,10 +10,10 @@
 
 <body>
   <div class="container">
+    <div class="form">
     <a>
       <img src="img/logo.png" alt="Logo" width="180" height="100">
     </a>
-    <div class="form">
       <h1 class="title"><i>FKPark Management System</i></h1>
       <div class="content">
         <div class="row">
