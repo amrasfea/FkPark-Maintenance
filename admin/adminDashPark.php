@@ -1,13 +1,13 @@
 <?php
 // Simulated more data for demonstration purposes
 $parkingSpaces = [
-    ['area' => 'A1', 'totalSpace' => 50, 'id' => 'A1-S22', 'status' => 'Available', 'typeEvent' => 'Concert', 'description' => 'Reserved for concert attendees', 'time' => '8:00 AM - 6:00 PM'],
-    ['area' => 'A2', 'totalSpace' => 40, 'id' => 'A2-S23', 'status' => 'Occupied', 'typeEvent' => 'Open', 'description' => 'Open parking space', 'time' => '7:00 AM - 7:00 PM'],
-    ['area' => 'A3', 'totalSpace' => 60, 'id' => 'A3-S24', 'status' => 'Available', 'typeEvent' => 'Covered', 'description' => 'Covered parking area', 'time' => '9:00 AM - 5:00 PM'],
-    ['area' => 'A4', 'totalSpace' => 30, 'id' => 'A4-S25', 'status' => 'Occupied', 'typeEvent' => 'Underground', 'description' => 'Underground parking area', 'time' => '24/7'],
-    ['area' => 'B1', 'totalSpace' => 80, 'id' => 'B1-S26', 'status' => 'Available', 'typeEvent' => 'Open', 'description' => 'Open parking area near the mall', 'time' => '10:00 AM - 10:00 PM'],
-    ['area' => 'B2', 'totalSpace' => 70, 'id' => 'B2-S27', 'status' => 'Occupied', 'typeEvent' => 'Covered', 'description' => 'Shaded area', 'time' => '9:00 AM - 5:00 PM'],
-    ['area' => 'B3', 'totalSpace' => 90, 'id' => 'B3-S28', 'status' => 'Available', 'typeEvent' => 'Open', 'description' => 'Open parking space', 'time' => '8:00 AM - 6:00 PM'],
+    ['area' => 'A1', 'totalSpace' => 25, 'id' => 'A1-S22', 'status' => 'Available', 'typeEvent' => 'Concert', 'description' => 'Reserved for concert attendees', 'time' => '8:00 AM - 6:00 PM'],
+    ['area' => 'A2', 'totalSpace' => 25, 'id' => 'A2-S23', 'status' => 'Occupied', 'typeEvent' => 'Open', 'description' => 'Open parking space', 'time' => '7:00 AM - 7:00 PM'],
+    ['area' => 'A3', 'totalSpace' => 25, 'id' => 'A3-S24', 'status' => 'Available', 'typeEvent' => 'Covered', 'description' => 'Covered parking area', 'time' => '9:00 AM - 5:00 PM'],
+    ['area' => 'A4', 'totalSpace' => 25, 'id' => 'A4-S25', 'status' => 'Occupied', 'typeEvent' => 'Underground', 'description' => 'Underground parking area', 'time' => '24/7'],
+    ['area' => 'B1', 'totalSpace' => 32, 'id' => 'B1-S26', 'status' => 'Occupied', 'typeEvent' => 'Open', 'description' => 'Open parking area near the mall', 'time' => '10:00 AM - 10:00 PM'],
+    ['area' => 'B2', 'totalSpace' => 33, 'id' => 'B2-S27', 'status' => 'Occupied', 'typeEvent' => 'Covered', 'description' => 'Shaded area', 'time' => '9:00 AM - 5:00 PM'],
+    ['area' => 'B3', 'totalSpace' => 35, 'id' => 'B3-S28', 'status' => 'Occupied', 'typeEvent' => 'Open', 'description' => 'Open parking space', 'time' => '8:00 AM - 6:00 PM'],
 ];
 
 // Calculate total, occupied, and available spaces

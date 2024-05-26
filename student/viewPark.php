@@ -38,8 +38,20 @@
             echo '<div class="park-list">';
             // Simulated data for demonstration purposes
             $parkingSpaces = [
-                ['area' => 'A1', 'id' => 'A1-S22', 'status' => 'available', 'type' => 'Open', 'description' => 'Near entrance', 'time' => '8:00 AM - 6:00 PM'],
-                ['area' => 'B2', 'id' => 'B2-S30', 'status' => 'occupied', 'type' => 'Covered', 'description' => 'Shaded area', 'time' => '9:00 AM - 5:00 PM'],
+                ['area' => 'A1', 'id' => 'A1-S01', 'status' => 'available', 'type' => '-', 'description' => '-'],
+                ['area' => 'A1', 'id' => 'A1-S02', 'status' => 'occupied', 'type' => 'Covered', 'description' => 'Shaded area'],
+                ['area' => 'A1', 'id' => 'A1-S03', 'status' => 'available', 'type' => '-', 'description' => '-'],
+                ['area' => 'A1', 'id' => 'A1-S04', 'status' => 'available', 'type' => '-', 'description' => '-'],
+                ['area' => 'A1', 'id' => 'A1-S05', 'status' => 'occupied', 'type' => 'maintenance', 'description' => 'lawn mowing'],
+                ['area' => 'A1', 'id' => 'A1-S06', 'status' => 'available', 'type' => '-', 'description' => '-'],
+                ['area' => 'A1', 'id' => 'A1-S07', 'status' => 'available', 'type' => '-', 'description' => '-'],
+                ['area' => 'A1', 'id' => 'A1-S22', 'status' => 'available', 'type' => '-', 'description' => '-'],
+                ['area' => 'A1', 'id' => 'A1-S23', 'status' => 'occupied', 'type' => 'Covered', 'description' => 'Shaded area'],
+
+                ['area' => 'B1', 'id' => 'B1-S01', 'status' => 'available', 'type' => '-', 'description' => '-'],
+                ['area' => 'B1', 'id' => 'B1-S20', 'status' => 'occupied', 'type' => 'maintenance', 'description' => 'lawn mowing'],
+                ['area' => 'B1', 'id' => 'B1-S23', 'status' => 'available', 'type' => '-', 'description' => '-'],
+                ['area' => 'B1', 'id' => 'B1-S30', 'status' => 'occupied', 'type' => 'Covered', 'description' => 'Shaded area'],
                 // Add more parking spaces as needed
             ];
             // Filter parking spaces based on the entered park area
