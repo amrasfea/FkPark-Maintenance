@@ -1,6 +1,6 @@
 <?php
 // Include database configuration file
-include('../connect.php'); // Adjust the path as needed
+include '../config.php';
 
 // Initialize variables
 $searchArea = "";
@@ -11,7 +11,7 @@ if (isset($_POST['search'])) {
     // Prepare a select statement with a search condition
     $query = "SELECT * FROM parkSpace WHERE ps_area LIKE ?";
     $param = "%" . $searchArea . "%";
-    if ($stmt = mysqli_prepare($con, $query)) {
+    if ($stmt = mysqli_prepare($conn, $query)) {
         // Bind variables to the prepared statement as parameters
         mysqli_stmt_bind_param($stmt, "s", $param);
         // Execute the statement
@@ -22,16 +22,16 @@ if (isset($_POST['search'])) {
             die("Error executing statement: " . mysqli_stmt_error($stmt));
         }
     } else {
-        die("Failed to prepare statement: " . mysqli_error($con));
+        die("Failed to prepare statement: " . mysqli_error($conn));
     }
 } else {
     // If search query is not set, fetch all parking spaces
     $query = "SELECT * FROM parkSpace";
-    if ($result = mysqli_query($con, $query)) {
+    if ($result = mysqli_query($conn, $query)) {
         // Get result
-        $result = mysqli_query($con, $query);
+        $result = mysqli_query($conn, $query);
     } else {
-        die("Failed to execute query: " . mysqli_error($con));
+        die("Failed to execute query: " . mysqli_error($conn));
     }
 }
 
@@ -58,7 +58,7 @@ if ($result) {
 }
 
 // Close connection
-mysqli_close($con);
+mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -180,4 +180,3 @@ mysqli_close($con);
     </script>
 </body>
 </html>
-

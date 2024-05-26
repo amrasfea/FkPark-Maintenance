@@ -1,6 +1,6 @@
 <?php
 // Include database configuration file
-include('../connect.php'); // Adjust the path as needed
+include '../config.php';
 
 // Get data from the form
 $pID = $_POST['pID'] ?? null;
@@ -13,7 +13,7 @@ $description = $_POST['description'] ?? null;
 if ($pID && $pArea && $status && $typeEvent && $description) {
     // Prepare and execute the query to update the parking space
     $query = "UPDATE parkSpace SET ps_area = ?, ps_availableStat = ?, ps_typeEvent = ?, ps_descriptionEvent = ? WHERE ps_id = ?";
-    if ($stmt = mysqli_prepare($con, $query)) {
+    if ($stmt = mysqli_prepare($conn, $query)) {
         mysqli_stmt_bind_param($stmt, "sssss", $pArea, $status, $typeEvent, $description, $pID);
         if (mysqli_stmt_execute($stmt)) {
             // Redirect back to listPark2.php after successful update
@@ -24,12 +24,12 @@ if ($pID && $pArea && $status && $typeEvent && $description) {
         }
         mysqli_stmt_close($stmt);
     } else {
-        die("Failed to prepare statement: " . mysqli_error($con));
+        die("Failed to prepare statement: " . mysqli_error($conn));
     }
 } else {
     die("All fields are required.");
 }
 
 // Close connection
-mysqli_close($con);
+mysqli_close($conn);
 ?>

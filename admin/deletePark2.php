@@ -1,13 +1,13 @@
 <?php
 // Include database configuration file
-include('../connect.php'); // Adjust the path as needed
+include '../config.php';
 
 if (isset($_POST['pID'])) {
     $pIDs = explode(',', $_POST['pID']); // Get the list of IDs to delete
 
     // Prepare the delete statement
     $query = "DELETE FROM parkSpace WHERE ps_id = ?";
-    if ($stmt = mysqli_prepare($con, $query)) {
+    if ($stmt = mysqli_prepare($conn, $query)) {
         // Loop through the IDs and delete each one
         foreach ($pIDs as $pID) {
             mysqli_stmt_bind_param($stmt, "s", $pID);
@@ -17,7 +17,7 @@ if (isset($_POST['pID'])) {
         }
         echo 'success';
     } else {
-        die("Failed to prepare statement: " . mysqli_error($con));
+        die("Failed to prepare statement: " . mysqli_error($conn));
     }
 
     // Close statement
@@ -27,5 +27,5 @@ if (isset($_POST['pID'])) {
 }
 
 // Close connection
-mysqli_close($con);
+mysqli_close($conn);
 ?>

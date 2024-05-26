@@ -1,6 +1,6 @@
 <?php
 // Include database configuration file
-include('../connect.php'); // Adjust the path as needed
+include '../config.php';
 
 // Get the Parking ID from the POST or GET data
 $pID = $_POST['pID'] ?? $_GET['pID'] ?? null;
@@ -8,7 +8,7 @@ $pID = $_POST['pID'] ?? $_GET['pID'] ?? null;
 if ($pID) {
     // Prepare and execute the query to fetch the selected parking space
     $query = "SELECT * FROM parkSpace WHERE ps_id = ?";
-    if ($stmt = mysqli_prepare($con, $query)) {
+    if ($stmt = mysqli_prepare($conn, $query)) {
         mysqli_stmt_bind_param($stmt, "s", $pID);
         if (mysqli_stmt_execute($stmt)) {
             $result = mysqli_stmt_get_result($stmt);
@@ -19,12 +19,12 @@ if ($pID) {
         }
         mysqli_stmt_close($stmt);
     } else {
-        die("Failed to prepare statement: " . mysqli_error($con));
+        die("Failed to prepare statement: " . mysqli_error($conn));
     }
 
     // Calculate total space for the area of the selected parking space
     $totalSpaceQuery = "SELECT COUNT(*) as totalSpace FROM parkSpace WHERE ps_area = ?";
-    if ($stmt = mysqli_prepare($con, $totalSpaceQuery)) {
+    if ($stmt = mysqli_prepare($conn, $totalSpaceQuery)) {
         mysqli_stmt_bind_param($stmt, "s", $selectedSpace['ps_area']);
         if (mysqli_stmt_execute($stmt)) {
             $result = mysqli_stmt_get_result($stmt);
@@ -36,14 +36,14 @@ if ($pID) {
         }
         mysqli_stmt_close($stmt);
     } else {
-        die("Failed to prepare statement: " . mysqli_error($con));
+        die("Failed to prepare statement: " . mysqli_error($conn));
     }
 } else {
     die("No parking space ID provided.");
 }
 
 // Close connection
-mysqli_close($con);
+mysqli_close($conn);
 
 // If the parking space is not found, display an error message
 if (!$selectedSpace) {

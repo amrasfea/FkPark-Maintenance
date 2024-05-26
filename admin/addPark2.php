@@ -1,5 +1,5 @@
 <?php
-include '../connect.php'; // Adjust the path as needed
+include '../config.php';
 
 $message = '';
 
@@ -9,14 +9,14 @@ if(isset($_POST['save'])){
     $ps_category = $_POST["ps_category"];
 
     // Check if the connection is established
-    if ($con === null) {
+    if ($conn === null) {
         die("Connection failed: " . mysqli_connect_error());
     }
 
     $sql = "INSERT INTO parkSpace (ps_area, ps_id, ps_category) VALUES (?, ?, ?)";
 
     // Using prepared statement to prevent SQL injection
-    if($stmt = mysqli_prepare($con, $sql)){
+    if($stmt = mysqli_prepare($conn, $sql)){
         // Bind variables to the prepared statement as parameters
         mysqli_stmt_bind_param($stmt, "sss", $ps_area, $ps_id, $ps_category);
 
@@ -24,17 +24,17 @@ if(isset($_POST['save'])){
         if(mysqli_stmt_execute($stmt)){
             $message = "Data inserted successfully";
         } else{
-            $message = "Error: " . mysqli_error($con);
+            $message = "Error: " . mysqli_error($conn);
         }
     } else {
-        $message = "Failed to prepare statement: " . mysqli_error($con);
+        $message = "Failed to prepare statement: " . mysqli_error($conn);
     }
 
     // Close statement
     mysqli_stmt_close($stmt);
 
     // Close connection
-    mysqli_close($con);
+    mysqli_close($conn);
 }
 ?>
 
