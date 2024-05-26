@@ -61,6 +61,9 @@ if(isset($_POST['save'])){
                 <label for="ps_area">Parking Area:</label>
                 <input type="text" class="form-control" id="ps_area" name="ps_area" required>
 
+                <label for="spaceno">Space Number:</label>
+                <input type="text" class="form-control" id="spaceno" name="spaceno">
+
                 <label for="ps_id">Parking ID:</label>
                 <input type="text" class="form-control" id="ps_id" name="ps_id" required>
 
