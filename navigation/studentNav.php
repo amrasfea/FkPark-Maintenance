@@ -176,7 +176,7 @@
                     <i class="lni lni-grid-alt"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="#">Thesis Master Gate</a>
+                    <a href="#">Student</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
@@ -245,7 +245,7 @@
                     <a href="../student/bookForm.php" class="sidebar-link">Booking Form </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">Booking List</a>
+                    <a href="../student/bookList.php#" class="sidebar-link">Booking List</a>
                 </li>
             </ul>
         </li>

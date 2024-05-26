@@ -3,8 +3,8 @@ session_start();
 
 // Database connection parameters
 $servername = "localhost";
-$username = "root";  
-$password = "";  
+$username = "root";
+$password = "";
 $dbname = "fkpark";
 
 // Create connection
@@ -17,24 +17,34 @@ if ($conn->connect_error) {
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $ps_id = $_POST['parkingSpace'];
+/*    $ps_id = $_POST['parkingSpace'];
     $u_id = $_POST['u_id'];
     $b_date = $_POST['b_date'];
     $b_time = $_POST['b_time'];
     $v_id = $_POST['v_id'];
-    $v_plateNum = $_POST['v_plateNum'];
+    $v_plateNum = $_POST['v_plateNum']; // This field is not in the bookInfo table*/
 
-    // SQL query to insert booking details
-    $sql = "INSERT INTO bookings (ps_id, u_id, b_date, b_time, v_id, v_plateNum) 
-            VALUES ('$ps_id', '$u_id', '$b_date', '$b_time', '$v_id', '$v_plateNum')";
+   // $b_id = $_POST['b_id'];
+    $u_id = $_POST['u_id'];
+    $b_date = $_POST['b_date'];
+    $b_time = $_POST['b_time'];
+    $v_id = $_POST['v_id'];
+    $ps_id = $_POST['ps_id'];
 
-    if ($conn->query($sql) === TRUE) {
-        echo "New booking created successfully";
+    // Ensure that all variables are set
+    if (isset($ps_id, $u_id, $b_date, $b_time, $v_id)) {
+        // SQL query to insert booking details
+        $sql = "INSERT INTO bookInfo (u_id, ps_id, b_date, b_time, v_id) VALUES ('$u_id', '$ps_id', '$b_date', '$b_time', '$v_id')";
+        
+      if ($conn->query($sql) === TRUE) {
+            echo "New booking created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "All form fields are required.";
     }
 
     $conn->close();
 }
 ?>
-``
