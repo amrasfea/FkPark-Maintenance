@@ -125,19 +125,19 @@ if (mysqli_query($conn, $createParkSpaceTableQuery)) {
 // MODULE 3
 // TABLE: BOOKINFO
 $createBookInfoTableQuery = "CREATE TABLE IF NOT EXISTS bookInfo(
-    b_id VARCHAR(10) PRIMARY KEY,
+    b_id VARCHAR(10) AUTO_INCREMENT PRIMARY KEY,
     u_id INT,
     b_date DATE NOT NULL,
     b_time TIME NOT NULL,
     b_parkStart TIME DEFAULT NULL,
     b_duration INT DEFAULT NULL,
     b_status VARCHAR(10),
-    b_QRid VARCHAR(255),
+    b_QRid VARCHAR(255),*/
     v_id INT ,
-    ps_id VARCHAR(10),
-    FOREIGN KEY (u_id) REFERENCES user(u_id),
+    ps_id VARCHAR(10),*/
+    FOREIGN KEY (u_id) REFERENCES user(u_id)
     FOREIGN KEY (v_id) REFERENCES vehicle(v_id),
-    FOREIGN KEY (ps_id) REFERENCES parkSpace(ps_id)
+   FOREIGN KEY (ps_id) REFERENCES parkSpace(ps_id)
 )";
 
 if (mysqli_query($conn, $createBookInfoTableQuery)) {
