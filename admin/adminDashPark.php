@@ -1,23 +1,15 @@
 <?php
 // Simulated more data for demonstration purposes
 $parkingSpaces = [
-    ['area' => 'A1', 'totalSpace' => 25, 'id' => 'A1-S22', 'status' => 'Available', 'typeEvent' => 'Concert', 'description' => 'Reserved for concert attendees', 'time' => '8:00 AM - 6:00 PM'],
-    ['area' => 'A2', 'totalSpace' => 25, 'id' => 'A2-S23', 'status' => 'Occupied', 'typeEvent' => 'Open', 'description' => 'Open parking space', 'time' => '7:00 AM - 7:00 PM'],
-    ['area' => 'A3', 'totalSpace' => 25, 'id' => 'A3-S24', 'status' => 'Available', 'typeEvent' => 'Covered', 'description' => 'Covered parking area', 'time' => '9:00 AM - 5:00 PM'],
-    ['area' => 'A4', 'totalSpace' => 25, 'id' => 'A4-S25', 'status' => 'Occupied', 'typeEvent' => 'Underground', 'description' => 'Underground parking area', 'time' => '24/7'],
-    ['area' => 'B1', 'totalSpace' => 32, 'id' => 'B1-S26', 'status' => 'Occupied', 'typeEvent' => 'Open', 'description' => 'Open parking area near the mall', 'time' => '10:00 AM - 10:00 PM'],
-    ['area' => 'B2', 'totalSpace' => 33, 'id' => 'B2-S27', 'status' => 'Occupied', 'typeEvent' => 'Covered', 'description' => 'Shaded area', 'time' => '9:00 AM - 5:00 PM'],
-    ['area' => 'B3', 'totalSpace' => 35, 'id' => 'B3-S28', 'status' => 'Occupied', 'typeEvent' => 'Open', 'description' => 'Open parking space', 'time' => '8:00 AM - 6:00 PM'],
+    ['area' => 'A', 'totalSpace' => 100, 'occupiedSpaces' => 40],
+    ['area' => 'B', 'totalSpace' => 100, 'occupiedSpaces' => 30]
 ];
 
-// Calculate total, occupied, and available spaces
-$totalSpaces = 0;
 $occupiedSpaces = 0;
+$totalSpaces = 0;
 foreach ($parkingSpaces as $space) {
     $totalSpaces += $space['totalSpace'];
-    if ($space['status'] === 'Occupied') {
-        $occupiedSpaces++;
-    }
+    $occupiedSpaces += $space['occupiedSpaces'];
 }
 $availableSpaces = $totalSpaces - $occupiedSpaces;
 ?>
@@ -104,18 +96,18 @@ $availableSpaces = $totalSpaces - $occupiedSpaces;
             var parkChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Occupied Spaces', 'Available Spaces'],
+                    labels: ['Park Area A', 'Park Area B'],
                     datasets: [{
-                        label: 'Park Spaces',
-                        data: [<?php echo $occupiedSpaces; ?>, <?php echo $availableSpaces; ?>],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)'
-                        ],
+                        label: 'Occupied Spaces',
+                        data: [<?php echo $parkingSpaces[0]['occupiedSpaces']; ?>, <?php echo $parkingSpaces[1]['occupiedSpaces']; ?>],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Available Spaces',
+                        data: [<?php echo $parkingSpaces[0]['totalSpace'] - $parkingSpaces[0]['occupiedSpaces']; ?>, <?php echo $parkingSpaces[1]['totalSpace'] - $parkingSpaces[1]['occupiedSpaces']; ?>],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1
                     }]
                 },
@@ -133,5 +125,5 @@ $availableSpaces = $totalSpaces - $occupiedSpaces;
             </div>
         </div>
     </div>
-    </body>
+</body>
 </html>
