@@ -28,6 +28,8 @@ $createTableQuery = "CREATE TABLE IF NOT EXISTS roles(
     r_id INT AUTO_INCREMENT PRIMARY KEY,
     r_typeName ENUM('Unit Keselamatan Staff','Administrators','Student') NOT NULL
 )";
+
+
 if (mysqli_query($conn, $createTableQuery)) {
     echo "Roles table created successfully or already exists.<br>";
 } else {
@@ -58,6 +60,7 @@ $createProfileTableQuery = "CREATE TABLE IF NOT EXISTS profiles (
     p_faculty VARCHAR(100) DEFAULT NULL,
     p_icNumber VARCHAR(15) NOT NULL,
     p_email VARCHAR(100) NOT NULL,
+    p_phoneNum VARCHAR(15) DEFAULT NULL,
     p_address VARCHAR(100) DEFAULT NULL,
     p_postCode VARCHAR(10) DEFAULT NULL,
     p_country VARCHAR(50) DEFAULT NULL,

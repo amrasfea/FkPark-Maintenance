@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -37,7 +39,7 @@
             min-height: 100vh; /* Ensure body takes full height */
             margin: 0;
             padding: 0;
-            
+
         }
 
         .wrapper {
@@ -60,7 +62,7 @@
             height: 100%;
             z-index: 1000;
             transition: all .25s ease-in-out;
-            background-color:#2E8B57;
+            background-color: #2E8B57;
             display: flex;
             flex-direction: column;
         }
@@ -161,9 +163,10 @@
         }
     </style>
 </head>
+
 <body>
-    
-<div class="wrapper">
+
+    <div class="wrapper">
         <aside id="sidebar">
             <div class="d-flex">
                 <button class="toggle-btn" type="button">
@@ -174,7 +177,7 @@
                 </div>
             </div>
             <ul class="sidebar-nav">
-            <li class="sidebar-item">
+                <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                         data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
                         <i class="lni lni-protection"></i>
@@ -187,65 +190,62 @@
                     </ul>
                 </li>
                 <li class="sidebar-item">
-    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-        data-bs-target="#expertDomainDropdown" aria-expanded="false" aria-controls="expertDomainDropdown">
-        <i class="lni lni-agenda"></i>
-        <span>Register</span>
-    </a>
-    <ul id="expertDomainDropdown" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-        <li class="sidebar-item">
-            <a href="../admin/registerStudent.php" class="sidebar-link">New Registration</a>
-        </li>
-        <li class="sidebar-item">
-            <a href="../admin/listRegistration.php" class="sidebar-link">List Registered User</a>
-        </li>
-    </ul>
-</li>
-
-               
-<li class="sidebar-item">
-    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-        data-bs-target="#publicationDropdown" aria-expanded="false" aria-controls="publicationDropdown">
-        <i class="lni lni-layout"></i>
-        <span>Parking Area</span>
-    </a>
-    <ul id="publicationDropdown" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-        <li class="sidebar-item">
-            <a href="../admin/addPark.php" class="sidebar-link">New Parking Spaces</a>
-        </li>
-        <li class="sidebar-item">
-            <a href="../admin/listPark.php" class="sidebar-link">List Parking Spaces</a>
-        </li>
-    </ul>
-</li>
-
-<li class="sidebar-item">
-    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-        data-bs-target="#dashboardDropdown" aria-expanded="false" aria-controls="progressDropdown">
-        <i class="lni lni-popup"></i>
-        <span>Dashboard</span>
-    </a>
-            <ul id="dashboardDropdown" class="sidebar-dropdown list-unstyled collapse">
-                <li class="sidebar-item">
-                    <a href="../admin/adminDashboard.php" class="sidebar-link">Registration Dashboard</a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="../admin/adminDashPark.php" class="sidebar-link">Park Space Dashboard</a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">uu</a>
+                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#expertDomainDropdown" aria-expanded="false" aria-controls="expertDomainDropdown">
+                        <i class="lni lni-agenda"></i>
+                        <span>Register</span>
+                    </a>
+                    <ul id="expertDomainDropdown" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="../admin/register_student.php" class="sidebar-link">New Registration</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="../admin/listRegistration.php" class="sidebar-link">List Registered User</a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">mm</a>
+                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#publicationDropdown" aria-expanded="false" aria-controls="publicationDropdown">
+                        <i class="lni lni-layout"></i>
+                        <span>Parking Area</span>
+                    </a>
+                    <ul id="publicationDropdown" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="../admin/addPark.php" class="sidebar-link">New Parking Spaces</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="../admin/listPark.php" class="sidebar-link">List Parking Spaces</a>
+                        </li>
+                    </ul>
                 </li>
-            </ul>
-        </li>
-    </ul>
-</li>
+
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#dashboardDropdown" aria-expanded="false" aria-controls="progressDropdown">
+                        <i class="lni lni-popup"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <ul id="dashboardDropdown" class="sidebar-dropdown list-unstyled collapse">
+                        <li class="sidebar-item">
+                            <a href="../admin/adminDashboard.php" class="sidebar-link">Registration Dashboard</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="../admin/adminDashPark.php" class="sidebar-link">Park Space Dashboard</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">uu</a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">mm</a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
             <div class="sidebar-footer">
-                <a href="#" class="sidebar-link">
+                <a href="../admin/logout.php" class="sidebar-link">
                     <i class="lni lni-exit"></i>
                     <span>Logout</span>
                 </a>
@@ -253,31 +253,33 @@
         </aside>
 
         <div class="main p-3">
-        <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #FAF9F5; margin-top:0%; ">
+            <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #FAF9F5; margin-top:0%; ">
 
-                <a class="navbar-brand" href="#" style="word-spacing:2px"> FACULY COMPUTING PARKING</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="#" style="word-spacing:2px"> FACULTY COMPUTING PARKING</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-               
+
 
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav">
-                        
+
                     </ul>
                 </div>
             </nav>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
-    <script src="script.js"></script>
-    <script>
-        const hamBurger = document.querySelector(".toggle-btn");
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+                crossorigin="anonymous"></script>
+            <script src="script.js"></script>
+            <script>
+                const hamBurger = document.querySelector(".toggle-btn");
 
-        hamBurger.addEventListener("click", function () {
-            document.querySelector("#sidebar").classList.toggle("expand");
-        });
-        
-    </script>
-        
+                hamBurger.addEventListener("click", function () {
+                    document.querySelector("#sidebar").classList.toggle("expand");
+                });
+            </script>
+</body>
+
+</html>

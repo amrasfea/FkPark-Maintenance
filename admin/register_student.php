@@ -1,3 +1,51 @@
+<?php
+session_start();
+require '../config.php'; // Database connection
+
+// Check if the current user is an administrator
+if ($_SESSION['role'] !== 'Administrators') {
+    header("Location: ../login.php");
+    exit();
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST["p_name"];
+    $email = $_POST["p_email"];
+    $password = password_hash($_POST["p_icNumber"], PASSWORD_DEFAULT); // For simplicity, using IC number as password
+    $course = $_POST["p_course"];
+    $faculty = $_POST["p_faculty"];
+    $icNumber = $_POST["p_icNumber"];
+    $address = $_POST["p_address"];
+    $postCode = $_POST["p_postCode"];
+    $country = $_POST["p_country"];
+    $state = $_POST["p_state"];
+
+    // Create new user with the student role
+    $roleQuery = "SELECT r_id FROM roles WHERE r_typeName = 'Student'";
+    $stmt = $conn->prepare($roleQuery);
+    $stmt->execute();
+    $stmt->bind_result($roleId);
+    $stmt->fetch();
+    $stmt->close();
+
+    $userQuery = "INSERT INTO user (u_email, u_password, r_id) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($userQuery);
+    $stmt->bind_param("ssi", $email, $password, $roleId);
+    $stmt->execute();
+    $userId = $stmt->insert_id;
+    $stmt->close();
+
+    // Create student profile
+    $profileQuery = "INSERT INTO profiles (p_name, p_email, p_course, p_faculty, p_icNumber, p_address, p_postCode, p_country, p_state, u_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($profileQuery);
+    $stmt->bind_param("sssssssssi", $name, $email, $course, $faculty, $icNumber, $address, $postCode, $country, $state, $userId);
+    $stmt->execute();
+    $stmt->close();
+
+    echo "Student registered successfully";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +81,7 @@
                 <input type="text" id="p_icNumber" name="p_icNumber" required>
             </div>
             <div class="form-group">
-                <label for="p_email">IC Number</label>
+                <label for="p_email">Email</label>
                 <input type="email" id="p_email" name="p_email" required>
             </div>
             <div class="form-group">
@@ -59,3 +107,4 @@
     </div>
 </body>
 </html>
+
