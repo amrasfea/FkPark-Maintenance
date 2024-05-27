@@ -125,16 +125,16 @@ if (mysqli_query($conn, $createParkSpaceTableQuery)) {
 // MODULE 3
 // TABLE: BOOKINFO
 $createBookInfoTableQuery = "CREATE TABLE IF NOT EXISTS bookInfo(
-    b_id VARCHAR(10) AUTO_INCREMENT PRIMARY KEY,
+    b_id INT AUTO_INCREMENT PRIMARY KEY,
     u_id INT,
     b_date DATE NOT NULL,
     b_time TIME NOT NULL,
     b_parkStart TIME DEFAULT NULL,
     b_duration INT DEFAULT NULL,
     b_status VARCHAR(10),
-    b_QRid VARCHAR(255),*/
+    b_QRid VARCHAR(255) DEFAULT NULL,
     v_id INT ,
-    ps_id VARCHAR(10),*/
+    ps_id VARCHAR(10),
     FOREIGN KEY (u_id) REFERENCES user(u_id)
     FOREIGN KEY (v_id) REFERENCES vehicle(v_id),
    FOREIGN KEY (ps_id) REFERENCES parkSpace(ps_id)
@@ -147,19 +147,7 @@ if (mysqli_query($conn, $createBookInfoTableQuery)) {
 }
 
 // MODULE 4 
-// TABLE: PATROL
-$createPatrolTableQuery = "CREATE TABLE IF NOT EXISTS patrol (
-    p_id INT AUTO_INCREMENT PRIMARY KEY,
-    p_datePatrol DATE NOT NULL,
-    p_timePatrol TIME NOT NULL,
-    p_location VARCHAR(200) NOT NULL
-)";
 
-if (mysqli_query($conn, $createPatrolTableQuery)) {
-    echo "Patrol table created successfully or already exists.<br>";
-} else {
-    die("Error creating Patrol table: " . mysqli_error($conn));
-}
 
 //TABLE :VIOLATION TYPE
 $createViolationTypeTableQuery = "CREATE TABLE IF NOT EXISTS violationType (
@@ -189,11 +177,10 @@ $createSummonTableQuery = "CREATE TABLE IF NOT EXISTS summon (
     vt_id INT DEFAULT NULL,
     v_id INT NOT NULL,
     ps_id VARCHAR(10) DEFAULT NULL,
-    p_id INT,
     FOREIGN KEY (vt_id) REFERENCES violationType (vt_id),
     FOREIGN KEY (v_id) REFERENCES vehicle(v_id),
-    FOREIGN KEY (ps_id) REFERENCES parkSpace(ps_id),
-    FOREIGN KEY (p_id) REFERENCES patrol(p_id)
+    FOREIGN KEY (ps_id) REFERENCES parkSpace(ps_id)
+   
 )";
 
 if (mysqli_query($conn, $createSummonTableQuery)) {
