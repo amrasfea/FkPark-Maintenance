@@ -113,6 +113,7 @@ $createParkSpaceTableQuery = "CREATE TABLE IF NOT EXISTS parkSpace(
     ps_time TIME NOT NULL,
     ps_typeEvent VARCHAR(50) DEFAULT NULL,
     ps_descriptionEvent VARCHAR(50) DEFAULT NULL,
+    ps_QR VARCHAR(255) DEFAULT NULL,
     ps_availableStat VARCHAR(10) DEFAULT NULL
     )";
 
@@ -176,10 +177,9 @@ $createSummonTableQuery = "CREATE TABLE IF NOT EXISTS summon (
     sum_QR VARCHAR(200) DEFAULT NULL,
     vt_id INT DEFAULT NULL,
     v_id INT NOT NULL,
-    ps_id VARCHAR(10) DEFAULT NULL,
     FOREIGN KEY (vt_id) REFERENCES violationType (vt_id),
-    FOREIGN KEY (v_id) REFERENCES vehicle(v_id),
-    FOREIGN KEY (ps_id) REFERENCES parkSpace(ps_id)
+    FOREIGN KEY (v_id) REFERENCES vehicle(v_id)
+    
    
 )";
 
