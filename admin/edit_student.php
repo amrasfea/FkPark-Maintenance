@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $successMessage = "Student registered successfully.";
 
     // Redirect to the list registration page with a success message
-    header("Location: listRegistration.php?updated=1&message=" . urlencode($successMessage));
+    header("Location: listRegistration.php?updated=1&message=Student+registered+successfully.");
     exit();
 }
 ?>

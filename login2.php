@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if the user exists and the role matches
     if ($userId && $role === $userType && password_verify($password, $hashedPassword)) {
-        $_SESSION['user_id'] = $userId;
+        $_SESSION['u_id'] = $userId;
         $_SESSION['role'] = $userType;
 
         // Redirect based on user type
@@ -46,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <link rel="stylesheet" href="css/login2.css">
+  <link rel="icon" type="image/x-icon" href="../img/logo.png">
 </head>
 <body>
   <div class="container">

@@ -1,3 +1,14 @@
+<?php 
+// Retrieve vehicle information from URL parameters
+$vehicleType = $_GET['v_vehicleType'];
+$brand = $_GET['v_brand'];
+$model = $_GET['v_model'];
+$roadTaxValidDate = $_GET['v_roadTaxValidDate'];
+$licenceValidDate = $_GET['v_licenceValidDate'];
+$licenceClass = $_GET['v_licenceClass'];
+$phoneNum = $_GET['v_phoneNum'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,14 +24,6 @@
     <?php include('../navigation/studentNav.php'); ?>
     <div class="container mt-5">
         <h2>Status Application</h2>
-        <form method="post" action="" class="search-form">
-            <div class="form-group">
-                <div class="search-input-group">
-                    <input type="text" class="form-control" id="searchArea" name="searchArea">
-                    <button type="submit" name="search" class="search-button">Search</button>
-                </div>
-            </div>
-        </form>
         <table class="table mt-4">
             <thead>
                 <tr>
@@ -31,14 +34,13 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Example row, you should dynamically generate these rows with PHP from your database -->
+                <!-- Display vehicle information -->
                 <tr>
-                    <td>sofea</td>
-                    <td>Car</td>
-                    <td>Approved</td>
-                    <td></td>
+                    <td><?php echo $_SESSION['username']; ?></td>
+                    <td><?php echo $vehicleType; ?></td>
+                    <td>Pending</td>
+                    <td>Submitted for approval</td>
                 </tr>
-                <!-- Additional rows go here -->
             </tbody>
         </table>
     </div>

@@ -1,13 +1,15 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require '../config.php'; // Database connection
 
 // Check if user_id is set in the session
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['u_id'])) {
     die("Error: User ID is not set in the session.");
 }
 
-$userId = $_SESSION['user_id'];
+$userId = $_SESSION['u_id'];
 
 // Fetch user and profile information using JOIN
 $userQuery = "SELECT u.u_id, u.u_email, u.u_type, p.p_name, p.p_icNumber, p.p_email, p.p_phoneNum, p.p_bodyNumber, p.p_department, p.p_position, p.p_address 
