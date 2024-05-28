@@ -1,5 +1,5 @@
 <?php
-/*$server = "localhost";
+$server = "localhost";
 $username = "root";
 $password = "";
 $dbname = "fkpark";
@@ -24,7 +24,7 @@ mysqli_select_db($conn, $dbname) or die(mysqli_error($conn));
 
 // MODULE 1
 // TABLE: USER
-$createUserTableQuery = "CREATE TABLE IF NOT EXISTS user (
+/*$createUserTableQuery = "CREATE TABLE IF NOT EXISTS user (
     u_id INT AUTO_INCREMENT PRIMARY KEY,
     u_email VARCHAR(100) NOT NULL UNIQUE,
     u_password VARCHAR(255) NOT NULL,
