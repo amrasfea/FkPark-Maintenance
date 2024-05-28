@@ -23,26 +23,12 @@ if (mysqli_query($conn, "CREATE DATABASE IF NOT EXISTS $dbname")) {
 mysqli_select_db($conn, $dbname) or die(mysqli_error($conn));
 
 // MODULE 1
-// TABLE: ROLES
-$createTableQuery = "CREATE TABLE IF NOT EXISTS roles(
-    r_id INT AUTO_INCREMENT PRIMARY KEY,
-    r_typeName ENUM('Unit Keselamatan Staff','Administrators','Student') NOT NULL
-)";
-
-
-if (mysqli_query($conn, $createTableQuery)) {
-    echo "Roles table created successfully or already exists.<br>";
-} else {
-    die("Error creating roles table: " . mysqli_error($conn));
-}
-
 // TABLE: USER
 $createUserTableQuery = "CREATE TABLE IF NOT EXISTS user (
     u_id INT AUTO_INCREMENT PRIMARY KEY,
     u_email VARCHAR(100) NOT NULL UNIQUE,
     u_password VARCHAR(255) NOT NULL,
-    r_id INT,
-    FOREIGN KEY (r_id) REFERENCES roles (r_id)
+    u_type ENUM('Unit Keselamatan Staff','Administrators','Student') NOT NULL
 )";
 
 if (mysqli_query($conn, $createUserTableQuery)) {
