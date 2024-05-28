@@ -7,25 +7,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
     $userType = $_POST["user"];
 
-    // Get role id from the roles table
-    $roleQuery = "SELECT r_id FROM roles WHERE r_typeName = ?";
-    $stmt = $conn->prepare($roleQuery);
-    $stmt->bind_param("s", $userType);
-    $stmt->execute();
-    $stmt->bind_result($roleId);
-    $stmt->fetch();
-    $stmt->close();
-
     // Verify user credentials
-    $query = "SELECT u_id, u_password FROM user WHERE u_email = ? AND r_id = ?";
+    $query = "SELECT u_id, u_password, u_type FROM user WHERE u_email = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("si", $email, $roleId);
+    if ($stmt === false) {
+        die("Prepare failed: " . $conn->error);
+    }
+    $stmt->bind_param("s", $email);
     $stmt->execute();
-    $stmt->bind_result($userId, $hashedPassword);
+    $stmt->bind_result($userId, $hashedPassword, $role);
     $stmt->fetch();
     $stmt->close();
 
-    if (password_verify($password, $hashedPassword)) {
+    // Check if the user exists and the role matches
+    if ($userId && $role === $userType && password_verify($password, $hashedPassword)) {
         $_SESSION['user_id'] = $userId;
         $_SESSION['role'] = $userType;
 
@@ -39,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         exit();
     } else {
-        echo "Invalid email or password";
+        echo "Invalid email, password, or user type.";
     }
 }
 ?>

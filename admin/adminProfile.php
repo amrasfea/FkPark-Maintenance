@@ -1,3 +1,32 @@
+<?php
+session_start();
+require '../config.php'; // Database connection
+
+// Check if user_id is set in the session
+if (!isset($_SESSION['user_id'])) {
+    die("Error: User ID is not set in the session.");
+}
+
+$userId = $_SESSION['user_id'];
+
+// Fetch user and profile information using JOIN
+$userQuery = "SELECT u.u_id, u.u_email, u.u_type, p.p_name, p.p_icNumber, p.p_email, p.p_phoneNum, p.p_address, p.p_bodyNumber, p.p_department, p.p_position 
+              FROM user u
+              JOIN profiles p ON u.u_id = p.u_id
+              WHERE u.u_id = ?";
+$stmt = $conn->prepare($userQuery);
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$userData = $result->fetch_assoc();
+$stmt->close();
+
+// Check if user data was retrieved
+if (!$userData) {
+    die("Error: No data found for the given user ID.");
+}
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -17,40 +46,24 @@
    <div class="row">
       <div class="col-md-12">
          <div id="content" class="content content-full-width">
-            <!-- begin profile -->
             <div class="profile">
                <div class="profile-header">
-                  <!-- BEGIN profile-header-cover -->
                   <div class="profile-header-cover"></div>
-                  <!-- END profile-header-cover -->
-                  <!-- BEGIN profile-header-content -->
                   <div class="profile-header-content">
-                     <!-- BEGIN profile-header-img -->
                      <div class="profile-header-img">
                         <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
                      </div>
-                     <!-- END profile-header-img -->
-                     <!-- BEGIN profile-header-info -->
                      <div class="profile-header-info">
-                        <h4 class="m-t-10 m-b-5">Aliya ilyas</h4>
-                        <p class="m-b-10" style="color: black;">Administrator</p>
-                        <!-- Change here: added href attribute with the URL of editProfileStudent.php -->
-                        <a href="../admin/editAdminProfile.php" class="btn btn-sm btn-info mb-2" style="background-color: green; color:white;">Edit Profile</a>
+                        <h4 class="m-t-10 m-b-5"><?php echo htmlspecialchars($userData['p_name']); ?></h4>
+                        <p class="m-b-10" style="color: black;"><?php echo htmlspecialchars($userData['u_type']); ?></p>
+                        <a href="editAdminProfile.php" class="btn btn-sm btn-info mb-2" style="background-color: green; color:white;">Edit Profile</a>
                      </div>
-                     <!-- END profile-header-info -->
                   </div>
-                  <!-- END profile-header-content -->
-                  <!-- BEGIN profile-header-tab -->
                   <ul class="profile-header-tab nav nav-tabs">
-                     <li class="nav-item"><a href="../admin/adminsection.php" target="__blank" class="nav-link_">Profile</a></li>
+                     <li class="nav-item"><a href="adminsection.php" target="__blank" class="nav-link_">Profile</a></li>
                   </ul>
-                  <!-- END profile-header-tab -->
                </div>
             </div>
-            <!-- end profile -->
-            <!-- begin user-info -->
-           
-            
          </div>
       </div>
    </div>

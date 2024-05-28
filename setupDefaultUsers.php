@@ -1,46 +1,45 @@
 <?php
 require 'config.php'; // Database connection
 
-function createUser($conn, $email, $password, $role, $name, $icNumber, $phoneNum) {
+function createUser($conn, $email, $password, $role, $name, $icNumber, $phoneNum, $department, $bodyNumber, $position) {
     // Hash the password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    // Get the role id from the roles table
-    $roleQuery = "SELECT r_id FROM roles WHERE r_typeName = ?";
-    $stmt = $conn->prepare($roleQuery);
-    $stmt->bind_param("s", $role);
-    $stmt->execute();
-    $stmt->bind_result($roleId);
-    $stmt->fetch();
-    $stmt->close();
-
-    if (!$roleId) {
-        die("Role $role does not exist.");
-    }
-
-    // Create new user with the selected role
-    $userQuery = "INSERT INTO user (u_email, u_password, r_id) VALUES (?, ?, ?)";
+    // Create new user with the specified role
+    $userQuery = "INSERT INTO user (u_email, u_password, u_type) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($userQuery);
-    $stmt->bind_param("ssi", $email, $hashedPassword, $roleId);
+    if ($stmt === false) {
+        die("Prepare failed: " . $conn->error);
+    }
+    $stmt->bind_param("sss", $email, $hashedPassword, $role);
     $stmt->execute();
+    if ($stmt->error) {
+        die("Execute failed: " . $stmt->error);
+    }
     $userId = $stmt->insert_id;
     $stmt->close();
 
-    // Create profile for the admin or staff
-    $profileQuery = "INSERT INTO profiles (p_name, p_email, p_icNumber, p_phoneNum, u_id) VALUES (?, ?, ?, ?, ?)";
+    // Create profile for the user
+    $profileQuery = "INSERT INTO profiles (p_name, p_email, p_icNumber, p_phoneNum, p_department, p_bodyNumber, p_position, u_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($profileQuery);
-    $stmt->bind_param("sssii", $name, $email, $icNumber, $phoneNum, $userId);
+    if ($stmt === false) {
+        die("Prepare failed: " . $conn->error);
+    }
+    $stmt->bind_param("sssssssi", $name, $email, $icNumber, $phoneNum, $department, $bodyNumber, $position, $userId);
     $stmt->execute();
+    if ($stmt->error) {
+        die("Execute failed: " . $stmt->error);
+    }
     $stmt->close();
 
     echo ucfirst($role) . " $name registered successfully.<br>";
 }
 
 // Default admin user
-createUser($conn, "admin@example.com", "admin123", "Administrators", "Admin Name", "123456789", "1234567890");
+createUser($conn, "amirul@gmail.com", "admin123", "Administrators", "Amirul bin Ahmad", "6901010305", "0199336892", "Security", "K101", "Administrator Officer");
 
 // Default staff user
-createUser($conn, "staff@example.com", "staff123", "Unit Keselamatan Staff", "Staff Name", "987654321", "0987654321");
+createUser($conn, "Akmal@gmail.com", "staff123", "Unit Keselamatan Staff", "Akmal bin Ali", "701001031919", "01129406033", "Emergency Responce","K102","Safety Officer");
 
 echo "Default users created successfully.";
 ?>

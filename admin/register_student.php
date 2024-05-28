@@ -19,18 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $postCode = $_POST["p_postCode"];
     $country = $_POST["p_country"];
     $state = $_POST["p_state"];
+    $userType = 'Student'; // Explicitly setting the user type to Student
 
-    // Create new user with the student role
-    $roleQuery = "SELECT r_id FROM roles WHERE r_typeName = 'Student'";
-    $stmt = $conn->prepare($roleQuery);
-    $stmt->execute();
-    $stmt->bind_result($roleId);
-    $stmt->fetch();
-    $stmt->close();
-
-    $userQuery = "INSERT INTO user (u_email, u_password, r_id) VALUES (?, ?, ?)";
+    // Create new user with the specified role
+    $userQuery = "INSERT INTO user (u_email, u_password, u_type) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($userQuery);
-    $stmt->bind_param("ssi", $email, $password, $roleId);
+    $stmt->bind_param("sss", $email, $password, $userType);
     $stmt->execute();
     $userId = $stmt->insert_id;
     $stmt->close();
@@ -42,7 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
     $stmt->close();
 
-    echo "Student registered successfully";
+    // Redirect to the list registration page with the newly registered student information
+    header("Location: listregistration.php?newly_registered_id=$userId");
+    exit();
 }
 ?>
 
@@ -107,4 +103,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </body>
 </html>
+
 
