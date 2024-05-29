@@ -45,6 +45,15 @@ $stmt->close();
     <title>List Vehicle Application</title>
     <link rel="stylesheet" href="../css/park.css">
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
+    <script>
+        function confirmApproval(event, action) {
+            if (action === 'approve') {
+                if (!confirm('Are you sure you want to approve this application?')) {
+                    event.preventDefault();
+                }
+            }
+        }
+    </script>
 </head>
 <body>
     <?php include('../navigation/staffNav.php'); ?>
@@ -69,14 +78,18 @@ $stmt->close();
                         <td>{$row['p_name']}</td>
                         <td>{$row['p_course']}</td>
                         <td>{$row['p_icNumber']}</td>
-                        <td>
-                            <form method='post' action=''>
+                        <td>";
+                    if ($row['v_approvalStatus'] == 'Pending') {
+                        echo "<form method='post' action='' onsubmit='confirmApproval(event, this.action.value)'>
                                 <input type='hidden' name='v_id' value='{$row['v_id']}'>
                                 <button type='submit' name='action' value='approve' class='view-button'>Approve</button>
                                 <button type='submit' name='action' value='reject' class='edit-button'>Reject</button>
                                 <a href='../staff/viewVehicleApplication.php?v_id={$row['v_id']}' class='view-button'>View</a>
-                            </form>
-                        </td>
+                            </form>";
+                    } else {
+                        echo "<a href='../staff/viewVehicleApplication.php?v_id={$row['v_id']}' class='view-button'>View</a>";
+                    }
+                    echo "</td>
                     </tr>";
                 }
                 ?>
@@ -85,3 +98,4 @@ $stmt->close();
     </div>
 </body>
 </html>
+
