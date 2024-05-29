@@ -18,20 +18,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $demerit = $_POST["sum_demerit"];
 
     // Create new user with the specified role
-    $summon = "INSERT INTO summon (sum_date, sum_vModel, sum_vBrand, sum_vPlate, sum_location, sum_violationType, sum_demerit) VALUES (?, ?, ?)";
+    $summon = "INSERT INTO summon (sum_date, sum_vModel, sum_vBrand, sum_vPlate, sum_location, sum_violationType, sum_demerit) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($summon);
     $stmt->bind_param("sss", $date, $model, $brand, $plate, $location, $violation, $demerit);
     $stmt->execute();
     $userId = $stmt->insert_id;
     $stmt->close();
 
-    // Create student profile
-    $profileQuery = "INSERT INTO profiles (p_name, p_email, p_course, p_faculty, p_icNumber, p_address, p_postCode, p_country, p_state, u_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($profileQuery);
-    $stmt->bind_param("sssssssssi", $name, $email, $course, $faculty, $icNumber, $address, $postCode, $country, $state, $userId);
-    $stmt->execute();
-    $stmt->close();
-
+    
     // Redirect to the list registration page with the newly registered student information
     header("Location: listregistration.php?newly_registered_id=$userId");
     exit();

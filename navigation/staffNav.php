@@ -237,6 +237,9 @@
         <li class="sidebar-item">
             <a href="../staff/summonList.php" class="sidebar-link">Summon list</a>
         </li>
+        <li class="sidebar-item">
+            <a href="../staff/violation.php" class="sidebar-link">Violation Guide</a>
+        </li>
     </ul>
 </li>                
             </ul>
