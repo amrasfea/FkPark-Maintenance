@@ -37,11 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Retrieve the user ID from the session
     $u_id = $_SESSION['u_id'];
 
-     // Insert data into database with initial status 'Pending'
-     $stmt = $conn->prepare("INSERT INTO vehicle (v_vehicleType, v_brand, v_model, v_roadTaxValidDate, v_licenceValidDate, v_licenceClass, v_phoneNum, v_vehicleGrant, v_approvalStatus, u_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Pending', ?)");
-     $stmt->bind_param("ssssssisi", $v_type, $v_brand, $v_model, $v_roadTaxValidDate, $v_licenceValidDate, $v_licenceClass, $v_phoneNum, $v_vehicleGrant, $u_id);
+    // Insert data into database with initial status 'Pending'
+    $stmt = $conn->prepare("INSERT INTO vehicle (v_vehicleType, v_brand, v_model, v_roadTaxValidDate, v_licenceValidDate, v_licenceClass, v_phoneNum, v_vehicleGrant, v_approvalStatus, u_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Pending', ?)");
+    $stmt->bind_param("ssssssisi", $v_type, $v_brand, $v_model, $v_roadTaxValidDate, $v_licenceValidDate, $v_licenceClass, $v_phoneNum, $v_vehicleGrant, $u_id);
 
-     if ($stmt->execute()) {
+    if ($stmt->execute()) {
         $v_id = $stmt->insert_id;
         header("Location: statusApplication.php?v_id=$v_id");
     } else {

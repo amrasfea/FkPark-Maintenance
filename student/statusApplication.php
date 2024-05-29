@@ -37,10 +37,8 @@ $stmt->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Status Application</title>
-    <!--EXTERNAL CSS-->
     <link rel="stylesheet" href="../css/park.css">
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
-    <!--FAVICON-->
 </head>
 <body>
     <?php include('../navigation/studentNav.php'); ?>
@@ -57,8 +55,8 @@ $stmt->close();
                     <th>License Valid Date</th>
                     <th>License Class</th>
                     <th>Phone Number</th>
-                    <th>Status</th>
-                    <th>Remarks</th>
+                    <th>Vehicle Grant</th>
+                    <th>Approval Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,15 +70,10 @@ $stmt->close();
                     <td><?php echo htmlspecialchars($vehicle['v_licenceValidDate']); ?></td>
                     <td><?php echo htmlspecialchars($vehicle['v_licenceClass']); ?></td>
                     <td><?php echo htmlspecialchars($vehicle['v_phoneNum']); ?></td>
+                    <td><a href="../uploads/<?php echo htmlspecialchars($vehicle['v_vehicleGrant']); ?>" target="_blank">View Grant</a></td>
                     <td><?php echo htmlspecialchars($vehicle['v_approvalStatus']); ?></td>
-                    <td>Submitted for approval</td>
                 </tr>
                 <?php endforeach; ?>
-                <?php if (empty($vehicles)): ?>
-                <tr>
-                    <td colspan="10">No vehicle information found.</td>
-                </tr>
-                <?php endif; ?>
             </tbody>
         </table>
     </div>
