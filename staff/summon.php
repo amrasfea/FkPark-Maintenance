@@ -9,7 +9,8 @@ if ($_SESSION['role'] !== 'Unit Keselamatan Staff') {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $date =$_POST["sum_date"];
+    $type = $_POST["sum_vType"];
+    $date = $_POST["sum_date"];
     $model = $_POST["sum_vModel"];
     $brand = $_POST["sum_vBrand"];
     $plate = $_POST["sum_vPlate"];
@@ -17,20 +18,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $violation = $_POST["sum_violationType"];
     $demerit = $_POST["sum_demerit"];
 
-    // Create new user with the specified role
-    $summon = "INSERT INTO summon (sum_date, sum_vModel, sum_vBrand, sum_vPlate, sum_location, sum_violationType, sum_demerit) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($summon);
-    $stmt->bind_param("sss", $date, $model, $brand, $plate, $location, $violation, $demerit);
+    // Check if the provided plate number exists in the vehicle table
+    $stmt = $conn->prepare("SELECT v_id FROM vehicle WHERE v_PlateNum = ?");
+    $stmt->bind_param("s", $plate);
     $stmt->execute();
-    $userId = $stmt->insert_id;
-    $stmt->close();
+    $result = $stmt->get_result();
+    // if data exist baru dia akan simpan data. 
+    // Check if a matching record is found
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $v_id = $row['v_id'];
 
-    
-    // Redirect to the list registration page with the newly registered student information
-    header("Location: listregistration.php?newly_registered_id=$userId");
-    exit();
+        // Insert summon data along with the retrieved v_id
+        $summon = "INSERT INTO summon (sum_date, sum_vModel, sum_vBrand, sum_vPlate, sum_location, sum_violationType, sum_demerit, v_id, sum_vType) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($summon);
+        $stmt->bind_param("ssssssiis", $date, $model, $brand, $plate, $location, $violation, $demerit, $v_id);
+        $stmt->execute();
+        $userId = $stmt->insert_id;
+        $stmt->close();
+
+        exit();
+    } else {
+        // Handle case where the provided plate number does not exist in the vehicle table
+        echo "<script>alert('Vehicle with plate number $plate not found. Proceed with manual summon');</script>";
+
+    }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,27 +70,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form method="post" action="summon.php">
             <div class="button-group">
                 <button type="button" id="newFormBtn">New Form</button>
-                <input type="date" name="sum_date">
+                <input type="date" name="sum_date" required>
                 <!--input type="time" name="summonTime"-->
             </div>
             <div id="formFields" class="form-group hidden">
-                <label for="vType">Vehicle type:</label>
-                <select name="vType" id="vType">
+                <label for="sum_vType">Vehicle type:</label>
+                <select name="sum_vType" id="sum_vType">
                     <option value="car">Car</option>
                     <option value="motorcycle">Motorcycle</option>
                 </select>
 
                 <label for="vModel">Vehicle Model:</label>
-                <input type="text" class="form-control" id="vModel" name="sum_vModel">
+                <input type="text" class="form-control" id="vModel" name="sum_vModel" required>
 
                 <label for="vBrand">Vehicle Brand:</label>
-                <input type="text" class="form-control" id="vBrand" name="sum_vBrand">
+                <input type="text" class="form-control" id="vBrand" name="sum_vBrand" required>
 
                 <label for="vPlate">Vehicle Plate Number:</label>
-                <input type="text" class="form-control" id="vPlate" name="sum_vPlate">
+                <input type="text" class="form-control" id="vPlate" name="sum_vPlate" required>
 
                 <label for="parkLoc">Parking Location:</label>
-                <input type="text" class="form-control" id="parkLoc" name="sum_location">
+                <input type="text" class="form-control" id="parkLoc" name="sum_location" required>
 
                 <label for="violation">Violation type:</label>
                 <select name="sum_violationType" id="violation" onchange="fillDemerit()">
@@ -84,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="Accident">Caused accidents</option>
                 </select>
                 <label for="demerit">Demerit:</label>
-                <input type="text" class="form-control" id="demerit" name="sum_demerit">
+                <input type="number" class="form-control" id="demerit" name="sum_demerit" readonly>
             </div>
             <div class="button-group">
                 <button type="button" id="guideBtn">Traffic Violation Guide and Demerit</button>
@@ -99,6 +114,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <script>
+        document.getElementById("newFormBtn").addEventListener("click", function() {
+            document.getElementById("formFields").classList.remove("hidden");
+        });
+
         function fillDemerit() {
             var violationType = document.getElementById("violation").value;
             var demeritInput = document.getElementById("demerit");
