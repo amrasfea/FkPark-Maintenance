@@ -32,6 +32,12 @@
                 <td>20</td>
             </tr>
         </table>
+        <button type="submit" name="edit">Add violation type</button>
+        <div class="popup">
+            <div class="popup-content">
+                <img src="../img/logo.png"  alt="user">
+            </div>
+        </div>
         <table>
             <tr>
                 <th>Total point</th>
