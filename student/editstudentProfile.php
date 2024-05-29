@@ -1,3 +1,56 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require '../config.php'; // Database connection
+
+// Check if user_id is set in the session
+if (!isset($_SESSION['u_id'])) {
+    die("Error: User ID is not set in the session.");
+}
+
+$userId = $_SESSION['u_id'];
+
+// Fetch user and profile information using JOIN
+$userQuery = "SELECT u.u_id, u.u_email, u.u_type, p.p_name, p.p_matricNum, p.p_course, p.p_faculty, p.p_icNumber, p.p_email, p.p_phoneNum, p.p_address
+              FROM user u
+              JOIN profiles p ON u.u_id = p.u_id
+              WHERE u.u_id = ?";
+$stmt = $conn->prepare($userQuery);
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$userData = $result->fetch_assoc();
+$stmt->close();
+
+// Check if user data was retrieved
+if (!$userData) {
+    die("Error: No data found for the given user ID.");
+}
+
+// Process form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['p_name'];
+    $matricNum = $_POST['p_matricNum'];
+    $course = $_POST['p_course'];
+    $faculty = $_POST['p_faculty'];
+    $icNumber = $_POST['p_icNumber'];
+    $email = $_POST['p_email'];
+    $phoneNum = $_POST['p_phoneNum'];
+    $address = $_POST['p_address'];
+  
+    $updateQuery = "UPDATE profiles SET p_name = ?, p_matricNum = ?, p_course = ?, p_faculty = ?, p_icNumber = ?, p_email = ?, p_phoneNum = ?, p_address = ? WHERE u_id = ?";
+    $stmt = $conn->prepare($updateQuery);
+    $stmt->bind_param("ssssssssi", $name, $matricNum, $course, $faculty, $icNumber, $email, $phoneNum, $address, $userId);
+    $stmt->execute();
+    $stmt->close();
+
+    // Redirect to the profile page after update
+    header("Location: profilesection.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,88 +62,76 @@
     <style>
         .field-input {
             border: none;
-            /* Remove background-color: transparent; */
             width: 100%;
         }
     </style>
-    <title>Profile</title>
+    <title>Edit Profile</title>
 </head>
 <body>
-<?php include('../student/studentProfile.php'); ?>
+<?php include('studentProfile.php'); ?>
 <div class="container">
    <div class="row">
       <div class="col-md-12">
          <div id="content" class="content content-full-width">
-            <!-- begin profile-content -->
             <div class="profile-content">
-               <!-- begin tab-content -->
                <div class="tab-content p-0">
-                  <!-- begin #profile-about tab -->
                   <div class="tab-pane fade in active show" id="profile-about">
-                     <!-- begin table -->
-                     <div class="table-responsive">
-                        <table class="table table-profile">
-                         
-                           <tbody>
-                              <tr class="highlight">
-                                 <td class="field">Student ID</td>
-                                 <td><input type="text" class="field-input" value="123456"></td>
-                              </tr>
-                              <tr class="divider">
-                                 <td colspan="2"></td>
-                              </tr>
-                              <tr>
-                                 <td class="field">Full Name</td>
-                                 <td><input type="text" class="field-input" value="John Doe"></td>
-                              </tr>
-                              <tr>
-                                 <td class="field">Course</td>
-                                 <td><input type="text" class="field-input" value="Computer Science"></td>
-                              </tr>
-                              <tr>
-                                 <td class="field">Faculty</td>
-                                 <td><input type="text" class="field-input" value="Faculty of Computer Science"></td>
-                              </tr>
-                              <tr>
-                                 <td class="field">IC Number</td>
-                                 <td><input type="text" class="field-input" value="123456-78-9012"></td>
-                              </tr>
-                              <tr>
-                                 <td class="field">Address</td>
-                                 <td><input type="text" class="field-input" value="123 Main Street"></td>
-                              </tr>
-                              <tr>
-                                 <td class="field">Postcode</td>
-                                 <td><input type="text" class="field-input" value="12345"></td>
-                              </tr>
-                              <tr>
-                                 <td class="field">Country</td>
-                                 <td><input type="text" class="field-input" value="United States"></td>
-                              </tr>
-                              <tr>
-                                 <td class="field">State</td>
-                                 <td><input type="text" class="field-input" value="California"></td>
-                              </tr>
-                              <tr class="divider">
-                                 <td colspan="2"></td>
-                              </tr>
-                              <tr class="highlight">
-                                 <td class="field">&nbsp;</td>
-                                 <td class="p-t-10 p-b-10">
-                                    <button type="submit" class="btn btn-primary width-150">Update</button>
-                                    <button type="submit" class="btn btn-white btn-white-without-border width-150 m-l-5" href="../student/studentProfile.php">Cancel</button>
-                                 </td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </div>
-                     <!-- end table -->
+                     <form method="post" action="editProfile.php">
+                        <div class="table-responsive">
+                            <table class="table table-profile">
+                                <tbody>
+                                    <tr class="highlight">
+                                        <td class="field">Matric Number</td>
+                                        <td><input type="text" name="p_matricNum" class="field-input" value="<?php echo htmlspecialchars($userData['p_matricNum']); ?>" required></td>
+                                    </tr>
+                                    <tr class="divider">
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Full Name</td>
+                                        <td><input type="text" name="p_name" class="field-input" value="<?php echo htmlspecialchars($userData['p_name']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">IC Number</td>
+                                        <td><input type="text" name="p_icNumber" class="field-input" value="<?php echo htmlspecialchars($userData['p_icNumber']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Email</td>
+                                        <td><input type="email" name="p_email" class="field-input" value="<?php echo htmlspecialchars($userData['p_email']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Phone</td>
+                                        <td><input type="text" name="p_phoneNum" class="field-input" value="<?php echo htmlspecialchars($userData['p_phoneNum']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Address</td>
+                                        <td><input type="text" name="p_address" class="field-input" value="<?php echo htmlspecialchars($userData['p_address']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Course</td>
+                                        <td><input type="text" name="p_course" class="field-input" value="<?php echo htmlspecialchars($userData['p_course']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Faculty</td>
+                                        <td><input type="text" name="p_faculty" class="field-input" value="<?php echo htmlspecialchars($userData['p_faculty']); ?>" required></td>
+                                    </tr>
+                                    <tr class="divider">
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr class="highlight">
+                                        <td class="field">&nbsp;</td>
+                                        <td class="p-t-10 p-b-10">
+                                            <button type="submit" class="btn btn-primary width-150">Update</button>
+                                            <a class="btn btn-white btn-white-without-border width-150 m-l-5" href="profilesection.php">Cancel</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                     </form>
                   </div>
-                  <!-- end #profile-about tab -->
-               </div>
-               <!-- end tab-content -->
+               </div>r
             </div>
-            <!-- end profile-content -->
          </div>
       </div>
    </div>

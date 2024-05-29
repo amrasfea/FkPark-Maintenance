@@ -1,3 +1,38 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require '../config.php'; // Database connection
+
+// Check if user_id is set in the session
+if (!isset($_SESSION['u_id'])) {
+    die("Error: User ID is not set in the session.");
+}
+
+$userId = $_SESSION['u_id'];
+
+// Fetch user and profile information using JOIN
+$userQuery = "SELECT u.u_id, u.u_email, u.u_type, p.p_name, p.p_matricNum, p.p_course, p.p_faculty, p.p_icNumber, p.p_email, p.p_phoneNum, p.p_address
+              FROM user u
+              JOIN profiles p ON u.u_id = p.u_id
+              WHERE u.u_id = ?";
+$stmt = $conn->prepare($userQuery);
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$userData = $result->fetch_assoc();
+$stmt->close();
+
+// Check if user data was retrieved
+if (!$userData) {
+    die("Error: No data found for the given user ID.");
+}
+
+// Provide default values for missing keys
+$userData['p_course'] = $userData['p_course'] ?? 'N/A';
+$userData['p_faculty'] = $userData['p_faculty'] ?? 'N/A';
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,53 +42,37 @@
     <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/profile.css">
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
-    <title>Bootstrap Example</title>
+    <title>Student Profile</title>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body>
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-  <?php include('../navigation/studentNav.php'); ?>
-<div class="container">
-   <div class="row">
-      <div class="col-md-12">
-         <div id="content" class="content content-full-width">
-            <!-- begin profile -->
-            <div class="profile">
-               <div class="profile-header">
-                  <!-- BEGIN profile-header-cover -->
-                  <div class="profile-header-cover"></div>
-                  <!-- END profile-header-cover -->
-                  <!-- BEGIN profile-header-content -->
-                  <div class="profile-header-content">
-                     <!-- BEGIN profile-header-img -->
-                     <div class="profile-header-img">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
-                     </div>
-                     <!-- END profile-header-img -->
-                     <!-- BEGIN profile-header-info -->
-                     <div class="profile-header-info">
-                        <h4 class="m-t-10 m-b-5">Amira Sofea</h4>
-                        <p class="m-b-10" style="color: black;">Software Engineering</p>
-                        <!-- Change here: added href attribute with the URL of editProfileStudent.php -->
-                        <a href="../student/editstudentProfile.php" class="btn btn-sm btn-info mb-2" style="background-color: #F9D43E; border-color:#F9D43E;">Edit Profile</a>
-                     </div>
-                     <!-- END profile-header-info -->
-                  </div>
-                  <!-- END profile-header-content -->
-                  <!-- BEGIN profile-header-tab -->
-                  <ul class="profile-header-tab nav nav-tabs">
-                     <li class="nav-item"><a href="../student/profilesection.php" target="__blank" class="nav-link_">Profile</a></li>
-                  </ul>
-                  <!-- END profile-header-tab -->
-               </div>
-            </div>
-            <!-- end profile -->
-            <!-- begin user-info -->
-           
-            
-         </div>
-      </div>
-   </div>
-</div>
-</body>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <?php include('../navigation/studentNav.php'); ?>
+    <div class="container">
+       <div class="row">
+          <div class="col-md-12">
+             <div id="content" class="content content-full-width">
+                <div class="profile">
+                   <div class="profile-header">
+                      <div class="profile-header-cover"></div>
+                      <div class="profile-header-content">
+                         <div class="profile-header-img">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                         </div>
+                         <div class="profile-header-info">
+                            <h4 class="m-t-10 m-b-5"><?php echo htmlspecialchars($userData['p_name']); ?></h4>
+                            <p class="m-b-10" style="color: black;"><?php echo htmlspecialchars($userData['u_type']); ?></p>
+                            <a href="editstudentProfile.php" class="btn btn-sm btn-info mb-2" style="background-color: green; color:white;">Edit Profile</a>
+                         </div>
+                      </div>
+                      <ul class="profile-header-tab nav nav-tabs">
+                         <li class="nav-item"><a href="../student/profilesection.php" target="__blank" class="nav-link_">Profile</a></li>
+                      </ul>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+  </body>
 </html>

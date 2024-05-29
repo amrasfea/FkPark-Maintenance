@@ -11,6 +11,7 @@ if ($_SESSION['role'] !== 'Administrators') {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST["p_name"];
     $email = $_POST["p_email"];
+    $matricNum = $_POST["p_matricNum"];
     $password = password_hash($_POST["p_icNumber"], PASSWORD_DEFAULT); // For simplicity, using IC number as password
     $course = $_POST["p_course"];
     $faculty = $_POST["p_faculty"];
@@ -30,9 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
 
     // Create student profile
-    $profileQuery = "INSERT INTO profiles (p_name, p_email, p_course, p_faculty, p_icNumber, p_address, p_postCode, p_country, p_state, u_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $profileQuery = "INSERT INTO profiles (p_name, p_email, p_matricNum, p_course, p_faculty, p_icNumber, p_address, p_postCode, p_country, p_state, u_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($profileQuery);
-    $stmt->bind_param("sssssssssi", $name, $email, $course, $faculty, $icNumber, $address, $postCode, $country, $state, $userId);
+    $stmt->bind_param("ssssssssssi", $name, $email, $matricNum, $course, $faculty, $icNumber, $address, $postCode, $country, $state, $userId);
     $stmt->execute();
     $stmt->close();
 
@@ -81,6 +82,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="email" id="p_email" name="p_email" required>
             </div>
             <div class="form-group">
+                <label for="p_matricNum">Matric Number</label>
+                <input type="text" id="p_matricNum" name="p_matricNum" required>
+            </div>
+            <div class="form-group">
                 <label for="p_address">Address</label>
                 <input type="text" id="p_address" name="p_address">
             </div>
@@ -103,5 +108,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </body>
 </html>
-
-

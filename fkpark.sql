@@ -79,6 +79,7 @@ CREATE TABLE `profiles` (
   `p_department` varchar(100) DEFAULT NULL,
   `p_bodyNumber` varchar(10) DEFAULT NULL,
   `p_position` varchar(100) DEFAULT NULL,
+  `p_matricNum` varchar(15) DEFAULT NULL,
   `u_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
