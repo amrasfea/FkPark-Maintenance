@@ -87,6 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="text" class="form-control" id="v_model" name="v_model" required>
         </div>
         <div class="mb-3">
+            <label for="v_plateNum" class="form-label">Plate Number</label>
+            <input type="text" class="form-control" id="v_plateNum" name="v_plateNum" required>
+        </div>
+        <div class="mb-3">
             <label for="v_roadTaxValidDate" class="form-label">Road Tax Valid Date</label>
             <input type="date" class="form-control" id="v_roadTaxValidDate" name="v_roadTaxValidDate" required>
         </div>
