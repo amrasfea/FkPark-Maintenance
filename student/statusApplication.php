@@ -4,28 +4,32 @@ require '../config.php'; // Database connection
 
 // Check if the current user is a student
 if ($_SESSION['role'] !== 'Student') {
-    header("Location: ../login.php");
+    header("Location: ../login2.php");
     exit();
 }
 
 // Retrieve the user ID from the session
 $u_id = $_SESSION['u_id'];
 
-// Get the vehicle ID from the URL parameters
-$v_id = isset($_GET['v_id']) ? intval($_GET['v_id']) : 0;
+// Fetch all vehicle information for the student from the database
+$vehicles = [];
 
-// Fetch the vehicle information from the database
-$stmt = $conn->prepare("SELECT v.*, p.p_name FROM vehicle v JOIN profiles p ON v.u_id = p.u_id WHERE v.v_id = ? AND v.u_id = ?");
-$stmt->bind_param("ii", $v_id, $u_id);
+$vehicleQuery = "SELECT v.*, p.p_name 
+                 FROM vehicle v 
+                 JOIN profiles p ON v.u_id = p.u_id 
+                 WHERE v.u_id = ?";
+$stmt = $conn->prepare($vehicleQuery);
+$stmt->bind_param("i", $u_id);
 $stmt->execute();
 $result = $stmt->get_result();
-if ($result->num_rows > 0) {
-    $vehicle = $result->fetch_assoc();
-} else {
-    die("No vehicle information found.");
+
+while ($row = $result->fetch_assoc()) {
+    $vehicles[] = $row;
 }
+
 $stmt->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +62,7 @@ $stmt->close();
                 </tr>
             </thead>
             <tbody>
-                <!-- Display vehicle information -->
+                <?php foreach ($vehicles as $vehicle): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($vehicle['p_name']); ?></td>
                     <td><?php echo htmlspecialchars($vehicle['v_vehicleType']); ?></td>
@@ -71,6 +75,12 @@ $stmt->close();
                     <td><?php echo htmlspecialchars($vehicle['v_approvalStatus']); ?></td>
                     <td>Submitted for approval</td>
                 </tr>
+                <?php endforeach; ?>
+                <?php if (empty($vehicles)): ?>
+                <tr>
+                    <td colspan="10">No vehicle information found.</td>
+                </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>

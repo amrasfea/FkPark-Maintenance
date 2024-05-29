@@ -4,7 +4,7 @@ require '../config.php'; // Database connection
 
 // Check if the current user is an administrator
 if ($_SESSION['role'] !== 'Administrators') {
-    header("Location: ../login.php");
+    header("Location: ../login2.php");
     exit();
 }
 
