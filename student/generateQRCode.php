@@ -1,11 +1,6 @@
 <?php
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require '../config.php';
-require_once '../phpqrcode/qrlib.php'; // Ensure the path to phpqrcode is correct
+include('../libs/phpqrcode/qrlib.php'); // Include the library
 
 if (!isset($_GET['v_id'])) {
     die("Vehicle ID is required.");
@@ -37,14 +32,9 @@ $qrContent = "Name: {$vehicle['p_name']}\n"
            . "Road Tax Valid Date: {$vehicle['v_roadTaxValidDate']}\n"
            . "License Valid Date: {$vehicle['v_licenceValidDate']}\n"
            . "License Class: {$vehicle['v_licenceClass']}\n"
-           . "Phone Number: {$vehicle['v_phoneNum']}\n"
-           . "Plate Number: {$vehicle['v_plateNum']}";
+           . "Phone Number: {$vehicle['v_phoneNum']}";
 
-// Debug: Output the QR content
-// echo nl2br(htmlspecialchars($qrContent));
-
+// Output QR code
 header('Content-Type: image/png');
-
-// Generate QR code and output it directly
 QRcode::png($qrContent);
 ?>

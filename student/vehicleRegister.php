@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $v_type = $_POST['v_type'];
     $v_brand = $_POST['v_brand'];
     $v_model = $_POST['v_model'];
+    $v_plateNum = $_POST['v_plateNum'];
     $v_roadTaxValidDate = $_POST['v_roadTaxValidDate'];
     $v_licenceValidDate = $_POST['v_licenceValidDate'];
     $v_licenceClass = $_POST['v_licenceClass'];
@@ -38,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $u_id = $_SESSION['u_id'];
 
     // Insert data into database with initial status 'Pending'
-    $stmt = $conn->prepare("INSERT INTO vehicle (v_vehicleType, v_brand, v_model, v_roadTaxValidDate, v_licenceValidDate, v_licenceClass, v_phoneNum, v_vehicleGrant, v_approvalStatus, u_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Pending', ?)");
-    $stmt->bind_param("ssssssisi", $v_type, $v_brand, $v_model, $v_roadTaxValidDate, $v_licenceValidDate, $v_licenceClass, $v_phoneNum, $v_vehicleGrant, $u_id);
+    $stmt = $conn->prepare("INSERT INTO vehicle (v_vehicleType, v_brand, v_model, v_plateNum, v_roadTaxValidDate, v_licenceValidDate, v_licenceClass, v_phoneNum, v_vehicleGrant, v_approvalStatus, u_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', ?)");
+    $stmt->bind_param("sssssssssi", $v_type, $v_brand, $v_model, $v_plateNum, $v_roadTaxValidDate, $v_licenceValidDate, $v_licenceClass, $v_phoneNum, $v_vehicleGrant, $u_id);
 
     if ($stmt->execute()) {
         $v_id = $stmt->insert_id;

@@ -2042,7 +2042,11 @@
 <b>Deprecated</b>:  Implicit conversion from float 28.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>144</b><br />
 <br />
 <b>Deprecated</b>:  Implicit conversion from float 29.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>144</b><br />
+<<<<<<< HEAD
 2024-05-29 20:09:45: <br />
+=======
+2024-05-29 20:09:16: <br />
+>>>>>>> c9348dfc6e520ff5bc0f17e3d9ae669fe55ed31d
 <b>Deprecated</b>:  Implicit conversion from float 0.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
 <br />
 <b>Deprecated</b>:  Implicit conversion from float 1.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
@@ -2237,6 +2241,47 @@
 <br />
 <b>Deprecated</b>:  Implicit conversion from float 96.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
 <br />
+<<<<<<< HEAD
+=======
+<b>Deprecated</b>:  Implicit conversion from float 97.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 98.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 99.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 100.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 101.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 102.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 103.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 104.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 105.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 106.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 107.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 108.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 109.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 110.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 111.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 112.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 113.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 114.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 115.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>140</b><br />
+<br />
+>>>>>>> c9348dfc6e520ff5bc0f17e3d9ae669fe55ed31d
 <b>Deprecated</b>:  Implicit conversion from float 0.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>144</b><br />
 <br />
 <b>Deprecated</b>:  Implicit conversion from float 1.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>144</b><br />
@@ -2284,3 +2329,18 @@
 <b>Deprecated</b>:  Implicit conversion from float 22.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>144</b><br />
 <br />
 <b>Deprecated</b>:  Implicit conversion from float 23.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>144</b><br />
+<<<<<<< HEAD
+=======
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 24.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>144</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 25.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>144</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 26.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>144</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 27.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>144</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 28.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>144</b><br />
+<br />
+<b>Deprecated</b>:  Implicit conversion from float 29.5 to int loses precision in <b>C:\xampp\htdocs\FKPark\phpqrcode\qrencode.php</b> on line <b>144</b><br />
+>>>>>>> c9348dfc6e520ff5bc0f17e3d9ae669fe55ed31d
