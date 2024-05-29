@@ -25,6 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $stmt->execute();
     $stmt->close();
 
+    // Set a session variable to indicate the action was taken
+    $_SESSION['action_taken'] = $action;
+
     // Redirect to refresh the page and reflect changes
     header("Location: listVehicleApplication.php");
     exit();
@@ -47,12 +50,33 @@ $stmt->close();
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
     <script>
         function confirmApproval(event, action) {
+            let confirmationMessage = '';
             if (action === 'approve') {
-                if (!confirm('Are you sure you want to approve this application?')) {
-                    event.preventDefault();
-                }
+                confirmationMessage = 'Are you sure you want to approve this application?';
+            } else if (action === 'reject') {
+                confirmationMessage = 'Are you sure you want to reject this application?';
+            }
+            if (!confirm(confirmationMessage)) {
+                event.preventDefault();
             }
         }
+
+        function showAlertMessage() {
+            <?php
+            if (isset($_SESSION['action_taken'])) {
+                $message = '';
+                if ($_SESSION['action_taken'] === 'approve') {
+                    $message = 'Application approved successfully.';
+                } elseif ($_SESSION['action_taken'] === 'reject') {
+                    $message = 'Application rejected successfully.';
+                }
+                echo "alert('$message');";
+                unset($_SESSION['action_taken']); // Clear the session variable
+            }
+            ?>
+        }
+
+        window.onload = showAlertMessage;
     </script>
 </head>
 <body>
@@ -98,4 +122,5 @@ $stmt->close();
     </div>
 </body>
 </html>
+
 
