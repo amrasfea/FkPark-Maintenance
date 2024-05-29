@@ -1,3 +1,42 @@
+<?php
+session_start();
+require '../config.php'; // Database connection
+
+// Check if the current user is a staff
+if ($_SESSION['role'] !== 'Unit Keselamatan Staff') {
+    header("Location: ../login2.php");
+    exit();
+}
+
+// Process form submission (approve or reject)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    $v_id = $_POST['v_id'];
+    $action = $_POST['action'];
+
+    // Update vehicle application status based on the action
+    if ($action === 'approve') {
+        $status = 'Approve';
+    } elseif ($action === 'reject') {
+        $status = 'Reject';
+    }
+
+    $stmt = $conn->prepare("UPDATE vehicle SET v_approvalStatus = ? WHERE v_id = ?");
+    $stmt->bind_param("si", $status, $v_id);
+    $stmt->execute();
+    $stmt->close();
+
+    // Redirect to refresh the page and reflect changes
+    header("Location: listVehicleApplication.php");
+    exit();
+}
+
+// Fetch all vehicle applications
+$stmt = $conn->prepare("SELECT v.*, p.p_name, p.p_course, p.p_icNumber FROM vehicle v JOIN profiles p ON v.u_id = p.u_id");
+$stmt->execute();
+$result = $stmt->get_result();
+$stmt->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,14 +50,6 @@
     <?php include('../navigation/staffNav.php'); ?>
     <div class="container mt-5">
         <h2>List Vehicle Registration</h2>
-        <form method="post" action="" class="search-form">
-            <div class="form-group">
-                <div class="search-input-group">
-                    <input type="text" class="form-control" id="searchArea" name="searchArea">
-                    <button type="submit" name="search" class="search-button">Search</button>
-                </div>
-            </div>
-        </form>
         <table class="table mt-4">
             <thead>
                 <tr>
@@ -26,23 +57,29 @@
                     <th>Name</th>
                     <th>Course</th>
                     <th>IC Number</th>
-                    <th>Action</th> <!-- Added Action column -->
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Example row, you should dynamically generate these rows with PHP from your database -->
-                <tr>
-                    <td>01</td>
-                    <td>Nur Amira Sofea Binti Othman</td>
-                    <td>BCS Software</td>
-                    <td>021007031014</td>
-                    <td>
-                        <a href="../staff/viewVehicleApplication.php" class="view-button">View</a>
-                        <a href="../staff/qrCode.php" class="edit-button">Approve</a>
-                        <button type="submit" name="delete" class="delete-button" onclick="alert('Database deleted')">Reject</button>
-                    </td>
-                </tr>
-                <!-- Additional rows go here -->
+                <?php
+                // Display all vehicle applications
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>
+                        <td>{$row['v_id']}</td>
+                        <td>{$row['p_name']}</td>
+                        <td>{$row['p_course']}</td>
+                        <td>{$row['p_icNumber']}</td>
+                        <td>
+                            <form method='post' action=''>
+                                <input type='hidden' name='v_id' value='{$row['v_id']}'>
+                                <button type='submit' name='action' value='approve' class='view-button'>Approve</button>
+                                <button type='submit' name='action' value='reject' class='edit-button'>Reject</button>
+                                <a href='../staff/viewVehicleApplication.php?v_id={$row['v_id']}' class='view-button'>View</a>
+                            </form>
+                        </td>
+                    </tr>";
+                }
+                ?>
             </tbody>
         </table>
     </div>
