@@ -131,7 +131,7 @@ CREATE TABLE `vehicle` (
   `v_licenceClass` varchar(5) NOT NULL,
   `v_phoneNum` int(11) NOT NULL,
   `v_vehicleGrant` blob NOT NULL,
-  `v_approvalStatus` enum('Reject','Approve') DEFAULT NULL,
+  `v_approvalStatus` enum('Pending','Reject','Approve') DEFAULT 'Pending',
   `v_remarks` text DEFAULT NULL,
   `v_qrCode` varchar(500) DEFAULT NULL,
   `v_plateNum` varchar(10) NOT NULL,
