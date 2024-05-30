@@ -240,6 +240,9 @@
         <li class="sidebar-item">
             <a href="../staff/violation.php" class="sidebar-link">Violation Guide</a>
         </li>
+        <li class="sidebar-item">
+            <a href="../staff/totalDemeritPoints.php" class="sidebar-link">Demerit List</a>
+        </li>
     </ul>
 </li>                
             </ul>
