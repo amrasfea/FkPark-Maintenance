@@ -26,6 +26,6 @@ session_destroy();
 </header>
 <h1 align="center">See you again, bye!!! </h1>
 <h4 align="center" class="err">You have been logged out.</h4>
-<p align="center">Click here to <a href="../login2.php">Login</a></p>
+<p align="center">Click here to <a href="../FKPark/login2.php">Login</a></p>
 </body>
 </html>
