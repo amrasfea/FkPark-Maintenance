@@ -2,32 +2,43 @@
 require '../session_check.php';
 require '../config.php'; // Database connection
 
-// Check if the current user is an administrator
-if ($_SESSION['role'] !== 'Unit Keselamatan Staff') {
-    header("Location: ../login2.php");
-    exit();
+// Check if user_id is set in the session
+if (!isset($_SESSION['u_id'])) {
+    die("Error: User ID is not set in the session.");
 }
 
-// Initialize variables to store receipt details
-$sum_date = $_GET['sum_date'] ?? '';
-$sum_id = $_GET['sum_id'] ?? '';
-$p_name = $_GET['p_name'] ?? '';
-$sum_vPlate = $_GET['sum_vPlate'] ?? '';
-$p_matricNum = $_GET['p_matricNum'] ?? '';
-$sum_location = $_GET['sum_location'] ?? '';
-$sum_status = $_GET['sum_status'] ?? '';
+$userId = $_SESSION['u_id'];
+$sql = "SELECT summon.*, vehicle.*, user.* ,profiles.*
+         FROM summon 
+        INNER JOIN vehicle ON summon.v_id = vehicle.v_id 
+        INNER JOIN user ON vehicle.u_id = user.u_id 
+        INNER JOIN profiles ON user.u_id = profiles.u_id
+        WHERE user.u_id = $userId";
+$result = $conn->query($sql);
 
-// Function to handle notification (dummy function for example purposes)
-/*function sendNotification($sum_id, $p_name, $sum_status) {
-    // Here you would add code to send a notification, e.g., email or SMS.
-    // For now, we'll just return a success message.
-    return "Notification sent to $p_name regarding summon $sum_id with status $sum_status.";
+// Check if query executed successfully
+if ($result && $result->num_rows > 0) {
+    // Fetch the data from the result set
+    $row = $result->fetch_assoc();
+
+    // Assign values to variables
+    $sum_date = $row['sum_date'];
+    $sum_id = $row['sum_id'];
+    $p_name = $row['p_name'];
+    $sum_vPlate = $row['sum_vPlate'];
+    $p_matricNum = $row['p_matricNum'];
+    $sum_location = $row['sum_location'];
+    $sum_status = $row['sum_status'];
+} else {
+    // Handle case when no data is found
+    $sum_date = '';
+    $sum_id = '';
+    $p_name = '';
+    $sum_vPlate = '';
+    $p_matricNum = '';
+    $sum_location = '';
+    $sum_status = '';
 }
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify'])) {
-    $notificationMessage = sendNotification($sum_id, $p_name, $sum_status);
-    echo "<script>alert('$notificationMessage');</script>";
-}*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify'])) {
             font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
         .notify-button:hover {
             background-color: #003d82;
@@ -114,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify'])) {
     </style>
 </head>
 <body>
-    <?php include('../navigation/staffNav.php'); ?>
+<?php include('../navigation/studentNav.php'); ?>
     <div class="receipt-container">
         <div class="receipt-header">
             <img src="../img/logo.png" alt="Logo">
@@ -129,13 +141,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify'])) {
             <label>Location: <span><?php echo htmlspecialchars($sum_location); ?></span></label>
             <label>Status: <span><?php echo htmlspecialchars($sum_status); ?></span></label>
         </div>
-        <!--div class="button-container">
-            <form method="POST">
-                <button type="submit" name="notify" class="notify-button">Notify</button>
-            </form>
-        </div-->
         <div class="receipt-footer">
-            <p>Copy &copy Unit Keselamatan UMPSA</p>
+            <p>Copy &copy; Unit Keselamatan UMPSA</p>
         </div>
     </div>
 </body>

@@ -1,3 +1,15 @@
+<?php
+require '../session_check.php';
+require '../config.php'; // Database connection
+
+// Check if user_id is set in the session
+if (!isset($_SESSION['u_id'])) {
+    die("Error: User ID is not set in the session.");
+}
+
+$userId = $_SESSION['u_id'];
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +19,7 @@
     <!--EXTERNAL CSS-->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="../css/inbox.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="../css/bookForm.css">
+    <link rel="stylesheet" href="../css/inbox.css">
     <!--FAVICON-->
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
 </head>
@@ -35,20 +47,34 @@
                             <div class="table-responsive">
                                 <table class="table email-table no-wrap table-hover v-middle mb-0 font-14">
                                     <tbody>
-                                        <!-- row -->
-                                        <tr>
-                                            <!-- Message -->
-                                            <td>
-                                                <a class="link" href="javascript: void(0)">
-                                                    <span class="badge badge-pill text-white font-medium badge-danger mr-2">Summon Ticket</span>
-                                                    <span class="text-dark"><a>Your have new summon ticket ! [BJW 2020]</a></span>
-                                                </a>
-                                            </td>
-                                            <!-- Time -->
-                                            <td class="text-muted">May 13</td>
-                                            <td><a href="../student/viewSummon.php"><button type="button" id="viewbtn" name="viewbtn">View</button></a></td>
-                                        </tr>
-                                        <!-- Add more rows for other summon ticket notifications -->
+                                        <?php
+                                            // Query to fetch summon ticket information related to the current user
+                                            $sql = "SELECT summon.*, vehicle.*, user.* 
+                                                    FROM summon 
+                                                    INNER JOIN vehicle ON summon.v_id = vehicle.v_id 
+                                                    INNER JOIN user ON vehicle.u_id = user.u_id 
+                                                    WHERE user.u_id = $userId";
+                                            $result = $conn->query($sql);
+
+                                            if ($result->num_rows > 0) {
+                                                // Output data of each row
+                                                while($row = $result->fetch_assoc()) {
+                                                    echo '<tr>';
+                                                    echo '<td>';
+                                                    echo '<a class="link" href="javascript: void(0)">';
+                                                    echo '<span class="badge badge-pill text-white font-medium badge-danger mr-2">Summon Ticket</span>';
+                                                    echo '<span class="text-dark">NEW MESSAGE SUMMON !</span>';
+                                                    echo '<span class="text-dark"><a>' . $row["v_plateNum"] . '</a></span>';
+                                                    echo '</a>';
+                                                    echo '</td>';
+                                                    echo '<td class="text-muted">' . $row["sum_date"] . '</td>';
+                                                    echo '<td><a href="../student/sumReceipt.php?id=' . $row["sum_id"] . '"><button type="button" id="viewbtn" name="viewbtn">View</button></a></td>';
+                                                    echo '</tr>';
+                                                }
+                                            } else {
+                                                echo "0 results";
+                                            }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
