@@ -1,4 +1,5 @@
 <?php
+require '../session_check.php';
 require '../config.php';
 include('../libs/phpqrcode/qrlib.php'); // Include the library
 

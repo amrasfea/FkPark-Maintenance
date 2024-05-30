@@ -1,5 +1,5 @@
 <?php
-session_start();
+require '../session_check.php';
 require '../config.php'; // Database connection
 
 // Check if the current user is a staff
@@ -88,8 +88,9 @@ $stmt->close();
                 <tr>
                     <th>Vehicle ID</th>
                     <th>Name</th>
-                    <th>Course</th>
-                    <th>IC Number</th>
+                    <th>Vehicle Brand</th>
+                    <th>Vehicle Model</th>
+                    <th>Plate Number</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -100,8 +101,9 @@ $stmt->close();
                     echo "<tr>
                         <td>{$row['v_id']}</td>
                         <td>{$row['p_name']}</td>
-                        <td>{$row['p_course']}</td>
-                        <td>{$row['p_icNumber']}</td>
+                        <td>{$row['v_brand']}</td>
+                        <td>{$row['v_model']}</td>
+                        <td>{$row['v_plateNum']}</td>
                         <td>";
                     if ($row['v_approvalStatus'] == 'Pending') {
                         echo "<form method='post' action='' onsubmit='confirmApproval(event, this.action.value)'>

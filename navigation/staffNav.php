@@ -244,7 +244,7 @@
 </li>                
             </ul>
             <div class="sidebar-footer">
-            <a href="../staff/logout.php" class="sidebar-link">
+            <a href="../logout.php" class="sidebar-link">
                     <i class="lni lni-exit"></i>
                     <span>Logout</span>
                 </a>
