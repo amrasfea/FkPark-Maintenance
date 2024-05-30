@@ -1,3 +1,56 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require '../config.php'; // Database connection
+
+// Check if user_id is set in the session
+if (!isset($_SESSION['u_id'])) {
+    die("Error: User ID is not set in the session.");
+}
+
+$userId = $_SESSION['u_id'];
+
+// Fetch user and profile information using JOIN
+$userQuery = "SELECT u.u_id, u.u_email, u.u_type, p.p_name, p.p_icNumber, p.p_email, p.p_phoneNum, p.p_bodyNumber, p.p_department, p.p_position, p.p_address 
+              FROM user u
+              JOIN profiles p ON u.u_id = p.u_id
+              WHERE u.u_id = ?";
+$stmt = $conn->prepare($userQuery);
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$userData = $result->fetch_assoc();
+$stmt->close();
+
+// Check if user data was retrieved
+if (!$userData) {
+    die("Error: No data found for the given user ID.");
+}
+
+// Process form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['p_name'];
+    $icNumber = $_POST['p_icNumber'];
+    $email = $_POST['p_email'];
+    $phoneNum = $_POST['p_phoneNum'];
+    $bodyNumber = $_POST['p_bodyNumber'];
+    $address = $_POST['p_address'];
+    $department = $_POST['p_department'];
+    $position = $_POST['p_position'];
+
+    $updateQuery = "UPDATE profiles SET p_name = ?, p_icNumber = ?, p_email = ?, p_phoneNum = ?, p_address = ?, p_bodyNumber = ?, p_department = ?, p_position = ? WHERE u_id = ?";
+    $stmt = $conn->prepare($updateQuery);
+    $stmt->bind_param("ssssssssi", $name, $icNumber, $email, $phoneNum, $address, $bodyNumber, $department, $position, $userId);
+    $stmt->execute();
+    $stmt->close();
+
+    // Redirect to the profile page after update
+    header("Location: staffsection.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,68 +62,76 @@
     <style>
         .field-input {
             border: none;
-            /* Remove background-color: transparent; */
             width: 100%;
         }
     </style>
-    <title>Profile</title>
+    <title>Edit Profile</title>
 </head>
 <body>
-<?php include('../staff/staffProfile.php'); ?>
+<?php include('staffProfile.php'); ?>
 <div class="container">
    <div class="row">
       <div class="col-md-12">
          <div id="content" class="content content-full-width">
-            <!-- begin profile-content -->
             <div class="profile-content">
-               <!-- begin tab-content -->
                <div class="tab-content p-0">
-                  <!-- begin #profile-about tab -->
                   <div class="tab-pane fade in active show" id="profile-about">
-                     <!-- begin table -->
-                     <div class="table-responsive">
-                        <table class="table table-profile">
-                         
-                           <tbody>
-                              <tr class="highlight">
-                                 <td class="field">Staff Body Number</td>
-                                 <td><input type="text" class="field-input" value="123456"></td>
-                              </tr>
-                              <tr class="divider">
-                                 <td colspan="2"></td>
-                              </tr>
-                              <tr>
-                                 <td class="field">Full Name</td>
-                                 <td><input type="text" class="field-input" value="John Doe"></td>
-                              </tr>
-                              <tr>
-                                 <td class="field">IC Number</td>
-                                 <td><input type="text" class="field-input" value="123456-78-9012"></td>
-                              </tr>
-                              <tr>
-                                 <td class="field">Address</td>
-                                 <td><input type="text" class="field-input" value="123 Main Street"></td>
-                              </tr>
-                              <tr class="divider">
-                                 <td colspan="2"></td>
-                              </tr>
-                              <tr class="highlight">
-                                 <td class="field">&nbsp;</td>
-                                 <td class="p-t-10 p-b-10">
-                                    <button type="submit" class="btn btn-primary width-150">Update</button>
-                                    <button type="submit" class="btn btn-white btn-white-without-border width-150 m-l-5" href="../student/studentProfile.php">Cancel</button>
-                                 </td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </div>
-                     <!-- end table -->
+                     <form method="post" action="editstaffProfile.php">
+                        <div class="table-responsive">
+                            <table class="table table-profile">
+                                <tbody>
+                                    <tr class="highlight">
+                                        <td class="field">Staff Body Number</td>
+                                        <td><input type="text" name="p_bodyNumber" class="field-input" value="<?php echo htmlspecialchars($userData['p_bodyNumber']); ?>" required></td>
+                                    </tr>
+                                    <tr class="divider">
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Full Name</td>
+                                        <td><input type="text" name="p_name" class="field-input" value="<?php echo htmlspecialchars($userData['p_name']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">IC Number</td>
+                                        <td><input type="text" name="p_icNumber" class="field-input" value="<?php echo htmlspecialchars($userData['p_icNumber']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Email</td>
+                                        <td><input type="email" name="p_email" class="field-input" value="<?php echo htmlspecialchars($userData['p_email']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Phone</td>
+                                        <td><input type="text" name="p_phoneNum" class="field-input" value="<?php echo htmlspecialchars($userData['p_phoneNum']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Address</td>
+                                        <td><input type="text" name="p_address" class="field-input" value="<?php echo htmlspecialchars($userData['p_address']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Department</td>
+                                        <td><input type="text" name="p_department" class="field-input" value="<?php echo htmlspecialchars($userData['p_department']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Position</td>
+                                        <td><input type="text" name="p_position" class="field-input" value="<?php echo htmlspecialchars($userData['p_position']); ?>" required></td>
+                                    </tr>
+                                    <tr class="divider">
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr class="highlight">
+                                        <td class="field">&nbsp;</td>
+                                        <td class="p-t-10 p-b-10">
+                                            <button type="submit" class="btn btn-primary width-150">Update</button>
+                                            <a class="btn btn-white btn-white-without-border width-150 m-l-5" href="staffsection.php">Cancel</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                     </form>
                   </div>
-                  <!-- end #profile-about tab -->
                </div>
-               <!-- end tab-content -->
             </div>
-            <!-- end profile-content -->
          </div>
       </div>
    </div>
