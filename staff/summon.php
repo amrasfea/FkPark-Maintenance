@@ -1,5 +1,5 @@
 <?php
-session_start();
+require '../session_check.php';
 require '../config.php'; // Database connection
 
 // Check if the current user is an administrator
@@ -106,8 +106,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save'])) {
             </div>
 
             <div class="button-group">
-                <button type="submit" name="noti">Send Notification</button>
-                <button type="submit" name="print">Print Receipt</button>
                 <button type="submit" name="save" id="saveBtn">Save</button>
             </div>
         </form>

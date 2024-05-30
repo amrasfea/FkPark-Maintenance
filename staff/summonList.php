@@ -1,5 +1,5 @@
 <?php
-session_start();
+require '../session_check.php';
 require '../config.php'; // Database connection
 
 // Check if the current user is an administrator
@@ -116,7 +116,7 @@ if (!$result) {
                         echo "<button type='submit' name='edit' class='edit-button'>Edit</button>";
                         echo "<button type='submit' name='delete' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</button>";
                         echo "</form>";
-                        echo "<a href='../staff/receipt.php'><button type='submit' name='view' class='edit-button'>View</button></a>";
+                        echo "<a href='../staff/receipt.php?sum_date=" . urlencode($row['sum_date']) . "&sum_id=" . urlencode($row['sum_id']) . "&p_name=" . urlencode($row['p_name']) . "&sum_vPlate=" . urlencode($row['sum_vPlate']) . "&p_matricNum=" . urlencode($row['p_matricNum']) . "&sum_location=" . urlencode($row['sum_location']) . "&sum_status=" . urlencode($row['sum_status']) . "'><button class='edit-button'>View</button></a>";
                         echo "</td>";
                         echo "</tr>";
                     }
