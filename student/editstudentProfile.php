@@ -38,16 +38,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['p_email'];
     $phoneNum = $_POST['p_phoneNum'];
     $address = $_POST['p_address'];
-  
+
     $updateQuery = "UPDATE profiles SET p_name = ?, p_matricNum = ?, p_course = ?, p_faculty = ?, p_icNumber = ?, p_email = ?, p_phoneNum = ?, p_address = ? WHERE u_id = ?";
     $stmt = $conn->prepare($updateQuery);
-    $stmt->bind_param("ssssssssi", $name, $matricNum, $course, $faculty, $icNumber, $email, $phoneNum, $address, $userId);
-    $stmt->execute();
-    $stmt->close();
 
-    // Redirect to the profile page after update
-    header("Location: profilesection.php");
-    exit();
+    if ($stmt === false) {
+        die("Error preparing statement: " . htmlspecialchars($conn->error));
+    }
+
+    $stmt->bind_param("ssssssssi", $name, $matricNum, $course, $faculty, $icNumber, $email, $phoneNum, $address, $userId);
+
+    if ($stmt->execute()) {
+        // Redirect to the profile page after update
+        header("Location: profilesection.php");
+        exit();
+    } else {
+        die("Error executing statement: " . htmlspecialchars($stmt->error));
+    }
+
+    $stmt->close();
 }
 ?>
 
@@ -76,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="profile-content">
                <div class="tab-content p-0">
                   <div class="tab-pane fade in active show" id="profile-about">
-                     <form method="post" action="editProfile.php">
+                     <form method="post" action="editstudentProfile.php">
                         <div class="table-responsive">
                             <table class="table table-profile">
                                 <tbody>
@@ -130,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                      </form>
                   </div>
-               </div>r
+               </div>
             </div>
          </div>
       </div>
@@ -138,3 +147,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 </body>
 </html>
+

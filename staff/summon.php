@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Insert summon data along with the retrieved v_id
         $summon = "INSERT INTO summon (sum_date, sum_vModel, sum_vBrand, sum_vPlate, sum_location, sum_violationType, sum_demerit, v_id, sum_vType) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($summon);
-        $stmt->bind_param("ssssssiis", $date, $model, $brand, $plate, $location, $violation, $demerit, $v_id);
+        $stmt->bind_param("sssssssis", $date, $model, $brand, $plate, $location, $violation, $demerit, $v_id, $type);
         $stmt->execute();
         $userId = $stmt->insert_id;
         $stmt->close();

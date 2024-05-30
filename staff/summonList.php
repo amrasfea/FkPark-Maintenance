@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +25,7 @@
             <table class="table mt-4">
                 <thead>
                     <tr>
+                        <th>Date</th>
                         <th>Summon ID</th>
                         <th>Vehicle Owner</th>
                         <th>Plate Number</th>
@@ -33,9 +35,11 @@
                         <th>Action</th> <!-- Added Action column -->
                     </tr>
                 </thead>
+                @foreach ($query as $query)
                 <tbody>
                     <!-- Example row, you should dynamically generate these rows with PHP from your database -->
                     <tr>
+                        <td>12/4/2024</td>
                         <td>1010</td>
                         <td>Nur Alia Nadhirah</td>
                         <td>BJW 2020</td>
