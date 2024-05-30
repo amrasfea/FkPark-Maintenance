@@ -1,6 +1,6 @@
 <?php
-// Include database configuration file
-include '../config.php';
+require '../session_check.php';
+require '../config.php'; // Database connection
 
 // Get the Parking ID from the POST or GET data
 $pID = $_POST['pID'] ?? $_GET['pID'] ?? null;
@@ -50,10 +50,6 @@ if (!$selectedSpace) {
     echo "<p>Parking space not found.</p>";
     exit;
 }
-
-// Debugging: Check the contents of $selectedSpace
-// Uncomment the following line to display the fetched data for debugging
-// echo '<pre>' . print_r($selectedSpace, true) . '</pre>';
 ?>
 
 <!DOCTYPE html>
@@ -92,7 +88,7 @@ if (!$selectedSpace) {
                 <input type="text" class="form-control" id="description" name="description" value="<?php echo htmlspecialchars($selectedSpace['ps_descriptionEvent']); ?>">
 
                </div>
-            <div class="button-group">
+               <div class="button-group">
                 <button type="button" name="cancel" onclick="cancelEdit()">Cancel</button>
                 <button type="submit" name="save">Save</button>
             </div>

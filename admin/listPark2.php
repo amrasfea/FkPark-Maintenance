@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Include database configuration file
 include '../config.php';
 
@@ -180,3 +181,5 @@ mysqli_close($conn);
     </script>
 </body>
 </html>
+
+
