@@ -9,16 +9,45 @@ $successMessage = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete']) && isset($_POST['delete_id'])) {
     $deleteId = intval($_POST['delete_id']);
     if ($deleteId > 0) {
-        // Delete the student record from the database
-        $deleteQuery = "DELETE FROM profiles WHERE u_id = ?";
-        $stmt = $conn->prepare($deleteQuery);
-        $stmt->bind_param("i", $deleteId);
-        $stmt->execute();
-        $stmt->close();
+        // Start transaction
+        $conn->begin_transaction();
 
-        // Set the success message
-        $successMessage = "Student deleted successfully.";
+        try {
+            // Delete the profile record first
+            $deleteProfileQuery = "DELETE FROM profiles WHERE u_id = ?";
+            $stmt = $conn->prepare($deleteProfileQuery);
+            $stmt->bind_param("i", $deleteId);
+            $stmt->execute();
+            $stmt->close();
+
+            // Delete the user record
+            $deleteUserQuery = "DELETE FROM user WHERE u_id = ?";
+            $stmt = $conn->prepare($deleteUserQuery);
+            $stmt->bind_param("i", $deleteId);
+            $stmt->execute();
+            $stmt->close();
+
+            // Commit the transaction
+            $conn->commit();
+
+            // Set the success message in session
+            $_SESSION['successMessage'] = "Student deleted successfully.";
+        } catch (Exception $e) {
+            // Rollback the transaction on error
+            $conn->rollback();
+            // Set the error message in session
+            $_SESSION['successMessage'] = "Error: Unable to delete student. " . $e->getMessage();
+        }
     }
+    // Redirect to the same page to show the success message
+    header("Location: listregistration.php");
+    exit();
+}
+
+// Check for the success message from the session
+if (isset($_SESSION['successMessage'])) {
+    $successMessage = $_SESSION['successMessage'];
+    unset($_SESSION['successMessage']); // Clear the message after displaying it
 }
 
 // Fetch newly registered student information if available
@@ -118,7 +147,7 @@ $studentsResult = $stmt->get_result();
                     <td>
                         <a href="../admin/viewRegistration.php?id=<?php echo $newlyRegisteredStudent['u_id']; ?>" class="view-button">View</a>
                         <a href="../admin/edit_student.php?id=<?php echo $newlyRegisteredStudent['u_id']; ?>" class="edit-button">Edit</a>
-                        <form method="post" action="listRegistration.php" onsubmit="return confirm('Are you sure you want to delete this student?');" style="display:inline;">
+                        <form method="post" action="listregistration.php" onsubmit="return confirm('Are you sure you want to delete this student?');" style="display:inline;">
                             <input type="hidden" name="delete_id" value="<?php echo $newlyRegisteredStudent['u_id']; ?>">
                             <button type="submit" name="delete" class="delete-button">Delete</button>
                         </form>
@@ -135,7 +164,7 @@ $studentsResult = $stmt->get_result();
                     <td>
                         <a href="../admin/viewRegistration.php?id=<?php echo $row['u_id']; ?>" class="view-button">View</a>
                         <a href="../admin/edit_student.php?id=<?php echo $row['u_id']; ?>" class="edit-button">Edit</a>
-                        <form method="post" action="listRegistration.php" onsubmit="return confirm('Are you sure you want to delete this student?');" style="display:inline;">
+                        <form method="post" action="listregistration.php" onsubmit="return confirm('Are you sure you want to delete this student?');" style="display:inline;">
                             <input type="hidden" name="delete_id" value="<?php echo $row['u_id']; ?>">
                             <button type="submit" name="delete" class="delete-button">Delete</button>
                         </form>
@@ -147,4 +176,5 @@ $studentsResult = $stmt->get_result();
     </div>
 </body>
 </html>
+
 

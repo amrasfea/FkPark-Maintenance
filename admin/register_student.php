@@ -37,6 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
     $stmt->close();
 
+    // Set the success message in session
+    $_SESSION['successMessage'] = "Student registered successfully.";
+
     // Redirect to the list registration page with the newly registered student information
     header("Location: listregistration.php?newly_registered_id=$userId");
     exit();
