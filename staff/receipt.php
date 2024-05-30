@@ -1,3 +1,23 @@
+<?php
+session_start();
+require '../config.php'; // Database connection
+
+// Check if the current user is an administrator
+if ($_SESSION['role'] !== 'Unit Keselamatan Staff') {
+    header("Location: ../login2.php");
+    exit();
+}
+
+// Initialize variables to store receipt details
+$sum_date = $_GET['sum_date'] ?? '';
+$sum_id = $_GET['sum_id'] ?? '';
+$p_name = $_GET['p_name'] ?? '';
+$sum_vPlate = $_GET['sum_vPlate'] ?? '';
+$p_matricNum = $_GET['p_matricNum'] ?? '';
+$sum_location = $_GET['sum_location'] ?? '';
+$sum_status = $_GET['sum_status'] ?? '';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,20 +68,17 @@
 </head>
 <body>
     <?php include('../navigation/staffNav.php'); ?>
-    <img src="../img/qr demo.png" class="qr-image" alt="QR Code">
-    <a href="#" class="qr-description">Scan QR for full details</a>
     <div class="receipt-container">
         <div class="receipt">
-            <label>TYPE: CAR</label>
-            <label>VEHICLE MODEL: MYVI</label>
-            <label>VEHICLE BRAND: PERODUA</label>
-            <label>VEHICLE PLATE NUMBER: BJW 2020</label>
-            <label>PARKING LOCATION: ZONE A</label>
-            <label>VIOLATION TYPE: NOT COMPLY IN CAMPUS TRAFFIC REGULATIONS</label>
-            <label>DEMERIT POINT: 15</label>
+            <label>Date: <?php echo htmlspecialchars($sum_date); ?></label>
+            <label>Summon ID: <?php echo htmlspecialchars($sum_id); ?></label>
+            <label>Vehicle Owner: <?php echo htmlspecialchars($p_name); ?></label>
+            <label>Plate Number: <?php echo htmlspecialchars($sum_vPlate); ?></label>
+            <label>Matric ID: <?php echo htmlspecialchars($p_matricNum); ?></label>
+            <label>Location: <?php echo htmlspecialchars($sum_location); ?></label>
+            <label>Status: <?php echo htmlspecialchars($sum_status); ?></label>
         </div>
     </div>
 </body>
 </html>
 
-</html>

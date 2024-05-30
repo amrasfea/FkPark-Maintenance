@@ -1,3 +1,64 @@
+<?php
+session_start();
+require '../config.php'; // Database connection
+
+// Check if the current user is an administrator
+if ($_SESSION['role'] !== 'Unit Keselamatan Staff') {
+    header("Location: ../login2.php");
+    exit();
+}
+
+// Initialize $result variable
+$result = null;
+
+// Handle search request
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['search'])) {
+    $date = $_POST['date'];
+    $searchQuery = "
+        SELECT 
+            summon.sum_date, 
+            summon.sum_id, 
+            summon.sum_vPlate, 
+            summon.sum_location, 
+            summon.sum_status, 
+            profiles.p_name, 
+            profiles.p_matricNum
+        FROM summon 
+        JOIN vehicle ON summon.v_id = vehicle.v_id
+        JOIN user ON vehicle.u_id = user.u_id
+        JOIN profiles ON user.u_id = profiles.u_id
+        WHERE summon.sum_date = ?
+    ";
+    $stmt = $conn->prepare($searchQuery);
+    $stmt->bind_param("s", $date);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+} else {
+    // Fetch all summon data from the database
+    $query = "
+        SELECT 
+            summon.sum_date, 
+            summon.sum_id, 
+            summon.sum_vPlate, 
+            summon.sum_location, 
+            summon.sum_status, 
+            profiles.p_name, 
+            profiles.p_matricNum
+        FROM summon 
+        JOIN vehicle ON summon.v_id = vehicle.v_id
+        JOIN user ON vehicle.u_id = user.u_id
+        JOIN profiles ON user.u_id = profiles.u_id
+    ";
+    $result = $conn->query($query);
+}
+
+// Debugging
+if (!$result) {
+    echo "Query Error: " . $conn->error;
+    exit();
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,51 +72,60 @@
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
 </head>
 <body>
-<?php include('../navigation/staffNav.php'); ?>
+    <?php include('../navigation/staffNav.php'); ?>
     <div class="container mt-3">
-            <h2>Summon List</h2>
-            <form method="post" action="" class="summon-list">
-                <div class="form-group">
-                    <div class="search-input-group">
-                        <input type="date" class="date" id="date" name="date">
-                        <button type="submit" class="search-button">Search</button>
-                    </div>
+        <h2>Summon List</h2>
+        <form method="post" action="" class="summon-list">
+            <div class="form-group">
+                <div class="search-input-group">
+                    <input type="date" class="date" id="date" name="date">
+                    <button type="submit" class="search-button" name="search">Search</button>
                 </div>
-            </form>
-            <table class="table mt-4">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Summon ID</th>
-                        <th>Vehicle Owner</th>
-                        <th>Plate Number</th>
-                        <th>Matric ID</th>
-                        <th>Location</th>
-                        <th>Status</th>
-                        <th>Action</th> <!-- Added Action column -->
-                    </tr>
-                </thead>
-                @foreach ($query as $query)
-                <tbody>
-                    <!-- Example row, you should dynamically generate these rows with PHP from your database -->
-                    <tr>
-                        <td>12/4/2024</td>
-                        <td>1010</td>
-                        <td>Nur Alia Nadhirah</td>
-                        <td>BJW 2020</td>
-                        <td>CB22034</td>
-                        <td>Zone B</td>
-                        <td>Warning</td>
-                        <td>
-                            <button type="submit" name="edit" class="edit-button">Edit</button>
-                            <button type="submit" name="delete" class="delete-button" onclick="alert('Database deleted')">Delete</button>
-                            <a href="../staff/receipt.php">
-                            <button type="submit" name="edit" class="edit-button" >View</button>
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            </div>
+        </form>
+
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Summon ID</th>
+                    <th>Vehicle Owner</th>
+                    <th>Plate Number</th>
+                    <th>Matric ID</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Action</th> <!-- Added Action column -->
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Dynamically generate rows from the fetched data
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row['sum_date']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['sum_id']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['p_name']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['sum_vPlate']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['p_matricNum']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['sum_location']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['sum_status']) . "</td>";
+                        echo "<td>";
+                        echo "<form method='post' action='' style='display:inline-block;'>";
+                        echo "<input type='hidden' name='sum_id' value='" . htmlspecialchars($row['sum_id']) . "'>";
+                        echo "<button type='submit' name='edit' class='edit-button'>Edit</button>";
+                        echo "<button type='submit' name='delete' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</button>";
+                        echo "</form>";
+                        echo "<a href='../staff/receipt.php'><button type='submit' name='view' class='edit-button'>View</button></a>";
+                        echo "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='8'>No records found</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

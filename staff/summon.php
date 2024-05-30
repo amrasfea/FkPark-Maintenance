@@ -8,7 +8,9 @@ if ($_SESSION['role'] !== 'Unit Keselamatan Staff') {
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save'])) {
     $type = $_POST["sum_vType"];
     $date = $_POST["sum_date"];
     $model = $_POST["sum_vModel"];
@@ -34,18 +36,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare($summon);
         $stmt->bind_param("sssssssis", $date, $model, $brand, $plate, $location, $violation, $demerit, $v_id, $type);
         $stmt->execute();
-        $userId = $stmt->insert_id;
         $stmt->close();
 
-        exit();
+        $message = "issued successfully";
+
     } else {
         // Handle case where the provided plate number does not exist in the vehicle table
-        echo "<script>alert('Vehicle with plate number $plate not found. Proceed with manual summon');</script>";
-
+        $message = "Vehicle with plate number $plate not found. Proceed with manual summon";
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -108,9 +108,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="button-group">
                 <button type="submit" name="noti">Send Notification</button>
                 <button type="submit" name="print">Print Receipt</button>
-                <button type="submit" name="save">Save</button>
+                <button type="submit" name="save" id="saveBtn">Save</button>
             </div>
         </form>
+        <?php
+        if (!empty($message)) {
+            echo "<script>alert('$message');</script>";
+        }
+        ?>
     </div>
 
     <script>
