@@ -1,7 +1,8 @@
 <?php
-session_start();
-// Include database configuration file
-include '../config.php';
+session_start(); // Start the session
+
+require '../session_check.php';
+require '../config.php'; // Database connection
 
 // Initialize variables
 $searchArea = "";
@@ -30,7 +31,6 @@ if (isset($_POST['search'])) {
     $query = "SELECT * FROM parkSpace";
     if ($result = mysqli_query($conn, $query)) {
         // Get result
-        $result = mysqli_query($conn, $query);
     } else {
         die("Failed to execute query: " . mysqli_error($conn));
     }
@@ -45,17 +45,38 @@ if ($result) {
     // Free result set
     mysqli_free_result($result);
     
-    // Calculate total space for each area
+    // Calculate total and occupied spaces for each area
     $totalSpace = [];
+    $occupiedSpace = [];
+    $eventSpace = [];
+
     foreach ($parkingSpaces as $space) {
         $area = $space['ps_area'];
         if (!isset($totalSpace[$area])) {
             $totalSpace[$area] = 0;
+            $occupiedSpace[$area] = 0;
+            $eventSpace[$area] = 0; // Initialize event space count here
         }
         $totalSpace[$area]++;
+        if ($space['ps_availableStat'] == 'occupied') {
+            $occupiedSpace[$area]++;
+        }
+        if ($space['ps_typeEvent'] !== '-') {
+            // Increment event space count only if the space is not occupied and used for an event
+            if ($space['ps_availableStat'] == 'occupied') {
+                $eventSpace[$area]++;
+            }
+        }
     }
-} else {
-    die("No parking spaces found.");
+    
+    
+
+    // Store the parking data in session
+    $_SESSION['parkingData'] = [
+        'totalSpace' => $totalSpace,
+        'occupiedSpace' => $occupiedSpace,
+        'eventSpace' => $eventSpace
+    ];
 }
 
 // Close connection
@@ -109,7 +130,10 @@ mysqli_close($conn);
                         <td><?php echo htmlspecialchars($space['ps_typeEvent']); ?></td>
                         <td><?php echo htmlspecialchars($space['ps_descriptionEvent']); ?></td>
                         <td>
-                            <a href="../admin/editPark2.php?id=<?php echo $newlyRegisteredStudent['u_id']; ?>" class="edit-button">Edit</a>
+                            <form method="post" action="editPark2.php" style="display:inline;">
+                                <input type="hidden" name="pID" value="<?php echo $space['ps_id']; ?>">
+                                <button type="submit" name="edit" class="edit-button">Edit</button>
+                            </form>
                             <button onclick="deleteParkingSpace('<?php echo $space['ps_id']; ?>')" class="delete-button">Delete</button>
                         </td>
                     </tr>
@@ -120,31 +144,32 @@ mysqli_close($conn);
     </div>
 
     <script>
-    function deleteParkingSpace(parkingSpaceId) {
-        if (confirm('Are you sure you want to delete this park space?')) {
-            const formData = new FormData();
-            formData.append('pID', parkingSpaceId);
+        function deleteParkingSpace(parkingSpaceId) {
+            if (confirm('Are you sure you want to delete this park space?')) {
+                const formData = new FormData();
+                formData.append('pID', parkingSpaceId);
 
-            fetch('deletePark2.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(responseText => {
-                if (responseText.trim() === 'success') {
-                    const row = document.getElementById('row-' + parkingSpaceId);
-                    if (row) {
-                        row.parentNode.removeChild(row); // Remove row from table
+                fetch('deletePark2.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(responseText => {
+                    if (responseText.trim() === 'success') {
+                        const row = document.getElementById('row-' + parkingSpaceId);
+                        if (row) {
+                            row.parentNode.removeChild(row); // Remove row from table
+                        }
+                    } else {
+                        console.error('Error deleting park space: ' + responseText);
                     }
-                } else {
-                    console.error('Error deleting park space: ' + responseText);
-                }
-            })
-            .catch(error => {
-                console.error('Error deleting park space: ' + error);
-            });
+                })
+                .catch(error => {
+                    console.error('Error deleting park space: ' + error);
+                });
+            }
         }
-    }
-</script>
+    </script>
+
 </body>
 </html>

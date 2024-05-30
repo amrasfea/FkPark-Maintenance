@@ -1,6 +1,6 @@
 <?php
-// Include database configuration file
-include '../config.php';
+require '../session_check.php';
+require '../config.php'; // Database connection
 
 if (isset($_POST['pID'])) {
     $pID = $_POST['pID']; // Get the ID to delete

@@ -1,17 +1,20 @@
 <?php
-// Simulated more data for demonstration purposes
-$parkingSpaces = [
-    ['area' => 'A', 'totalSpace' => 100, 'occupiedSpaces' => 40],
-    ['area' => 'B', 'totalSpace' => 100, 'occupiedSpaces' => 30]
-];
+session_start(); // Start the session to access session variables
 
-$occupiedSpaces = 0;
-$totalSpaces = 0;
-foreach ($parkingSpaces as $space) {
-    $totalSpaces += $space['totalSpace'];
-    $occupiedSpaces += $space['occupiedSpaces'];
+// Check if parking data is available in session
+if (!isset($_SESSION['parkingData'])) {
+    die("No parking data available.");
 }
+
+$parkingData = $_SESSION['parkingData'];
+$totalSpace = $parkingData['totalSpace'];
+$occupiedSpace = $parkingData['occupiedSpace'];
+$eventSpace = $parkingData['eventSpace'];
+
+$totalSpaces = array_sum($totalSpace);
+$occupiedSpaces = array_sum($occupiedSpace);
 $availableSpaces = $totalSpaces - $occupiedSpaces;
+$eventSpaces = array_sum($eventSpace);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +86,7 @@ $availableSpaces = $totalSpaces - $occupiedSpaces;
     <div class="container mt-5">
         <h1>Park Area Report</h1>
         
-        <h3>Total Spaces: <?php echo $totalSpaces; ?> | Occupied Spaces: <?php echo $occupiedSpaces; ?> | Available Spaces: <?php echo $availableSpaces; ?></h3>
+        <h3>Total Spaces: <?php echo $totalSpaces; ?> | Occupied Spaces: <?php echo $occupiedSpaces; ?> | Available Spaces: <?php echo $availableSpaces; ?> | Event Spaces: <?php echo $eventSpaces; ?></h3>
 
         <!-- Canvas element for Chart.js -->
         <div class="container">
@@ -96,18 +99,30 @@ $availableSpaces = $totalSpaces - $occupiedSpaces;
             var parkChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Park Area A', 'Park Area B'],
+                    labels: [<?php foreach ($totalSpace as $area => $value) { echo "'$area', "; } ?>],
                     datasets: [{
+                        label: 'Total Spaces',
+                        data: [<?php foreach ($totalSpace as $area => $value) { echo "$value, "; } ?>],
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    }, {
                         label: 'Occupied Spaces',
-                        data: [<?php echo $parkingSpaces[0]['occupiedSpaces']; ?>, <?php echo $parkingSpaces[1]['occupiedSpaces']; ?>],
+                        data: [<?php foreach ($occupiedSpace as $area => $value) { echo "$value, "; } ?>],
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         borderColor: 'rgba(255, 99, 132, 1)',
                         borderWidth: 1
                     }, {
                         label: 'Available Spaces',
-                        data: [<?php echo $parkingSpaces[0]['totalSpace'] - $parkingSpaces[0]['occupiedSpaces']; ?>, <?php echo $parkingSpaces[1]['totalSpace'] - $parkingSpaces[1]['occupiedSpaces']; ?>],
+                        data: [<?php foreach ($totalSpace as $area => $value) { echo ($value - (isset($occupiedSpace[$area]) ? $occupiedSpace[$area] : 0)) . ", "; } ?>],
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Event Spaces',
+                        data: [<?php foreach ($eventSpace as $area => $value) { echo "$value, "; } ?>],
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
                     }]
                 },
@@ -121,9 +136,7 @@ $availableSpaces = $totalSpaces - $occupiedSpaces;
             });
         </script>
 
-        
-            </div>
-        </div>
     </div>
 </body>
 </html>
+

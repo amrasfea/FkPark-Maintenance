@@ -218,6 +218,9 @@
                         <li class="sidebar-item">
                             <a href="../admin/listPark2.php" class="sidebar-link">List Parking Spaces</a>
                         </li>
+                        <li class="sidebar-item">
+                            <a href="../admin/listApproveBook.php" class="sidebar-link">List Approve Booking</a>
+                        </li>
                     </ul>
                 </li>
 
