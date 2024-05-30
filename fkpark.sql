@@ -99,7 +99,6 @@ CREATE TABLE `summon` (
   `sum_violationType` varchar(200) NOT NULL,
   `sum_demerit` int(11) NOT NULL,
   `sum_status` varchar(200) DEFAULT NULL,
-  `sum_QR` varchar(200) DEFAULT NULL,
   `vt_id` int(11) DEFAULT NULL,
   `v_id` int(11) NOT NULL,
   `sum_vType` enum ('Car','Motorcycle'),
