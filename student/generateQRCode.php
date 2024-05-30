@@ -42,8 +42,13 @@ $vehicleInfo = "Name: " . $vehicle['p_name'] . "\n" .
                "Phone: " . $vehicle['v_phoneNum'] . "\n" .
                "Status: " . $vehicle['v_approvalStatus'];
 
-// Generate the QR code
-header('Content-Type: image/png');
-QRcode::png($vehicleInfo, false, QR_ECLEVEL_L, 10);
-?>
+// Filepath to save the QR code image
+$qrCodeFilePath = '../qrcodes/vehicle_' . $v_id . '.png';
 
+// Generate the QR code and save it to a file
+QRcode::png($vehicleInfo, $qrCodeFilePath, QR_ECLEVEL_L, 10);
+
+// Redirect to the HTML page to display the QR code
+header("Location: display_qr.php?file=$qrCodeFilePath");
+exit();
+?>
