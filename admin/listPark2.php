@@ -89,7 +89,6 @@ mysqli_close($conn);
         <table class="table mt-4">
             <thead>
                 <tr>
-                    <th>Select</th>
                     <th>Area</th>
                     <th>Total Space</th>
                     <th>Parking ID</th>
@@ -103,7 +102,6 @@ mysqli_close($conn);
                 <!-- Dynamic generation of rows from database data -->
                 <?php foreach ($parkingSpaces as $space): ?>
                     <tr id="row-<?php echo $space['ps_id']; ?>">
-                        <td><input type="checkbox" class="select-checkbox" data-id="<?php echo $space['ps_id']; ?>"></td>
                         <td><?php echo htmlspecialchars($space['ps_area']); ?></td>
                         <td><?php echo isset($totalSpace[$space['ps_area']]) ? $totalSpace[$space['ps_area']] : 0; ?></td>
                         <td><?php echo htmlspecialchars($space['ps_id']); ?></td>
@@ -111,75 +109,42 @@ mysqli_close($conn);
                         <td><?php echo htmlspecialchars($space['ps_typeEvent']); ?></td>
                         <td><?php echo htmlspecialchars($space['ps_descriptionEvent']); ?></td>
                         <td>
-                            <form method="post" action="editPark2.php" style="display:inline;">
-                                <input type="hidden" name="pID" value="<?php echo $space['ps_id']; ?>">
-                                <button type="submit" name="edit" class="edit-button">Edit</button>
-                            </form>
+                            <a href="../admin/editPark2.php?id=<?php echo $newlyRegisteredStudent['u_id']; ?>" class="edit-button">Edit</a>
+                            <button onclick="deleteParkingSpace('<?php echo $space['ps_id']; ?>')" class="delete-button">Delete</button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
                 <!-- Additional rows go here -->
             </tbody>
         </table>
-        <div class="button-group mt-4">
-            <button type="button" name="delete" class="delete-button" onclick="deleteSelected()">Delete Selected</button>
-        </div>
     </div>
 
     <script>
-        const stack = [];
+    function deleteParkingSpace(parkingSpaceId) {
+        if (confirm('Are you sure you want to delete this park space?')) {
+            const formData = new FormData();
+            formData.append('pID', parkingSpaceId);
 
-        document.querySelectorAll('.select-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    stack.push(this.getAttribute('data-id'));
+            fetch('deletePark2.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(responseText => {
+                if (responseText.trim() === 'success') {
+                    const row = document.getElementById('row-' + parkingSpaceId);
+                    if (row) {
+                        row.parentNode.removeChild(row); // Remove row from table
+                    }
                 } else {
-                    const index = stack.indexOf(this.getAttribute('data-id'));
-                    if (index > -1) {
-                        stack.splice(index, 1);
-                    }
+                    console.error('Error deleting park space: ' + responseText);
                 }
+            })
+            .catch(error => {
+                console.error('Error deleting park space: ' + error);
             });
-        });
-
-        function deleteSelected() {
-            if (stack.length === 0) {
-                alert('No parking spaces selected.');
-                return;
-            }
-
-            if (confirm('Are you sure you want to delete the selected parking spaces?')) {
-                fetch('deletePark2.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: new URLSearchParams({
-                        'pID': stack.join(',')
-                    })
-                })
-                .then(response => response.text())
-                .then(responseText => {
-                    if (responseText.trim() === 'success') {
-                        stack.forEach(id => {
-                            const row = document.getElementById('row-' + id);
-                            if (row) {
-                                row.parentNode.removeChild(row); // Remove row from table
-                            }
-                        });
-                        stack.length = 0; // Clear the stack
-                        alert('Data deleted successfully!');
-                    } else {
-                        alert('Error deleting data: ' + responseText);
-                    }
-                })
-                .catch(error => {
-                    alert('Error deleting data: ' + error);
-                });
-            }
         }
-    </script>
+    }
+</script>
 </body>
 </html>
-
-
