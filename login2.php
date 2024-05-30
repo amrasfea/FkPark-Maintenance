@@ -24,6 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['u_id'] = $userId;
         $_SESSION['role'] = $userType;
 
+        // Set session timeout duration (1 hour)
+        $_SESSION['login_time'] = time();
+        $_SESSION['expire_time'] = $_SESSION['login_time'] + 3600; // 3600 seconds = 1 hour
+
         // Redirect based on user type
         if ($userType === "Administrators") {
             header("Location: ./admin/adminDashboard.php");
@@ -38,7 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,6 +62,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="row">
           <h2>LOGIN</h2>
         </div>
+        <?php if (isset($_GET['session_expired'])): ?>
+          <div class="row">
+            <p style="color: red;">Your session has expired. Please log in again.</p>
+          </div>
+        <?php endif; ?>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" name="login" id="login">
           <div class="row">
             <div class="col mb-3">
@@ -91,5 +99,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </div>
 </body>
 </html>
+
 
 

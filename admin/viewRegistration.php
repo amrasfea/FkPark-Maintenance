@@ -1,5 +1,5 @@
 <?php
-session_start();
+require '../session_check.php';
 require '../config.php'; // Database connection
 
 // Fetch student information based on the provided ID
