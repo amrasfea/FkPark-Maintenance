@@ -28,51 +28,122 @@ if (!$userData) {
     die("Error: No data found for the given user ID.");
 }
 
-// Provide default values for missing keys
-$userData['p_course'] = $userData['p_course'] ?? 'N/A';
-$userData['p_faculty'] = $userData['p_faculty'] ?? 'N/A';
+// Process form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['p_name'];
+    $matricNum = $_POST['p_matricNum'];
+    $course = $_POST['p_course'];
+    $faculty = $_POST['p_faculty'];
+    $icNumber = $_POST['p_icNumber'];
+    $email = $_POST['p_email'];
+    $phoneNum = $_POST['p_phoneNum'];
+    $address = $_POST['p_address'];
+
+    $updateQuery = "UPDATE profiles SET p_name = ?, p_matricNum = ?, p_course = ?, p_faculty = ?, p_icNumber = ?, p_email = ?, p_phoneNum = ?, p_address = ? WHERE u_id = ?";
+    $stmt = $conn->prepare($updateQuery);
+
+    if ($stmt === false) {
+        die("Error preparing statement: " . htmlspecialchars($conn->error));
+    }
+
+    $stmt->bind_param("ssssssssi", $name, $matricNum, $course, $faculty, $icNumber, $email, $phoneNum, $address, $userId);
+
+    if ($stmt->execute()) {
+        // Redirect to the profile page after update
+        header("Location: profilesection.php");
+        exit();
+    } else {
+        die("Error executing statement: " . htmlspecialchars($stmt->error));
+    }
+
+    $stmt->close();
+}
 ?>
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/profile.css">
-    <link rel="icon" type="image/x-icon" href="../img/logo.png">
-    <title>Student Profile</title>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <?php include('../navigation/studentNav.php'); ?>
-    <div class="container">
-       <div class="row">
-          <div class="col-md-12">
-             <div id="content" class="content content-full-width">
-                <div class="profile">
-                   <div class="profile-header">
-                      <div class="profile-header-cover"></div>
-                      <div class="profile-header-content">
-                         <div class="profile-header-img">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
-                         </div>
-                         <div class="profile-header-info">
-                            <h4 class="m-t-10 m-b-5"><?php echo htmlspecialchars($userData['p_name']); ?></h4>
-                            <p class="m-b-10" style="color: black;"><?php echo htmlspecialchars($userData['u_type']); ?></p>
-                            <a href="editstudentProfile.php" class="btn btn-sm btn-info mb-2" style="background-color: green; color:white;">Edit Profile</a>
-                         </div>
-                      </div>
-                      <ul class="profile-header-tab nav nav-tabs">
-                         <li class="nav-item"><a href="../student/profilesection.php" target="__blank" class="nav-link_">Profile</a></li>
-                      </ul>
-                   </div>
-                </div>
-             </div>
-          </div>
-       </div>
-    </div>
-  </body>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="../img/logo.png">
+    <style>
+        .field-input {
+            border: none;
+            width: 100%;
+        }
+    </style>
+    <title>Edit Profile</title>
+</head>
+<body>
+<?php include('studentProfile.php'); ?>
+<div class="container">
+   <div class="row">
+      <div class="col-md-12">
+         <div id="content" class="content content-full-width">
+            <div class="profile-content">
+               <div class="tab-content p-0">
+                  <div class="tab-pane fade in active show" id="profile-about">
+                     <form method="post" action="editstudentProfile.php">
+                        <div class="table-responsive">
+                            <table class="table table-profile">
+                                <tbody>
+                                    <tr class="highlight">
+                                        <td class="field">Matric Number</td>
+                                        <td><input type="text" name="p_matricNum" class="field-input" value="<?php echo htmlspecialchars($userData['p_matricNum']); ?>" required></td>
+                                    </tr>
+                                    <tr class="divider">
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Full Name</td>
+                                        <td><input type="text" name="p_name" class="field-input" value="<?php echo htmlspecialchars($userData['p_name']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">IC Number</td>
+                                        <td><input type="text" name="p_icNumber" class="field-input" value="<?php echo htmlspecialchars($userData['p_icNumber']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Email</td>
+                                        <td><input type="email" name="p_email" class="field-input" value="<?php echo htmlspecialchars($userData['p_email']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Phone</td>
+                                        <td><input type="text" name="p_phoneNum" class="field-input" value="<?php echo htmlspecialchars($userData['p_phoneNum']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Address</td>
+                                        <td><input type="text" name="p_address" class="field-input" value="<?php echo htmlspecialchars($userData['p_address']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Course</td>
+                                        <td><input type="text" name="p_course" class="field-input" value="<?php echo htmlspecialchars($userData['p_course']); ?>" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="field">Faculty</td>
+                                        <td><input type="text" name="p_faculty" class="field-input" value="<?php echo htmlspecialchars($userData['p_faculty']); ?>" required></td>
+                                    </tr>
+                                    <tr class="divider">
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr class="highlight">
+                                        <td class="field">&nbsp;</td>
+                                        <td class="p-t-10 p-b-10">
+                                            <button type="submit" class="btn btn-primary width-150">Update</button>
+                                            <a class="btn btn-white btn-white-without-border width-150 m-l-5" href="profilesection.php">Cancel</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+</body>
 </html>
