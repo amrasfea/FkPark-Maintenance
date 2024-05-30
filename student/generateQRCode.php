@@ -1,16 +1,19 @@
 <?php
 require '../session_check.php';
 require '../config.php';
-include('../libs/phpqrcode/qrlib.php'); // Include the library
+require '../phpqrcode/qrlib.php'; // Path to the PHP QR Code library
 
-if (!isset($_GET['v_id'])) {
-    die("Vehicle ID is required.");
+// Check if the current user is a student
+if ($_SESSION['role'] !== 'Student') {
+    header("Location: ../login2.php");
+    exit();
 }
 
-$v_id = intval($_GET['v_id']);
+// Retrieve the vehicle ID from the URL
+$v_id = $_GET['v_id'];
 
-// Fetch vehicle information from the database
-$stmt = $conn->prepare("SELECT v.*, p.p_name 
+// Fetch the vehicle information from the database
+$stmt = $conn->prepare("SELECT v.*, p.p_name, p.p_course, p.p_icNumber 
                         FROM vehicle v 
                         JOIN profiles p ON v.u_id = p.u_id 
                         WHERE v.v_id = ?");
@@ -18,24 +21,29 @@ $stmt->bind_param("i", $v_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $vehicle = $result->fetch_assoc();
-
-if (!$vehicle) {
-    die("Vehicle not found.");
-}
-
 $stmt->close();
 
-// Generate QR code content
-$qrContent = "Name: {$vehicle['p_name']}\n"
-           . "Vehicle Type: {$vehicle['v_vehicleType']}\n"
-           . "Brand: {$vehicle['v_brand']}\n"
-           . "Model: {$vehicle['v_model']}\n"
-           . "Road Tax Valid Date: {$vehicle['v_roadTaxValidDate']}\n"
-           . "License Valid Date: {$vehicle['v_licenceValidDate']}\n"
-           . "License Class: {$vehicle['v_licenceClass']}\n"
-           . "Phone Number: {$vehicle['v_phoneNum']}";
+// Check if vehicle data is found
+if (!$vehicle) {
+    die("Vehicle not found");
+}
 
-// Output QR code
+// Concatenate vehicle information into a string
+$vehicleInfo = "Name: " . $vehicle['p_name'] . "\n" .
+               "Course: " . $vehicle['p_course'] . "\n" .
+               "IC Number: " . $vehicle['p_icNumber'] . "\n" .
+               "Vehicle Type: " . $vehicle['v_vehicleType'] . "\n" .
+               "Brand: " . $vehicle['v_brand'] . "\n" .
+               "Model: " . $vehicle['v_model'] . "\n" .
+               "Plate Number: " . $vehicle['v_plateNum'] . "\n" .
+               "Road Tax Valid: " . $vehicle['v_roadTaxValidDate'] . "\n" .
+               "License Valid: " . $vehicle['v_licenceValidDate'] . "\n" .
+               "License Class: " . $vehicle['v_licenceClass'] . "\n" .
+               "Phone: " . $vehicle['v_phoneNum'] . "\n" .
+               "Status: " . $vehicle['v_approvalStatus'];
+
+// Generate the QR code
 header('Content-Type: image/png');
-QRcode::png($qrContent);
+QRcode::png($vehicleInfo, false, QR_ECLEVEL_L, 10);
 ?>
+

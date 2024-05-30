@@ -74,11 +74,11 @@ $stmt->close();
                     <td><a href="../uploads/<?php echo htmlspecialchars($vehicle['v_vehicleGrant']); ?>" target="_blank">View Grant</a></td>
                     <td><?php echo htmlspecialchars($vehicle['v_approvalStatus']); ?></td>
                     <td>
-                    <?php if ($vehicle['v_approvalStatus'] === 'Approve'): ?>
-    <a href="../student/generateQRCode.php?v_id=<?php echo htmlspecialchars($vehicle['v_id']); ?>" target="_blank">View QR Code</a>
-<?php endif; ?>
+    <?php if ($vehicle['v_approvalStatus'] === 'Approve'): ?>
+        <a href="../student/generateQRCode.php?v_id=<?php echo htmlspecialchars($vehicle['v_id']); ?>" target="_blank">View QR Code</a>
+    <?php endif; ?>
+</td>
 
-                    </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
