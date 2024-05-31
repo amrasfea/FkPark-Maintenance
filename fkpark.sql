@@ -101,7 +101,7 @@ CREATE TABLE `summon` (
   `sum_status` varchar(200) DEFAULT NULL,
   `vt_id` int(11) DEFAULT NULL,
   `v_id` int(11) NOT NULL,
-  `sum_vType` enum ('Car','Motorcycle'),
+  `sum_vType` enum ('Car','Motorcycle')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

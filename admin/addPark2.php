@@ -48,15 +48,26 @@ if(isset($_POST['save'])){
     <link rel="stylesheet" href="../css/park.css">
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
     <!--FAVICON-->
+    <style>
+        .message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
 </head>
 <body>
     <?php include('../navigation/adminNav.php'); ?>
     <div class="container mt-5">
         <h2>Parking Space Form</h2>
+        <?php if ($message != ''): ?>
+            <div class="message"><?php echo htmlspecialchars($message); ?></div>
+        <?php endif; ?>
         <form id="parkingForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-            <div class="button-group">
-                <button type="button" name="newForm" onclick="newForm()">New Form</button>
-            </div>
+            
             <div class="form-group">
                 <label for="ps_area">Parking Area:</label>
                 <input type="text" class="form-control" id="ps_area" name="ps_area" required>
@@ -76,12 +87,6 @@ if(isset($_POST['save'])){
             </div>
         </form>
     </div>
-
-    <?php if ($message != ''): ?>
-        <script>
-            alert('<?php echo $message; ?>');
-        </script>
-    <?php endif; ?>
 
     <script>
         function clearForm() {
