@@ -28,19 +28,13 @@ if (!$result) {
     exit();
 }
 
-// Prepare the update statement
-$updateStmt = $conn->prepare("
-    UPDATE summon 
-    SET sum_status = ?
-    WHERE v_id IN (
-        SELECT v_id FROM vehicle WHERE u_id = ?
-    )
-");
-
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $u_id = $row['u_id'];
         $total_demerit = $row['total_demerit'];
+
+        // Debugging
+        echo "User ID: " . $u_id . ", Total Demerit: " . $total_demerit . "<br>";
 
         if ($total_demerit < 20) {
             $status = 'Warning';
@@ -52,14 +46,20 @@ if ($result->num_rows > 0) {
             $status = 'Revoke of in campus vehicle permission for entire study duration';
         }
 
-        // Bind parameters and execute the update statement
+        // Prepare and execute the update statement
+        $updateStmt = $conn->prepare("UPDATE summon SET sum_status = ? WHERE v_id IN (SELECT v_id FROM vehicle WHERE u_id = ?)");
         $updateStmt->bind_param("si", $status, $u_id);
-        $updateStmt->execute();
+
+        if (!$updateStmt->execute()) {
+            echo "Error updating status: " . $updateStmt->error;
+        } else {
+            echo "Status updated successfully for user ID: " . $u_id . "<br>";
+        }
+
+        $updateStmt->close();
     }
 }
 
-$updateStmt->close();
 $conn->close();
-
-echo "Status updated successfully.";
 ?>
+

@@ -8,50 +8,90 @@ if ($_SESSION['role'] !== 'Unit Keselamatan Staff') {
     exit();
 }
 
-// Initialize $result variable
-$result = null;
-
-// Handle search request
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['search'])) {
-    $date = $_POST['date'];
-    $searchQuery = "
-        SELECT 
-            summon.sum_date, 
-            summon.sum_id, 
-            summon.sum_vPlate, 
-            summon.sum_location, 
-            summon.sum_status, 
-            profiles.p_name, 
-            profiles.p_matricNum
-        FROM summon 
-        JOIN vehicle ON summon.v_id = vehicle.v_id
-        JOIN user ON vehicle.u_id = user.u_id
-        JOIN profiles ON user.u_id = profiles.u_id
-        WHERE summon.sum_date = ?
-    ";
-    $stmt = $conn->prepare($searchQuery);
-    $stmt->bind_param("s", $date);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
-} else {
-    // Fetch all summon data from the database
-    $query = "
-        SELECT 
-            summon.sum_date, 
-            summon.sum_id, 
-            summon.sum_vPlate, 
-            summon.sum_location, 
-            summon.sum_status, 
-            profiles.p_name, 
-            profiles.p_matricNum
-        FROM summon 
-        JOIN vehicle ON summon.v_id = vehicle.v_id
-        JOIN user ON vehicle.u_id = user.u_id
-        JOIN profiles ON user.u_id = profiles.u_id
-    ";
-    $result = $conn->query($query);
+// Check if delete button is clicked
+if (isset($_POST['delete']) && isset($_POST['sum_id'])) {
+    $sum_id = $_POST['sum_id'];
+    
+    // Prepare and execute the delete statement
+    $deleteStmt = $conn->prepare("DELETE FROM summon WHERE sum_id = ?");
+    $deleteStmt->bind_param("i", $sum_id);
+    
+    if ($deleteStmt->execute()) {
+        echo "<script>alert('Record deleted successfully');</script>";
+        // Redirect to avoid form resubmission
+        header("Location: ".$_SERVER['PHP_SELF']);
+        exit();
+    } else {
+        echo "<script>alert('Error deleting record: ".$conn->error."');</script>";
+    }
+    
+    $deleteStmt->close();
 }
+
+// Fetch total demerit points for each user and update their status
+$query = "
+    SELECT 
+        profiles.u_id,
+        SUM(summon.sum_demerit) as total_demerit
+    FROM summon 
+    JOIN vehicle ON summon.v_id = vehicle.v_id
+    JOIN user ON vehicle.u_id = user.u_id
+    JOIN profiles ON user.u_id = profiles.u_id
+    GROUP BY profiles.u_id
+";
+
+$result = $conn->query($query);
+
+// Debugging
+if (!$result) {
+    echo "Query Error: " . $conn->error;
+    exit();
+}
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $u_id = $row['u_id'];
+        $total_demerit = $row['total_demerit'];
+
+        if ($total_demerit < 20) {
+            $status = 'Warning';
+        } elseif ($total_demerit < 50) {
+            $status = 'Revoke of in campus vehicle permission for 1 semester';
+        } elseif ($total_demerit < 80) {
+            $status = 'Revoke of in campus vehicle permission for 2 semesters';
+        } else {
+            $status = 'Revoke of in campus vehicle permission for entire study duration';
+        }
+
+        // Prepare and execute the update statement
+        $updateStmt = $conn->prepare("UPDATE summon SET sum_status = ? WHERE v_id IN (SELECT v_id FROM vehicle WHERE u_id = ?)");
+        $updateStmt->bind_param("si", $status, $u_id);
+
+        if (!$updateStmt->execute()) {
+            echo "<script>alert('Error updating status: ".$conn->error."');</script>";
+        }
+
+        $updateStmt->close();
+    }
+}
+
+// Fetch summon data with updated status
+$query = "
+    SELECT 
+        summon.sum_date, 
+        summon.sum_id, 
+        summon.sum_vPlate, 
+        summon.sum_location, 
+        summon.sum_status, 
+        profiles.p_name, 
+        profiles.p_matricNum
+    FROM summon 
+    JOIN vehicle ON summon.v_id = vehicle.v_id
+    JOIN user ON vehicle.u_id = user.u_id
+    JOIN profiles ON user.u_id = profiles.u_id
+";
+
+$result = $conn->query($query);
 
 // Debugging
 if (!$result) {
@@ -113,10 +153,10 @@ if (!$result) {
                         echo "<td>";
                         echo "<form method='post' action='' style='display:inline-block;'>";
                         echo "<input type='hidden' name='sum_id' value='" . htmlspecialchars($row['sum_id']) . "'>";
-                        echo "<button type='submit' name='edit' class='edit-button'>Edit</button>";
+                        //echo "<button type='submit' name='edit' class='edit-button'>Edit</button>";
                         echo "<button type='submit' name='delete' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</button>";
                         echo "</form>";
-                        echo "<a href='../staff/receipt.php?sum_date=" . urlencode($row['sum_date']) . "&sum_id=" . urlencode($row['sum_id']) . "&p_name=" . urlencode($row['p_name']) . "&sum_vPlate=" . urlencode($row['sum_vPlate']) . "&p_matricNum=" . urlencode($row['p_matricNum']) . "&sum_location=" . urlencode($row['sum_location']) . "&sum_status=" . urlencode($row['sum_status']) . "'><button class='edit-button'>View</button></a>";
+                        echo "<a href='../staff/receipt.php?sum_date=" . urlencode($row['sum_date']) . "&sum_id=" . urlencode($row['sum_id']) . "&p_name=". urlencode($row['p_name']) . "&sum_vPlate=" . urlencode($row['sum_vPlate']) . "&p_matricNum=" . urlencode($row['p_matricNum']) . "&sum_location=" . urlencode($row['sum_location']) . "&sum_status=" . urlencode($row['sum_status']) . "'><button class='edit-button'>View</button></a>";
                         echo "</td>";
                         echo "</tr>";
                     }
