@@ -9,6 +9,9 @@ if (!isset($_SESSION['u_id'])) {
 // Retrieve the user ID from the session
 $u_id = $_SESSION['u_id'];
 
+//ini datang dari urlencode page searchParking, so kena guna get
+$ps_id = $_GET['ps_id'] ?? '';
+
 ?>
 
 <!DOCTYPE html>

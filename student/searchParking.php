@@ -37,7 +37,8 @@ if (isset($_POST['area'], $_POST['date'], $_POST['time'])) {
             <?php while ($row = $result->fetch_assoc()): ?>
                 <li class="list-group-item">
                     <?php echo $row['ps_id']; ?>
-                    <a href="bookForm.php?ps_id=<?php echo $row['ps_id']; ?>&date=<?php echo $date; ?>&time=<?php echo $time; ?>" class="btn btn-primary float-right">Book Now</a>
+                <!-- ini untuk pass variable ke page lain bila click button , guna urlencode-->    
+                <?php echo "<a href='../student/bookForm.php?ps_id=" . urlencode($row['ps_id']) ."'><button class='btn btn-primary float-right'>Book Now</button></a>"; ?>
                 </li>
             <?php endwhile; ?>
         </ul>
