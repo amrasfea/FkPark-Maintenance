@@ -53,7 +53,7 @@
                 <p>Parking area: <?php echo htmlspecialchars($parkSpace['ps_area']); ?></p>
                 <p>Parking ID: <?php echo htmlspecialchars($parkSpace['ps_id']); ?></p>
                 <p>Status: <?php echo ucfirst(htmlspecialchars($parkSpace['ps_availableStat'])); ?></p>
-                <p>Type: <?php echo htmlspecialchars($parkSpace['ps_typeEvent']); ?></p>
+                <p>Type event: <?php echo htmlspecialchars($parkSpace['ps_typeEvent']); ?></p>
                 <p>Description: <?php echo htmlspecialchars($parkSpace['ps_descriptionEvent']); ?></p>
                 <!-- Add any other details you want to display -->
             </div>
