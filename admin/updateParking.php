@@ -1,6 +1,7 @@
 <?php
-// Include database configuration file
-include '../config.php';
+require '../session_check.php';
+require '../config.php'; // Database connection
+
 
 // Get data from the form
 $pID = $_POST['pID'] ?? null;

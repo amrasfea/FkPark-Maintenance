@@ -2,6 +2,7 @@
 require '../session_check.php';
 require '../config.php'; // Database connection
 
+
 // Get the Parking ID from the POST or GET data
 $pID = $_POST['pID'] ?? $_GET['pID'] ?? null;
 
@@ -80,7 +81,7 @@ if (!$selectedSpace) {
 
                 <label for="status">Status:</label>
                 <input type="text" class="form-control" id="status" name="status" value="<?php echo htmlspecialchars($selectedSpace['ps_availableStat']); ?>">
-
+                
                 <label for="typeEvent">Type Event:</label>
                 <input type="text" class="form-control" id="typeEvent" name="typeEvent" value="<?php echo htmlspecialchars($selectedSpace['ps_typeEvent']); ?>">
 

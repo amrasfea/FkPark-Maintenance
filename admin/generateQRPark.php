@@ -2,6 +2,7 @@
 require '../session_check.php';
 require '../config.php'; // Database connection
 
+include '../phpqrcode/qrlib.php'; // Path to the PHP QR Code library
 
 $message = '';
 

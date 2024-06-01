@@ -1,5 +1,7 @@
 <?php
-session_start(); // Start the session to access session variables
+require '../session_check.php';
+require '../config.php'; // Database connection
+
 
 // Check if parking data is available in session
 if (!isset($_SESSION['parkingData'])) {

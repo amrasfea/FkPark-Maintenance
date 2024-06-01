@@ -19,7 +19,7 @@
                 <div class="input-group">
                     <label for="parkDate">Park Date:</label>
                     <input type="date" name="parkDate" class="form-control" required>
-                    <label for="parkDate">Park Time:</label>
+                    <label for="parkTime">Park Time:</label>
                     <input type="time" name="parkTime" class="form-control" required>
                     <label for="searchArea" class="label-inline">Park Area:</label>
                     <input type="text" class="form-control" id="searchArea" name="searchArea" required>
@@ -29,55 +29,56 @@
         </form>
 
         <?php
+        // Database connection
+        require '../config.php'; // Adjust the path as needed
+
         // Check if form is submitted and searchArea is set and not empty
         if (isset($_POST['search']) && isset($_POST['searchArea']) && !empty(trim($_POST['searchArea']))) {
             $searchArea = $_POST['searchArea'];
-            // Display park spaces only if searchArea is provided
-            echo '<div class="container mt-3">';
-            echo '<h3>Park Spaces</h3>';
-            echo '<div class="park-list">';
-            // Simulated data for demonstration purposes
-            $parkingSpaces = [
-                ['area' => 'A1', 'id' => 'A1-S01', 'status' => 'available', 'type' => '-', 'description' => '-'],
-                ['area' => 'A1', 'id' => 'A1-S02', 'status' => 'occupied', 'type' => 'Covered', 'description' => 'Shaded area'],
-                ['area' => 'A1', 'id' => 'A1-S03', 'status' => 'available', 'type' => '-', 'description' => '-'],
-                ['area' => 'A1', 'id' => 'A1-S04', 'status' => 'available', 'type' => '-', 'description' => '-'],
-                ['area' => 'A1', 'id' => 'A1-S05', 'status' => 'occupied', 'type' => 'maintenance', 'description' => 'lawn mowing'],
-                ['area' => 'A1', 'id' => 'A1-S06', 'status' => 'available', 'type' => '-', 'description' => '-'],
-                ['area' => 'A1', 'id' => 'A1-S07', 'status' => 'available', 'type' => '-', 'description' => '-'],
-                ['area' => 'A1', 'id' => 'A1-S22', 'status' => 'available', 'type' => '-', 'description' => '-'],
-                ['area' => 'A1', 'id' => 'A1-S23', 'status' => 'occupied', 'type' => 'Covered', 'description' => 'Shaded area'],
+            // Valid areas
+            $validAreas = ['B1', 'B2', 'B3'];
+            if (in_array($searchArea, $validAreas)) {
+                // Prepare the SQL query to fetch park spaces from the database
+                $query = "SELECT * FROM parkSpace WHERE ps_area = ?";
+                if ($stmt = mysqli_prepare($conn, $query)) {
+                    mysqli_stmt_bind_param($stmt, "s", $searchArea);
+                    if (mysqli_stmt_execute($stmt)) {
+                        $result = mysqli_stmt_get_result($stmt);
+                        $parkingSpaces = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                        mysqli_stmt_close($stmt);
 
-                ['area' => 'B1', 'id' => 'B1-S01', 'status' => 'available', 'type' => '-', 'description' => '-'],
-                ['area' => 'B1', 'id' => 'B1-S20', 'status' => 'occupied', 'type' => 'maintenance', 'description' => 'lawn mowing'],
-                ['area' => 'B1', 'id' => 'B1-S23', 'status' => 'available', 'type' => '-', 'description' => '-'],
-                ['area' => 'B1', 'id' => 'B1-S30', 'status' => 'occupied', 'type' => 'Covered', 'description' => 'Shaded area'],
-                // Add more parking spaces as needed
-            ];
-            // Filter parking spaces based on the entered park area
-            $filteredSpaces = array_filter($parkingSpaces, function($space) use ($searchArea) {
-                return $space['area'] == $searchArea;
-            });
-            // Display the filtered park spaces
-            if (!empty($filteredSpaces)) { // Only display if there are filtered spaces
-                // Count total spaces
-                $totalSpaces = count($filteredSpaces);
-                echo "<p>Total Spaces in $searchArea: $totalSpaces</p>";
-                foreach ($filteredSpaces as $space) {
-                    echo '<div class="park-item">';
-                    // Display parking ID and status in one line
-                    echo '<div class="park-info">';
-                    echo '<p>Parking ID: ' . $space['id'] . '</p>';
-                    echo '<a href="viewPark2.php?id=' . $space['id'] . '" class="status-button ' . $space['status'] . '">' . ucfirst($space['status']) . '</a>';
-                    echo '</div>';
-                    echo '</div>';
+                        echo '<div class="container mt-3">';
+                        echo '<h3>Park Spaces</h3>';
+                        echo '<div class="park-list">';
+                        
+                        if (!empty($parkingSpaces)) {
+                            $totalSpaces = count($parkingSpaces);
+                            echo "<p>Total Spaces in $searchArea: $totalSpaces</p>";
+                            foreach ($parkingSpaces as $space) {
+                                echo '<div class="park-item">';
+                                // Display parking ID and status in one line
+                                echo '<div class="park-info">';
+                                echo '<p>Parking ID: ' . htmlspecialchars($space['ps_id']) . '</p>';
+                                echo '<a href="viewPark2.php?id=' . htmlspecialchars($space['ps_id']) . '" class="status-button ' . htmlspecialchars($space['ps_availableStat']) . '">' . ucfirst(htmlspecialchars($space['ps_availableStat'])) . '</a>';
+                                echo '</div>';
+                                echo '</div>';
+                            }
+                        } else {
+                            echo '<p>No park spaces available in the specified area.</p>';
+                        }
+                        echo '</div>'; // closing park-list div
+                        echo '</div>'; // closing container div
+                    } else {
+                        echo '<p>Error executing query: ' . mysqli_error($conn) . '</p>';
+                    }
+                } else {
+                    echo '<p>Failed to prepare query: ' . mysqli_error($conn) . '</p>';
                 }
             } else {
-                echo '<p>No park spaces available in the specified area.</p>';
+                echo '<p>Invalid park area. Please enter B1, B2, or B3.</p>';
             }
-            echo '</div>'; // closing park-list div
-            echo '</div>'; // closing container div
         }
+        mysqli_close($conn);
         ?>
     </div>
 </body>
