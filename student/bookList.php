@@ -1,23 +1,17 @@
 <?php
-session_start();
+require '../session_check.php';
+require '../config.php'; // Database connection
 
-// Database connection parameters
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "fkpark";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Check if user_id is set in the session
+if (!isset($_SESSION['u_id'])) {
+    die("Error: User ID is not set in the session.");
 }
 
-// Retrieve bookings
-$sql = "SELECT * FROM bookInfo";
+// Retrieve all bookings for the logged-in user
+$u_id = $_SESSION['u_id'];
+$sql = "SELECT * FROM bookInfo WHERE u_id = '$u_id'";
 $result = $conn->query($sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +21,6 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking List</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="../img/logo.png">
 </head>
 <body>
 
@@ -35,41 +28,36 @@ $result = $conn->query($sql);
 
 <div class="container mt-5">
     <h2>Booking List</h2>
-    <?php if ($result->num_rows > 0): ?>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Booking ID</th>
-                    <th>User ID</th>
-                    <th>Parking Space</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Vehicle ID</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while($row = $result->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo $row['b_id']; ?></td>
-                        <td><?php echo $row['u_id']; ?></td>
-                        <td><?php echo $row['ps_id']; ?></td>
-                        <td><?php echo $row['b_date']; ?></td>
-                        <td><?php echo $row['b_time']; ?></td>
-                        <td><?php echo $row['v_id']; ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p>No bookings found.</p>
-    <?php endif; ?>
+    <?php
+    if ($result->num_rows > 0) {
+        echo "<table class='table table-striped'>";
+        echo "<thead><tr><th>Booking ID</th><th>Parking Space</th><th>Date</th><th>Time</th><th>Status</th><th>Vehicle ID</th><th>Plate Number</th></tr></thead>";
+        echo "<tbody>";
+        while($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . $row["b_id"] . "</td>";
+            echo "<td>" . $row["ps_id"] . "</td>";
+            echo "<td>" . $row["b_date"] . "</td>";
+            echo "<td>" . $row["b_time"] . "</td>";
+            echo "<td>" . $row["b_status"] . "</td>";
+            echo "<td>" . $row["v_id"] . "</td>";
+            echo "<td>" . $row["v_plateNum"] . "</td>";
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+    } else {
+        echo "<p>No bookings found.</p>";
+    }
+    ?>
 </div>
 
-  
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
 
-<?php $conn->close(); ?>
+<?php
+$conn->close();
+?>
