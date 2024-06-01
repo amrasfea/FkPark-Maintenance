@@ -78,17 +78,29 @@ if (!$selectedSpace) {
                 <label for="pID">Parking ID:</label>
                 <input type="text" class="form-control" id="pID" name="pID" value="<?php echo htmlspecialchars($selectedSpace['ps_id']); ?>" readonly>
 
-                <label for="status">Status:</label>
-                <input type="text" class="form-control" id="status" name="status" value="<?php echo htmlspecialchars($selectedSpace['ps_availableStat']); ?>">
-
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <select class="form-control" id="status" name="status">
+                        <option value="available" <?php if ($selectedSpace['ps_availableStat'] === 'available') echo 'selected'; ?>>available</option>
+                        <option value="occupied" <?php if ($selectedSpace['ps_availableStat'] === 'occupied') echo 'selected'; ?>>occupied</option>
+                    </select>
+                </div>
+               
                 <label for="typeEvent">Type Event:</label>
                 <input type="text" class="form-control" id="typeEvent" name="typeEvent" value="<?php echo htmlspecialchars($selectedSpace['ps_typeEvent']); ?>">
 
                 <label for="description">Description:</label>
                 <input type="text" class="form-control" id="description" name="description" value="<?php echo htmlspecialchars($selectedSpace['ps_descriptionEvent']); ?>">
-
-               </div>
-               <div class="button-group">
+                
+                <div id="date-time-fields">
+                    <label for="date">Date:</label>
+                    <input type="date" class="form-control" id="date" name="date" value="<?php echo htmlspecialchars($selectedSpace['ps_date']); ?>">
+                    
+                    <label for="time">Time:</label>
+                    <input type="time" class="form-control" id="time" name="time" value="<?php echo htmlspecialchars($selectedSpace['ps_time']); ?>">
+                </div>
+            </div>
+            <div class="button-group">
                 <button type="button" name="cancel" onclick="cancelEdit()">Cancel</button>
                 <button type="submit" name="save">Save</button>
             </div>
@@ -100,6 +112,21 @@ if (!$selectedSpace) {
             // Redirect back to the list page
             window.location.href = 'listPark2.php';
         }
+
+        // Hide date and time fields if status is "available"
+        const statusInput = document.getElementById('status');
+        const dateTimeFields = document.getElementById('date-time-fields');
+
+        statusInput.addEventListener('input', function() {
+            if (statusInput.value === 'available') {
+                dateTimeFields.style.display = 'none';
+            } else {
+                dateTimeFields.style.display = 'block';
+            }
+        });
+
+        // Trigger input event initially to check status on page load
+        statusInput.dispatchEvent(new Event('input'));
     </script>
 </body>
 </html>

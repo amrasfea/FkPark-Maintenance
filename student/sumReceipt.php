@@ -8,17 +8,26 @@ if (!isset($_SESSION['u_id'])) {
 }
 
 $userId = $_SESSION['u_id'];
-$sql = "SELECT summon.*, vehicle.*, user.* ,profiles.*
-         FROM summon 
+
+// Check if summon ID is passed as a parameter
+if (!isset($_GET['id'])) {
+    die("Error: Summon ID is not set in the URL.");
+}
+
+$sumId = $_GET['id'];
+
+// Query to fetch specific summon details based on summon ID
+$sql = "SELECT summon.*, vehicle.*, user.*, profiles.*
+        FROM summon 
         INNER JOIN vehicle ON summon.v_id = vehicle.v_id 
         INNER JOIN user ON vehicle.u_id = user.u_id 
         INNER JOIN profiles ON user.u_id = profiles.u_id
-        WHERE user.u_id = $userId";
+        WHERE user.u_id = $userId AND summon.sum_id = $sumId";
+
 $result = $conn->query($sql);
 
-// Check if query executed successfully
+// Check if query executed successfully and fetch the data
 if ($result && $result->num_rows > 0) {
-    // Fetch the data from the result set
     $row = $result->fetch_assoc();
 
     // Assign values to variables
@@ -31,15 +40,10 @@ if ($result && $result->num_rows > 0) {
     $sum_status = $row['sum_status'];
 } else {
     // Handle case when no data is found
-    $sum_date = '';
-    $sum_id = '';
-    $p_name = '';
-    $sum_vPlate = '';
-    $p_matricNum = '';
-    $sum_location = '';
-    $sum_status = '';
+    die("Error: Summon details not found.");
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

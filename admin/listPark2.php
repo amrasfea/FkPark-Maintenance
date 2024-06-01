@@ -44,7 +44,7 @@ if ($result) {
     }
     // Free result set
     mysqli_free_result($result);
-    
+
     // Calculate total and occupied spaces for each area
     $totalSpace = [];
     $occupiedSpace = [];
@@ -68,8 +68,8 @@ if ($result) {
             }
         }
     }
-    
-    
+
+
 
     // Store the parking data in session
     $_SESSION['parkingData'] = [

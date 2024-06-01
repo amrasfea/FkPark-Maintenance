@@ -226,6 +226,19 @@
 
 <li class="sidebar-item">
     <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+        data-bs-target="#publicationDropdown" aria-expanded="false" aria-controls="publicationDropdown">
+        <i class="lni lni-layout"></i>
+        <span>Parking Area</span>
+    </a>
+    <ul id="publicationDropdown" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+        <li class="sidebar-item">
+            <a href="../staff/staffViewPark.php" class="sidebar-link">Available Parking Spaces</a>
+        </li>
+    </ul>
+</li>
+
+<li class="sidebar-item">
+    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
         data-bs-target="#progressDropdown" aria-expanded="false" aria-controls="progressDropdown">
         <i class="lni lni-popup"></i>
         <span>Summon</span>

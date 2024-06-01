@@ -10,7 +10,7 @@
     <!-- FAVICON -->
 </head>
 <body>
-    <?php include('../navigation/studentNav.php'); ?>
+    <?php include('../navigation/staffNav.php'); ?>
 
     <?php
     // Database connection
