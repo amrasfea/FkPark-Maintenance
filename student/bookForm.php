@@ -1,3 +1,19 @@
+<?php
+require '../session_check.php';
+require '../config.php'; // Database connection
+
+// Check if user_id is set in the session
+if (!isset($_SESSION['u_id'])) {
+    die("Error: User ID is not set in the session.");
+}
+// Retrieve the user ID from the session
+$u_id = $_SESSION['u_id'];
+
+//ini datang dari urlencode page searchParking, so kena guna get
+$ps_id = $_GET['ps_id'] ?? '';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +21,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking Form</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="../img/logo.png">
-    <link rel="stylesheet" href="../css/bookForm.css">
 </head>
 <body>
 
@@ -14,58 +28,28 @@
 
 <div class="container mt-5">
     <h2>Booking Form</h2>
-    <form action="submitBooking.php" method="POST">
+    <form action="submitBooking.php" method="post">
         <div class="mb-3">
-            <label for="parkingSpace" class="form-label">Parking Space</label>
-            <select class="form-control" id="ps_id" name="ps_id">
-                <!-- B1 Parking Spaces -->
-                <optgroup label="B1 - 32 spaces">
-                    <?php for($i = 1; $i <= 32; $i++): ?>
-                        <option value="B1-S<?php echo sprintf('%02d', $i); ?>">B1-S<?php echo sprintf('%02d', $i); ?></option>
-                    <?php endfor; ?>
-                </optgroup>
-                <!-- B2 Parking Spaces -->
-                <optgroup label="B2 - 33 spaces">
-                    <?php for($i = 1; $i <= 33; $i++): ?>
-                        <option value="B2-S<?php echo sprintf('%02d', $i); ?>">B2-S<?php echo sprintf('%02d', $i); ?></option>
-                    <?php endfor; ?>
-                </optgroup>
-                <!-- B3 Parking Spaces -->
-                <optgroup label="B3 - 35 spaces">
-                    <?php for($i = 1; $i <= 35; $i++): ?>
-                        <option value="B3-S<?php echo sprintf('%02d', $i); ?>">B3-S<?php echo sprintf('%02d', $i); ?></option>
-                    <?php endfor; ?>
-                </optgroup>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="u_id" class="form-label">User ID</label>
-            <input type="text" class="form-control" id="u_id" name="u_id" required>
+            <label for="ps_id" class="form-label">Parking Space</label>
+            <input type="text" class="form-control" id="ps_id" name="ps_id" value="<?php echo $ps_id; ?>" readonly>
         </div>
         <div class="mb-3">
             <label for="b_date" class="form-label">Parking Date</label>
-            <input type="date" class="form-control" id="b_date" name="b_date" required>
+            <input type="date" class="form-control" id="b_date" name="b_date" value="<?php echo $date; ?>" required>
         </div>
         <div class="mb-3">
             <label for="b_time" class="form-label">Parking Time</label>
-            <input type="time" class="form-control" id="b_time" name="b_time" required>
-        </div>
-        <div class="mb-3">
-            <label for="v_id" class="form-label">Vehicle ID</label>
-            <input type="text" class="form-control" id="v_id" name="v_id" required>
+            <input type="time" class="form-control" id="b_time" name="b_time" value="<?php echo $time; ?>" required>
         </div>
         <div class="mb-3">
             <label for="v_plateNum" class="form-label">Car Plate Number</label>
-            <input type="text" class="form-control" id="v_plateNum" name="v_plateNum" required>
+            <input type="text" class="form-control" id="b_plateNum" name="b_plateNum" required>
         </div>
-        <button type="submit" class="btn btn-primary">Next</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
         <br><br>
         <button type="reset" class="btn btn-primary">Reset</button>
     </form>
 </div>
-    
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 </body>
 </html>

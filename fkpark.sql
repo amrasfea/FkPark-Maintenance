@@ -37,7 +37,8 @@ CREATE TABLE `bookinfo` (
   `b_status` varchar(10) DEFAULT NULL,
   `b_QRid` varchar(255) DEFAULT NULL,
   `v_id` int(11) DEFAULT NULL,
-  `ps_id` varchar(10) DEFAULT NULL
+  `ps_id` varchar(10) DEFAULT NULL,
+  `b_platenum` int 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
