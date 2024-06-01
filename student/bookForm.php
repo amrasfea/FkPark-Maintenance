@@ -9,9 +9,29 @@ if (!isset($_SESSION['u_id'])) {
 // Retrieve the user ID from the session
 $u_id = $_SESSION['u_id'];
 
-//ini datang dari urlencode page searchParking, so kena guna get
+// Initialize variables to prevent undefined variable warnings
 $ps_id = $_GET['ps_id'] ?? '';
+$parking_date = $_GET['parking_date'] ?? '';
+$parking_time = $_GET['parking_time'] ?? '';
+$vehicle_plate_number = $_POST['vehicle_plate_number'] ?? '';
 
+// Debugging: Print out received parameters
+echo "ps_id: $ps_id<br>";
+echo "parking_date: $parking_date<br>";
+echo "parking_time: $parking_time<br>";
+
+// Get parking area from parkspace table using ps_id
+if (!empty($ps_id)) {
+    $query = "SELECT ps_area FROM parkspace WHERE ps_id = '$ps_id'";
+    $result = mysqli_query($conn, $query); // Use $conn from config.php
+
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        $parking_area = $row['ps_area'];
+    } else {
+        echo "Error: " . mysqli_error($conn);
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -28,26 +48,24 @@ $ps_id = $_GET['ps_id'] ?? '';
 
 <div class="container mt-5">
     <h2>Booking Form</h2>
-    <form action="submitBooking.php" method="post">
-        <div class="mb-3">
-            <label for="ps_id" class="form-label">Parking Space</label>
-            <input type="text" class="form-control" id="ps_id" name="ps_id" value="<?php echo $ps_id; ?>" readonly>
+    <form action="confirmBook.php" method="post">
+        <div class="form-group">
+            <label for="ps_id">Parking Space ID:</label>
+            <input type="text" id="ps_id" name="ps_id" class="form-control" value="<?php echo $ps_id; ?>" readonly>
         </div>
-        <div class="mb-3">
-            <label for="b_date" class="form-label">Parking Date</label>
-            <input type="date" class="form-control" id="b_date" name="b_date" value="<?php echo $date; ?>" required>
+        <div class="form-group">
+            <label for="parking_date">Parking Date:</label>
+            <input type="text" id="parking_date" name="parking_date" class="form-control" value="<?php echo $parking_date; ?>" readonly>
         </div>
-        <div class="mb-3">
-            <label for="b_time" class="form-label">Parking Time</label>
-            <input type="time" class="form-control" id="b_time" name="b_time" value="<?php echo $time; ?>" required>
+        <div class="form-group">
+            <label for="parking_time">Parking Time:</label>
+            <input type="text" id="parking_time" name="parking_time" class="form-control" value="<?php echo $parking_time; ?>" readonly>
         </div>
-        <div class="mb-3">
-            <label for="v_plateNum" class="form-label">Car Plate Number</label>
-            <input type="text" class="form-control" id="b_plateNum" name="b_plateNum" required>
+        <div class="form-group">
+            <label for="vehicle_plate_number">Vehicle Plate Number:</label>
+            <input type="text" id="vehicle_plate_number" name="vehicle_plate_number" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <br><br>
-        <button type="reset" class="btn btn-primary">Reset</button>
+        <input type="submit" value="Submit" class="btn btn-primary">
     </form>
 </div>
 

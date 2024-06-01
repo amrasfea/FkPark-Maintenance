@@ -242,7 +242,7 @@
     </a>
             <ul id="progressDropdown" class="sidebar-dropdown list-unstyled collapse">
                 <li class="sidebar-item">
-                    <a href="../student/searchForm.php" class="sidebar-link">Booking Form </a>
+                    <a href="../student/searchPark1.php" class="sidebar-link">Booking Form </a>
                 </li>
                 <li class="sidebar-item">
                     <a href="../student/bookList.php#" class="sidebar-link">Booking List</a>
