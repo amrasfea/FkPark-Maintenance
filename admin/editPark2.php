@@ -78,14 +78,9 @@ if (!$selectedSpace) {
                 <label for="pID">Parking ID:</label>
                 <input type="text" class="form-control" id="pID" name="pID" value="<?php echo htmlspecialchars($selectedSpace['ps_id']); ?>" readonly>
 
-                <div class="form-group">
-                    <label for="status">Status:</label>
-                    <select class="form-control" id="status" name="status">
-                        <option value="available" <?php if ($selectedSpace['ps_availableStat'] === 'available') echo 'selected'; ?>>available</option>
-                        <option value="occupied" <?php if ($selectedSpace['ps_availableStat'] === 'occupied') echo 'selected'; ?>>occupied</option>
-                    </select>
-                </div>
-               
+                <label for="status">Status:</label>
+                <input type="text" class="form-control" id="status" name="status" value="<?php echo htmlspecialchars($selectedSpace['ps_availableStat']); ?>">
+                
                 <label for="typeEvent">Type Event:</label>
                 <input type="text" class="form-control" id="typeEvent" name="typeEvent" value="<?php echo htmlspecialchars($selectedSpace['ps_typeEvent']); ?>">
 

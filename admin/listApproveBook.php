@@ -67,6 +67,11 @@ $stmt->close();
                 echo "alert('$message');";
                 unset($_SESSION['action_taken']); // Clear the session variable
             }
+
+            if (isset($_SESSION['new_booking'])) {
+                echo "alert('New booking request received.');";
+                unset($_SESSION['new_booking']); // Clear the session variable
+            }
             ?>
         }
 
@@ -111,3 +116,4 @@ $stmt->close();
     </div>
 </body>
 </html>
+
