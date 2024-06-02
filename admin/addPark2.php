@@ -1,7 +1,5 @@
 <?php
-require '../session_check.php';
-require '../config.php'; // Database connection
-
+include '../config.php';
 
 $message = '';
 
@@ -9,42 +7,33 @@ if(isset($_POST['save'])){
     $ps_area = $_POST["ps_area"];
     $ps_id = $_POST["ps_id"];
     $ps_category = $_POST["ps_category"];
-    $spaceno = $_POST["spaceno"];
 
     // Check if the connection is established
     if ($conn === null) {
         die("Connection failed: " . mysqli_connect_error());
     }
 
-    // Insert park space details into database
-    $sql = "INSERT INTO parkSpace (ps_area, ps_id, ps_category, spaceno) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO parkSpace (ps_area, ps_id, ps_category) VALUES (?, ?, ?)";
+
+    // Using prepared statement to prevent SQL injection
     if($stmt = mysqli_prepare($conn, $sql)){
-        mysqli_stmt_bind_param($stmt, "ssss", $ps_area, $ps_id, $ps_category, $spaceno);
+        // Bind variables to the prepared statement as parameters
+        mysqli_stmt_bind_param($stmt, "sss", $ps_area, $ps_id, $ps_category);
+
+        // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
-            // Get the last inserted ID
-            $last_id = mysqli_insert_id($conn);
-
-            // Generate QR Code
-            $qrCodeData = "ID: $ps_id, Area: $ps_area, Category: $ps_category, Space No: $spaceno";
-            $qrCodeFilePath = '../qrcodes/park_space_' . $last_id . '.png';
-            QRcode::png($qrCodeData, $qrCodeFilePath, QR_ECLEVEL_L, 10);
-
-            // Update the database with the QR code path
-            $updateQuery = "UPDATE parkSpace SET ps_QR = ? WHERE id = ?";
-            $updateStmt = mysqli_prepare($conn, $updateQuery);
-            mysqli_stmt_bind_param($updateStmt, "si", $qrCodeFilePath, $last_id);
-            mysqli_stmt_execute($updateStmt);
-            mysqli_stmt_close($updateStmt);
-
-            $message = "Data inserted successfully with QR code";
-        } else {
+            $message = "Data inserted successfully";
+        } else{
             $message = "Error: " . mysqli_error($conn);
         }
-        mysqli_stmt_close($stmt);
     } else {
         $message = "Failed to prepare statement: " . mysqli_error($conn);
     }
 
+    // Close statement
+    mysqli_stmt_close($stmt);
+
+    // Close connection
     mysqli_close($conn);
 }
 ?>
@@ -78,10 +67,11 @@ if(isset($_POST['save'])){
             <div class="message"><?php echo htmlspecialchars($message); ?></div>
         <?php endif; ?>
         <form id="parkingForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            
             <div class="form-group">
                 <label for="ps_area">Parking Area:</label>
                 <input type="text" class="form-control" id="ps_area" name="ps_area" required>
-                
+
                 <label for="spaceno">Space Number:</label>
                 <input type="text" class="form-control" id="spaceno" name="spaceno">
 
