@@ -3,35 +3,50 @@ require '../session_check.php';
 require '../config.php'; // Database connection
 
 // Process form submission (approve or reject)
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['ps_id'])) {
     $ps_id = $_POST['ps_id'];
     $action = $_POST['action'];
+    $status = ($action === 'approve') ? 'Available' : 'Occupied';
 
-    // Update park space booking status based on the action
-    if ($action === 'approve') {
-        $status = 'Available';
-    } elseif ($action === 'reject') {
-        $status = 'Occupied';
+    $stmt = $conn->prepare("UPDATE parkspace SET ps_availableStat = ? WHERE ps_id = ?");
+    if ($stmt) {
+        $stmt->bind_param("si", $status, $ps_id);
+        if ($stmt->execute()) {
+            $_SESSION['action_taken'] = $action;
+        } else {
+            $_SESSION['error'] = "Failed to update booking status.";
+        }
+        $stmt->close();
+    } else {
+        $_SESSION['error'] = "Failed to prepare the statement.";
     }
 
-    $stmt = $conn->prepare("UPDATE parkSpace SET ps_availableStat = ? WHERE ps_id = ?");
-    $stmt->bind_param("si", $status, $ps_id);
-    $stmt->execute();
-    $stmt->close();
-
-    // Set a session variable to indicate the action was taken
-    $_SESSION['action_taken'] = $action;
-
-    // Redirect to refresh the page and reflect changes
     header("Location: listApproveBook.php");
     exit();
 }
 
-// Fetch all park space bookings for areas B1, B2, and B3
-$stmt = $conn->prepare("SELECT * FROM parkSpace WHERE ps_area IN ('B1', 'B2', 'B3')");
-$stmt->execute();
-$result = $stmt->get_result();
-$stmt->close();
+// Fetch all park space bookings for areas B1, B2, and B3 that are not yet approved
+$query = "
+    SELECT 
+        b.b_id, b.u_id, b.b_date, b.b_time, b.b_parkStart, b.b_duration, b.b_status, b.b_QRid, b.v_id, b.ps_id, b.b_platenum, 
+        p.ps_area, p.ps_category, p.ps_date, p.ps_time, p.ps_typeEvent, p.ps_descriptionEvent, p.ps_QR, p.ps_availableStat,
+        pr.p_name, pr.p_course, pr.p_faculty, pr.p_icNumber, pr.p_email, pr.p_phoneNum, pr.p_address, pr.p_postCode, pr.p_country, pr.p_state, pr.p_department, pr.p_bodyNumber, pr.p_position, pr.p_matricNum
+    FROM bookinfo b
+    JOIN parkspace p ON b.ps_id = p.ps_id
+    JOIN profiles pr ON b.u_id = pr.u_id
+    WHERE p.ps_area IN ('B1', 'B2', 'B3') AND p.ps_availableStat = 'Pending'
+";
+
+$stmt = $conn->prepare($query);
+if ($stmt) {
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $pendingBookings = ($result->num_rows > 0);
+    $stmt->close();
+} else {
+    die("Failed to prepare the query: " . $conn->error);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -44,12 +59,7 @@ $stmt->close();
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
     <script>
         function confirmApproval(event, action) {
-            let confirmationMessage = '';
-            if (action === 'approve') {
-                confirmationMessage = 'Are you sure you want to approve this booking?';
-            } else if (action === 'reject') {
-                confirmationMessage = 'Are you sure you want to reject this booking?';
-            }
+            let confirmationMessage = action === 'approve' ? 'Are you sure you want to approve this booking?' : 'Are you sure you want to reject this booking?';
             if (!confirm(confirmationMessage)) {
                 event.preventDefault();
             }
@@ -57,20 +67,17 @@ $stmt->close();
 
         function showAlertMessage() {
             <?php
-            if (isset($_SESSION['action_taken'])) {
-                $message = '';
-                if ($_SESSION['action_taken'] === 'approve') {
-                    $message = 'Booking approved successfully.';
-                } elseif ($_SESSION['action_taken'] === 'reject') {
-                    $message = 'Booking rejected successfully.';
-                }
-                echo "alert('$message');";
-                unset($_SESSION['action_taken']); // Clear the session variable
+            if ($pendingBookings) {
+                echo "alert('New booking request received.');";
             }
 
-            if (isset($_SESSION['new_booking'])) {
-                echo "alert('New booking request received.');";
-                unset($_SESSION['new_booking']); // Clear the session variable
+            if (isset($_SESSION['action_taken'])) {
+                $message = ($_SESSION['action_taken'] === 'approve') ? 'Booking approved successfully.' : 'Booking rejected successfully.';
+                echo "alert('$message');";
+                unset($_SESSION['action_taken']);
+            } elseif (isset($_SESSION['error'])) {
+                echo "alert('{$_SESSION['error']}');";
+                unset($_SESSION['error']);
             }
             ?>
         }
@@ -87,17 +94,22 @@ $stmt->close();
                 <tr>
                     <th>Park Space ID</th>
                     <th>Area</th>
+                    <th>Parking Date</th>
+                    <th>Parking Time</th>
+                    <th>Plate Number</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                // Display all park space bookings
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>
                         <td>{$row['ps_id']}</td>
                         <td>{$row['ps_area']}</td>
+                        <td>{$row['b_date']}</td>
+                        <td>{$row['b_time']}</td>
+                        <td>{$row['b_platenum']}</td>
                         <td>{$row['ps_availableStat']}</td>
                         <td>";
                     if ($row['ps_availableStat'] == 'Pending') {
@@ -116,4 +128,3 @@ $stmt->close();
     </div>
 </body>
 </html>
-
