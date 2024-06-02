@@ -112,6 +112,17 @@ mysqli_close($conn);
                 <tr>
                     <th>Area</th>
                     <th>Total Space</th>
+                </tr>
+            </thead>
+            <tbody> 
+                <tr id="row-<?php echo $space['ps_id']; ?>">
+                    <td><?php echo htmlspecialchars($space['ps_area']); ?></td>
+                    <td><?php echo isset($totalSpace[$space['ps_area']]) ? $totalSpace[$space['ps_area']] : 0; ?></td>
+                </tr>
+        </table>
+        <table class="table mt-4">
+            <thead>
+                <tr>
                     <th>Parking ID</th>
                     <th>Status</th>
                     <th>Type Event</th>
@@ -123,8 +134,6 @@ mysqli_close($conn);
                 <!-- Dynamic generation of rows from database data -->
                 <?php foreach ($parkingSpaces as $space): ?>
                     <tr id="row-<?php echo $space['ps_id']; ?>">
-                        <td><?php echo htmlspecialchars($space['ps_area']); ?></td>
-                        <td><?php echo isset($totalSpace[$space['ps_area']]) ? $totalSpace[$space['ps_area']] : 0; ?></td>
                         <td><?php echo htmlspecialchars($space['ps_id']); ?></td>
                         <td><?php echo htmlspecialchars($space['ps_availableStat']); ?></td>
                         <td><?php echo htmlspecialchars($space['ps_typeEvent']); ?></td>
