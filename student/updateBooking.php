@@ -78,6 +78,11 @@ if ($result && $row = $result->fetch_assoc()) {
             <label for="vehicle_model">Vehicle Model:</label>
             <input type="text" id="vehicle_model" name="vehicle_model" class="form-control" value="<?php echo htmlspecialchars($row['v_model']); ?>" readonly>
         </div>
+        <div class="form-group">
+            <label for="b_duration">Duration (in hours):</label>
+            <input type="number" id="b_duration" name="b_duration" class="form-control" value="<?php echo htmlspecialchars($row['b_duration']); ?>" required>
+        </div>
+
         <button type="submit" class="btn btn-primary">Update Booking</button>
     </form>
     <a href="bookList.php" class="btn btn-secondary mt-2">Go to Booking List</a>
