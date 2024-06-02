@@ -36,7 +36,7 @@ if (empty($v_id)) {
 // Insert the booking details into the bookinfo table
 $query = "INSERT INTO bookinfo (u_id, b_date, b_time, ps_id, b_platenum, v_id, b_status) VALUES (?, ?, ?, ?, ?, ?, 'Pending')";
 $stmt = $conn->prepare($query);
-$stmt->bind_param('isssii', $u_id, $parking_date, $parking_time, $ps_id, $vehicle_plate_number, $v_id);
+$stmt->bind_param('issssi', $u_id, $parking_date, $parking_time, $ps_id, $vehicle_plate_number, $v_id);
 
 if ($stmt->execute()) {
     // Booking successful, display the confirmation page
