@@ -9,7 +9,7 @@ if (!isset($_SESSION['u_id'])) {
 
 // Retrieve all bookings for the logged-in user
 $u_id = $_SESSION['u_id'];
-$sql = "SELECT * FROM bookInfo WHERE u_id = '$u_id'";
+$sql = "SELECT * FROM bookinfo WHERE u_id = '$u_id'";
 $result = $conn->query($sql);
 
 ?>
@@ -31,7 +31,7 @@ $result = $conn->query($sql);
     <?php
     if ($result->num_rows > 0) {
         echo "<table class='table table-striped'>";
-        echo "<thead><tr><th>Booking ID</th><th>Parking Space</th><th>Date</th><th>Time</th><th>Status</th><th>Vehicle ID</th><th>Plate Number</th></tr></thead>";
+        echo "<thead><tr><th>Booking ID</th><th>Parking Space</th><th>Date</th><th>Time</th><th>Status</th><th>Vehicle ID</th><th>Plate Number</th><th>Actions</th></tr></thead>";
         echo "<tbody>";
         while($row = $result->fetch_assoc()) {
             echo "<tr>";
@@ -41,7 +41,12 @@ $result = $conn->query($sql);
             echo "<td>" . $row["b_time"] . "</td>";
             echo "<td>" . $row["b_status"] . "</td>";
             echo "<td>" . $row["v_id"] . "</td>";
-            echo "<td>" . $row["v_plateNum"] . "</td>";
+            echo "<td>" . $row["b_platenum"] . "</td>";
+            echo "<td>";
+            echo "<a href='viewBooking.php?b_id=" . $row["b_id"] . "' class='btn btn-info btn-sm'>View</a> ";
+            echo "<a href='updateBooking.php?b_id=" . $row["b_id"] . "' class='btn btn-warning btn-sm'>Update</a> ";
+            echo "<a href='deleteBooking.php?b_id=" . $row["b_id"] . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this booking?\")'>Delete</a>";
+            echo "</td>";
             echo "</tr>";
         }
         echo "</tbody>";
