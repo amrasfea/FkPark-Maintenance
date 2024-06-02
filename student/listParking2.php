@@ -27,6 +27,10 @@ if (isset($_POST['parking_area'], $_POST['parking_date'], $_POST['parking_time']
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Available Parking Spaces</title>
+    <!--EXTERNAL CSS-->
+    <link rel="stylesheet" href="../css/park.css">
+    <link rel="icon" type="image/x-icon" href="../img/logo.png">
+    <!--FAVICON-->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -42,7 +46,15 @@ if (isset($result) && $result) {
     echo "<ul>";
     // Loop through results and display each parking space
     while ($row = mysqli_fetch_assoc($result)) {
-        echo "<li>Parking Space ID: " . $row['ps_id'] . " <a href='bookForm.php?ps_id=" . $row['ps_id'] . "&parking_date=" . urlencode($parking_date) . "&parking_time=" . urlencode($parking_time) . "'>Book Now</a></li>";    }
+        // Display parking ID and status in one line
+        echo '<div class="park-item">';
+        echo '<div class="park-info">';
+        echo '<p>Parking Space ID: ' . htmlspecialchars($row['ps_id']) . '</p>';
+        echo '<a href="bookForm.php?ps_id=' . htmlspecialchars($row['ps_id']) . '&parking_date=' . urlencode($parking_date) . '&parking_time=' . urlencode($parking_time) . '" class="book-button">Book Now</a>';
+        echo '</div>';
+        echo '</div>';
+    }
+        //echo "<li>Parking Space ID: " . $row['ps_id'] . " <a href='bookForm.php?ps_id=" . $row['ps_id'] . "&parking_date=" . urlencode($parking_date) . "&parking_time=" . urlencode($parking_time) . "'>Book Now</a></li>";    }
     echo "</ul>";
 } else {
     echo "Error: " . mysqli_error($conn);

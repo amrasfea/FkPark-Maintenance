@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Parking</title>
+    <!--EXTERNAL CSS-->
+    <link rel="stylesheet" href="../css/park.css">
+    <link rel="icon" type="image/x-icon" href="../img/logo.png">
+    <!--FAVICON-->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -13,6 +17,7 @@
 <div class="container mt-5">
 <h2>Search Available Parking</h2>
     <form action="listParking2.php" method="post">
+    <div class="form-group">
         <label for="parking_area">Parking Area:</label>
         <select name="parking_area" id="parking_area">
             <option value="B1">B1</option>
@@ -24,6 +29,7 @@
         <label for="parking_time">Time:</label>
         <input type="time" id="parking_time" name="parking_time"><br><br>
         <?php echo "<a href='../student/listParking2.php?parking_date=" . urlencode('$parking_date'). "&parking_time=" . urlencode('$parking_time')."'><button class='btn btn-primary'>Search</button></a>"; ?>
+    </div>
     </form>
 </div>
 

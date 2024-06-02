@@ -37,7 +37,7 @@ try {
     $ps_id = $row['ps_id'];
 
     // Update the parking space status to 'Not Available'
-    $sql = "UPDATE parkspace SET ps_availableStat = 'Not Available' WHERE ps_id = ?";
+    $sql = "UPDATE parkspace SET ps_availableStat = 'occupied' WHERE ps_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('s', $ps_id);
 
