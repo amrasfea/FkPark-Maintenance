@@ -34,7 +34,7 @@ CREATE TABLE `bookinfo` (
   `b_time` time NOT NULL,
   `b_parkStart` time DEFAULT NULL,
   `b_duration` int(11) DEFAULT NULL,
-  `b_status` varchar(10) DEFAULT NULL,
+  `b_status` varchar(10) DEFAULT 'Pending',
   `b_QRid` varchar(255) DEFAULT NULL,
   `v_id` int(11) DEFAULT NULL,
   `ps_id` varchar(10) DEFAULT NULL,

@@ -34,9 +34,9 @@ if (empty($v_id)) {
 }
 
 // Insert the booking details into the bookinfo table
-$query = "INSERT INTO bookinfo (u_id, b_date, b_time, ps_id, b_platenum, v_id) VALUES (?, ?, ?, ?, ?, ?)";
+$query = "INSERT INTO bookinfo (u_id, b_date, b_time, ps_id, b_platenum, v_id, b_status) VALUES (?, ?, ?, ?, ?, ?, 'Pending')";
 $stmt = $conn->prepare($query);
-$stmt->bind_param('issssi', $u_id, $parking_date, $parking_time, $ps_id, $vehicle_plate_number, $v_id);
+$stmt->bind_param('isssii', $u_id, $parking_date, $parking_time, $ps_id, $vehicle_plate_number, $v_id);
 
 if ($stmt->execute()) {
     // Booking successful, display the confirmation page
@@ -56,7 +56,7 @@ if ($stmt->execute()) {
 
     <div class="container mt-5">
         <div class="alert alert-success" role="alert">
-            Booking Successful! Your booking ID is <?php echo htmlspecialchars($b_id); ?>.
+            Booking Successful! Your booking ID is <?php echo htmlspecialchars($b_id); ?>. It is now pending approval.
         </div>
         <a href="bookList.php" class="btn btn-primary">Go to Booking List</a>
     </div>
