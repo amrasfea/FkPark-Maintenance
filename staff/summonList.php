@@ -91,7 +91,20 @@ $query = "
     JOIN profiles ON user.u_id = profiles.u_id
 ";
 
-$result = $conn->query($query);
+// Check if search button is clicked and date is provided
+if (isset($_POST['search']) && !empty($_POST['date'])) {
+    $search_date = $_POST['date'];
+    $query .= " WHERE summon.sum_date = ?";
+}
+
+
+// Prepare and execute the query
+$stmt = $conn->prepare($query);
+if (isset($search_date)) {
+    $stmt->bind_param("s", $search_date);
+}
+$stmt->execute();
+$result = $stmt->get_result();
 
 // Debugging
 if (!$result) {
