@@ -2,9 +2,10 @@
 require '../session_check.php';
 require '../config.php'; // Database connection
 
-// Check if user_id is set in the session
-if (!isset($_SESSION['u_id'])) {
-    die("Error: User ID is not set in the session.");
+// Check if the current user is a student
+if ($_SESSION['role'] !== 'Student') {
+    header("Location: ../login2.php");
+    exit();
 }
 
 $userId = $_SESSION['u_id'];
@@ -68,7 +69,7 @@ $userId = $_SESSION['u_id'];
                                                     echo '</a>';
                                                     echo '</td>';
                                                     echo '<td class="text-muted">' . $row["sum_date"] . '</td>';
-                                                    echo '<td><a href="../student/sumReceipt.php?id=' . $row["sum_id"] . '"><button type="button" id="viewbtn" name="viewbtn">View</button></a></td>';
+                                                    echo '<td><a href="../student/SummonQR.php?sum_id=' . $row["sum_id"] . '"><button type="button" id="viewbtn" name="viewbtn">View</button></a></td>';
                                                     echo '</tr>';
                                                 }
                                             } else {
