@@ -119,11 +119,6 @@ $sum_status = $_GET['sum_status'] ?? '';
             <label>Location: <span><?php echo htmlspecialchars($sum_location); ?></span></label>
             <label>Status: <span><?php echo htmlspecialchars($sum_status); ?></span></label>
         </div>
-        <!--div class="button-container">
-            <form method="POST">
-                <button type="submit" name="notify" class="notify-button">Notify</button>
-            </form>
-        </div-->
         <div class="receipt-footer">
             <p>Copy &copy Unit Keselamatan UMPSA</p>
         </div>

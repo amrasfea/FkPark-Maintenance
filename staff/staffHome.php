@@ -1,8 +1,8 @@
 <?php
-require '../session_check.php';
-require '../config.php'; // Adjust this path to match your actual database connection file
+require '../session_check.php'; //session
+require '../config.php'; 
 
-// Check if the current user is an administrator
+// Check if the current user is an UK Staff
 if ($_SESSION['role'] !== 'Unit Keselamatan Staff') {
     header("Location: ../login2.php");
     exit();
@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
+            //json_encode ni untuk jadikan array/data -> json object 
             labels: <?php echo json_encode($chart_data['labels']); ?>,
             datasets: [{
                 label: 'Statistics',
@@ -162,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 label: 'Summon Issued by Month',
                 data: <?php echo json_encode($summons_data); ?>,
-                backgroundColor: [
+                backgroundColor: [              //nak edit warna pie chart by month
                     '#FF9C96', //January
                     '#FFB996', //February
                     '#FD0716', // March
