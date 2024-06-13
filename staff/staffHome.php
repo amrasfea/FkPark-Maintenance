@@ -163,32 +163,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 label: 'Summon Issued by Month',
                 data: <?php echo json_encode($summons_data); ?>,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.8)',
-                    'rgba(54, 162, 235, 0.8)',
-                    'rgba(255, 206, 86, 0.8)',
-                    'rgba(75, 192, 192, 0.8)',
-                    'rgba(153, 102, 255, 0.8)',
-                    'rgba(255, 159, 64, 0.8)',
-                    'rgba(255, 99, 132, 0.8)',
-                    'rgba(54, 162, 235, 0.8)',
-                    'rgba(255, 206, 86, 0.8)',
-                    'rgba(75, 192, 192, 0.8)',
-                    'rgba(153, 102, 255, 0.8)',
-                    'rgba(255, 159, 64, 0.8)',
+                    '#FF9C96', //January
+                    '#FFB996', //February
+                    '#FD0716', // March
+                    'rgba(75, 192, 192, 0.8)', //April
+                    '#FF96DF', //May
+                    'rgba(255, 159, 64, 0.8)', //June
+                    'rgba(255, 99, 132, 0.8)', //July
+                    'rgba(54, 162, 235, 0.8)', //August
+                    'rgba(255, 206, 86, 0.8)', //September
+                    '#E9CAFB', //October
+                    'rgba(153, 102, 255, 0.8)', //November
+                    '#F7FA2D', //December
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
+                    '#FF9C96', //January
+                    '#FFB996', //February
+                    '#FD0716', // March
+                    'rgba(75, 192, 192, 0.8)', //April
+                    '#FF96DF', //May
+                    'rgba(255, 159, 64, 0.8)', //June
+                    'rgba(255, 99, 132, 0.8)', //July
+                    'rgba(54, 162, 235, 0.8)', //August
+                    'rgba(255, 206, 86, 0.8)', //September
+                    '#E9CAFB', //October
+                    'rgba(153, 102, 255, 0.8)', //November
+                    '#F7FA2D', //December
                 ],
                 borderWidth: 1
             }]
