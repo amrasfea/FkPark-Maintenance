@@ -90,7 +90,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save'])) {
                 <input type="text" class="form-control" id="vPlate" name="sum_vPlate" required>
 
                 <label for="parkLoc">Parking Location:</label>
-                <input type="text" class="form-control" id="parkLoc" name="sum_location" required>
+                <select name="sum_location" id="summonLoc">
+                    <option value="Zone A">Zone A</option>
+                    <option value="Zone B">Zone B</option>
+                </select>
+
 
                 <label for="violation">Violation type:</label>
                 <select name="sum_violationType" id="violation" onchange="fillDemerit()">

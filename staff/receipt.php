@@ -17,17 +17,7 @@ $p_matricNum = $_GET['p_matricNum'] ?? '';
 $sum_location = $_GET['sum_location'] ?? '';
 $sum_status = $_GET['sum_status'] ?? '';
 
-// Function to handle notification (dummy function for example purposes)
-/*function sendNotification($sum_id, $p_name, $sum_status) {
-    // Here you would add code to send a notification, e.g., email or SMS.
-    // For now, we'll just return a success message.
-    return "Notification sent to $p_name regarding summon $sum_id with status $sum_status.";
-}
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify'])) {
-    $notificationMessage = sendNotification($sum_id, $p_name, $sum_status);
-    echo "<script>alert('$notificationMessage');</script>";
-}*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
