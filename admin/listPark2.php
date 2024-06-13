@@ -10,8 +10,8 @@ $searchArea = "";
 // Check if search query is set
 if (isset($_POST['search'])) {
     $searchArea = $_POST['searchArea'];
-    // Prepare a select statement with a search condition
-    $query = "SELECT * FROM parkSpace WHERE ps_area LIKE ?";
+    // Prepare a select statement with a case-insensitive search condition
+    $query = "SELECT * FROM parkSpace WHERE LOWER(ps_area) LIKE LOWER(?)";
     $param = "%" . $searchArea . "%";
     if ($stmt = mysqli_prepare($conn, $query)) {
         // Bind variables to the prepared statement as parameters
@@ -51,7 +51,7 @@ if ($result) {
     $eventSpace = [];
 
     foreach ($parkingSpaces as $space) {
-        $area = $space['ps_area'];
+        $area = strtolower($space['ps_area']);
         if (!isset($totalSpace[$area])) {
             $totalSpace[$area] = 0;
             $occupiedSpace[$area] = 0;
@@ -68,8 +68,6 @@ if ($result) {
             }
         }
     }
-
-
 
     // Store the parking data in session
     $_SESSION['parkingData'] = [
@@ -102,24 +100,34 @@ mysqli_close($conn);
             <div class="form-group">
                 <label for="searchArea">Park Area:</label>
                 <div class="search-input-group">
-                    <input type="text" class="form-control" id="searchArea" name="searchArea" value="<?php echo htmlspecialchars($searchArea); ?>">
+                    <input type="text" class="form-control" id="searchArea" name="searchArea" placeholder="A1,A2,A3,A4,B1,B2,B3" value="<?php echo htmlspecialchars($searchArea); ?>">
                     <button type="submit" name="search" class="search-button">Search</button>
                 </div>
             </div>
         </form>
-        <table class="table mt-4">
-            <thead>
-                <tr>
-                    <th>Area</th>
-                    <th>Total Space</th>
-                </tr>
-            </thead>
-            <tbody> 
-                <tr id="row-<?php echo $space['ps_id']; ?>">
-                    <td><?php echo htmlspecialchars($space['ps_area']); ?></td>
-                    <td><?php echo isset($totalSpace[$space['ps_area']]) ? $totalSpace[$space['ps_area']] : 0; ?></td>
-                </tr>
-        </table>
+
+        <?php if (!empty($searchArea)): ?>
+            <?php $searchAreaLower = strtolower($searchArea); ?>
+            <?php if (isset($totalSpace[$searchAreaLower])): ?>
+            <table class="table mt-4">
+                <thead>
+                    <tr>
+                        <th>Area</th>
+                        <th>Total Space</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><?php echo htmlspecialchars($searchArea); ?></td>
+                        <td><?php echo $totalSpace[$searchAreaLower]; ?></td>
+                    </tr>
+                </tbody>
+            </table>
+            <?php else: ?>
+            <p>No results found for '<?php echo htmlspecialchars($searchArea); ?>'</p>
+            <?php endif; ?>
+        <?php endif; ?>
+
         <table class="table mt-4">
             <thead>
                 <tr>
