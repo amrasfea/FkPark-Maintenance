@@ -1,6 +1,7 @@
 <?php
 require '../session_check.php';
 require '../config.php'; // Database connection
+require '../phpqrcode/qrlib.php'; // PHP QR Code library
 
 // Check if booking ID is set in the query string
 $b_id = $_GET['b_id'] ?? '';
@@ -33,6 +34,19 @@ $result = $stmt->get_result();
 
 if ($result && $row = $result->fetch_assoc()) {
     // Data is fetched successfully
+
+    // Generate QR code data
+    $qrData = "Booking ID: " . $row['b_id'] . "\n"
+            . "Parking Space ID: " . $row['ps_id'] . "\n"
+            . "Parking Date: " . $row['b_date'] . "\n"
+            . "Parking Time: " . $row['b_time'] . "\n"
+            . "Vehicle Plate Number: " . $row['v_plateNum'];
+
+    // Path to save the QR code image
+    $qrFilename = "../qrcodes/booking_" . $row['b_id'] . ".png";
+    
+    // Generate QR code
+    QRcode::png($qrData, $qrFilename, 'L', 4, 2);
 } else {
     die("Error: Booking not found.");
 }
@@ -45,6 +59,11 @@ if ($result && $row = $result->fetch_assoc()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Booking</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .qr-code {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 
@@ -60,7 +79,14 @@ if ($result && $row = $result->fetch_assoc()) {
     <p><strong>Vehicle Brand:</strong> <?php echo htmlspecialchars($row['v_brand']); ?></p>
     <p><strong>Vehicle Model:</strong> <?php echo htmlspecialchars($row['v_model']); ?></p>
     <p><strong>Name:</strong> <?php echo htmlspecialchars($row['p_name']); ?></p>
-    <a href="bookList.php" class="btn btn-primary">Go to Booking List</a>
+    
+    <!-- Display QR code -->
+    <div class="qr-code">
+        <h4>QR Code</h4>
+        <img src="<?php echo $qrFilename; ?>" alt="Booking QR Code" class="img-fluid">
+    </div>
+    
+    <a href="bookList.php" class="btn btn-primary mt-3">Go to Booking List</a>
 </div>
 
 </body>

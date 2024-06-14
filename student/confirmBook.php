@@ -1,3 +1,7 @@
+<!-- confirm booking -->
+<!-- by auni -->
+
+
 <?php
 require '../session_check.php';
 require '../config.php'; // Database connection
