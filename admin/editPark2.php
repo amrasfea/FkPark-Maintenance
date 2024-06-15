@@ -97,17 +97,17 @@ if (!$selectedSpace) {
             </div>
             <div class="button-group">
                 <button type="button" name="cancel" onclick="cancelEdit()">Cancel</button>
-                <button type="submit" name="save" >Save</button>
+                <button type="submit" name="save">Save</button>
             </div>
         </form>
     </div>
 
     <script>
         function cancelEdit() {
-            // Redirect back to the list page with the search area preserved
-            const searchArea = "<?php echo isset($_GET['searchArea']) ? urlencode($_GET['searchArea']) : ''; ?>";
-            window.location.href = 'listPark2.php' + (searchArea ? '?searchArea=' + searchArea : '');
+            // Redirect back to the list page
+            window.location.href = 'listPark2.php';
         }
+
         // Hide date and time fields if status is "available"
         const statusInput = document.getElementById('status');
         const dateTimeFields = document.getElementById('date-time-fields');
