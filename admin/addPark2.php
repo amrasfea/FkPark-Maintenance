@@ -1,29 +1,39 @@
+<!-- by umairah -->
+
 <?php
 include '../config.php';
+require '../phpqrcode/qrlib.php';
 
 $message = '';
 
-if(isset($_POST['save'])){
+if (isset($_POST['save'])) {
     $ps_area = $_POST["ps_area"];
     $ps_id = $_POST["ps_id"];
     $ps_category = $_POST["ps_category"];
+    $ps_availableStat = $_POST["ps_availableStat"];
 
     // Check if the connection is established
     if ($conn === null) {
         die("Connection failed: " . mysqli_connect_error());
     }
 
-    $sql = "INSERT INTO parkSpace (ps_area, ps_id, ps_category) VALUES (?, ?, ?)";
+    // SQL statement to insert data including QR code path
+    $sql = "INSERT INTO parkSpace (ps_area, ps_id, ps_category, ps_availableStat, ps_QR) VALUES (?, ?, ?, ?, ?)";
 
     // Using prepared statement to prevent SQL injection
-    if($stmt = mysqli_prepare($conn, $sql)){
+    if ($stmt = mysqli_prepare($conn, $sql)) {
+        // Generate QR code data
+        $qrData = "Parking Area: $ps_area\nParking ID: $ps_id\nCategory: $ps_category\nStatus: $ps_availableStat";
+        $qrCodeFilePath = '../qrcodes/parkspace_' . $ps_id . '.png';
+        QRcode::png($qrData, $qrCodeFilePath, QR_ECLEVEL_L, 10);
+
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "sss", $ps_area, $ps_id, $ps_category);
+        mysqli_stmt_bind_param($stmt, "sssss", $ps_area, $ps_id, $ps_category, $ps_availableStat, $qrCodeFilePath);
 
         // Attempt to execute the prepared statement
-        if(mysqli_stmt_execute($stmt)){
+        if (mysqli_stmt_execute($stmt)) {
             $message = "Data inserted successfully";
-        } else{
+        } else {
             $message = "Error: " . mysqli_error($conn);
         }
     } else {
@@ -66,6 +76,7 @@ if(isset($_POST['save'])){
         <?php if ($message != ''): ?>
             <div class="message"><?php echo htmlspecialchars($message); ?></div>
         <?php endif; ?>
+
         <form id="parkingForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             
             <div class="form-group">
@@ -80,6 +91,9 @@ if(isset($_POST['save'])){
 
                 <label for="ps_category">Category:</label>
                 <input type="text" class="form-control" id="ps_category" name="ps_category" required>
+
+                <label for="ps_availableStat">Status:</label>
+                <input type="text" class="form-control" id="ps_availableStat" name="ps_availableStat" value="available" required>
             </div>
             <div class="button-group">
                 <button type="button" name="cancel" onclick="clearForm()">Cancel</button>

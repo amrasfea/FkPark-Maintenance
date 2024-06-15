@@ -1,3 +1,4 @@
+<!-- by umairah -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,15 @@
     <link rel="stylesheet" href="../css/park.css">
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
     <!-- FAVICON -->
+    <style>
+        .qr-code {
+            margin-left: auto; /* Push QR code to the right end */
+        }
+        .qr-code img {
+            width: 80px;  /* Adjust the width as needed */
+            height: 80px; /* Adjust the height as needed */
+        }
+    </style>
 </head>
 <body>
     <?php include('../navigation/staffNav.php'); ?>
@@ -48,10 +58,13 @@
                     if (!empty($parkingSpaces)) {
                         foreach ($parkingSpaces as $space) {
                             echo '<div class="park-item">';
-                            // Display parking ID and status in one line
+                            // Display parking ID, status, and QR code in one line
                             echo '<div class="park-info">';
                             echo '<p>Parking ID: ' . htmlspecialchars($space['ps_id']) . '</p>';
                             echo '<a href="staffViewPark2.php?id=' . htmlspecialchars($space['ps_id']) . '" class="status-button ' . htmlspecialchars($space['ps_availableStat']) . '">' . ucfirst(htmlspecialchars($space['ps_availableStat'])) . '</a>';
+                            echo '</div>';
+                            echo '<div class="qr-code">';
+                            echo '<img src="' . htmlspecialchars($space['ps_QR']) . '" alt="QR Code">';
                             echo '</div>';
                             echo '</div>';
                         }
