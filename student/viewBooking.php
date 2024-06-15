@@ -35,12 +35,17 @@ $result = $stmt->get_result();
 if ($result && $row = $result->fetch_assoc()) {
     // Data is fetched successfully
 
+    $local_ip = '192.168.0.113'; // Replace with your local IP address or domain
+    // URL to updateBooking.php with booking ID
+    $updateBookingUrl = "http://$local_ip/FKPark/student/updateBooking.php?b_id=$b_id";
+
     // Generate QR code data
     $qrData = "Booking ID: " . $row['b_id'] . "\n"
             . "Parking Space ID: " . $row['ps_id'] . "\n"
             . "Parking Date: " . $row['b_date'] . "\n"
             . "Parking Time: " . $row['b_time'] . "\n"
-            . "Vehicle Plate Number: " . $row['v_plateNum'];
+            . "Vehicle Plate Number: " . $row['v_plateNum'] . "\n"
+            . "Update URL: " . $updateBookingUrl;
 
     // Path to save the QR code image
     $qrFilename = "../qrcodes/booking_" . $row['b_id'] . ".png";
