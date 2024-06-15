@@ -47,11 +47,11 @@ if ($stmt->execute()) {
     // Booking successful, generate QR code
     $b_id = $stmt->insert_id;
 
-    // Generate QR code
-    $qrData = "Booking ID: $b_id\nParking Space: $ps_id\nDate: $parking_date\nTime: $parking_time\nVehicle Plate Number: $vehicle_plate_number";
+    // Generate QR code with URL
+    $local_ip = '192.168.0.113'; // Replace with your local IP address
+    $url = "http://$local_ip/FKPark/student/updateBooking.php?b_id=$b_id";
     $qrFileName = "../qrcodes/booking_$b_id.png";
-    QRcode::png($qrData, $qrFileName, 'L', 4, 2);
-
+    QRcode::png($url, $qrFileName, 'L', 4, 2);
     ?>
     <!DOCTYPE html>
     <html lang="en">
