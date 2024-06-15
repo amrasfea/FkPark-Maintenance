@@ -115,11 +115,26 @@ mysqli_close($conn);
                     <th>Total Space</th>
                 </tr>
             </thead>
-            <tbody> 
-                <tr id="row-<?php echo $space['ps_id']; ?>">
-                    <td><?php echo htmlspecialchars($space['ps_area']); ?></td>
-                    <td><?php echo isset($totalSpace[$space['ps_area']]) ? $totalSpace[$space['ps_area']] : 0; ?></td>
-                </tr>
+            <tbody>
+                <?php if (isset($_POST['search'])): ?>
+                    <?php if (!empty($parkingSpaces)): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($parkingSpaces[0]['ps_area']); ?></td>
+                            <td><?php echo isset($totalSpace[$parkingSpaces[0]['ps_area']]) ? $totalSpace[$parkingSpaces[0]['ps_area']] : 0; ?></td>
+                        </tr>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="2">No results found for "<?php echo htmlspecialchars($searchArea); ?>".</td>
+                        </tr>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <?php foreach ($totalSpace as $area => $total): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($area); ?></td>
+                            <td><?php echo $total; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
         <table class="table mt-4">
