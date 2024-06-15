@@ -238,7 +238,7 @@
                             <a href="../admin/adminDashPark.php" class="sidebar-link">Park Space Dashboard</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">uu</a>
+                            <a href="../admin/adminDashBook.php" class="sidebar-link">Book Dashboard</a>
                         </li>
 
                         <li class="sidebar-item">
