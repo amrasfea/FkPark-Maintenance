@@ -1,5 +1,3 @@
-<!-- by umairah -->
-
 <?php
 include '../config.php';
 require '../phpqrcode/qrlib.php';
@@ -17,18 +15,13 @@ if (isset($_POST['save'])) {
         die("Connection failed: " . mysqli_connect_error());
     }
 
-    // SQL statement to insert data including QR code path
-    $sql = "INSERT INTO parkSpace (ps_area, ps_id, ps_category, ps_availableStat, ps_QR) VALUES (?, ?, ?, ?, ?)";
+    // SQL statement to insert data
+    $sql = "INSERT INTO parkSpace (ps_area, ps_id, ps_category, ps_availableStat) VALUES (?, ?, ?, ?)";
 
     // Using prepared statement to prevent SQL injection
     if ($stmt = mysqli_prepare($conn, $sql)) {
-        // Generate QR code data
-        $qrData = "Parking Area: $ps_area\nParking ID: $ps_id\nCategory: $ps_category\nStatus: $ps_availableStat";
-        $qrCodeFilePath = '../qrcodes/parkspace_' . $ps_id . '.png';
-        QRcode::png($qrData, $qrCodeFilePath, QR_ECLEVEL_L, 10);
-
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "sssss", $ps_area, $ps_id, $ps_category, $ps_availableStat, $qrCodeFilePath);
+        mysqli_stmt_bind_param($stmt, "ssss", $ps_area, $ps_id, $ps_category, $ps_availableStat);
 
         // Attempt to execute the prepared statement
         if (mysqli_stmt_execute($stmt)) {

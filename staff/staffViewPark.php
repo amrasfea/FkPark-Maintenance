@@ -33,10 +33,11 @@
                 </div>
             </div>
         </form>
-        
+
         <?php
         // Database connection
         require '../config.php'; // Adjust the path as needed
+        require '../phpqrcode/qrlib.php';
 
         // Check if form is submitted and searchArea is set and not empty
         if (isset($_POST['search']) && isset($_POST['searchArea']) && !empty(trim($_POST['searchArea']))) {
@@ -64,7 +65,16 @@
                             echo '<a href="staffViewPark2.php?id=' . htmlspecialchars($space['ps_id']) . '" class="status-button ' . htmlspecialchars($space['ps_availableStat']) . '">' . ucfirst(htmlspecialchars($space['ps_availableStat'])) . '</a>';
                             echo '</div>';
                             echo '<div class="qr-code">';
-                            echo '<img src="' . htmlspecialchars($space['ps_QR']) . '" alt="QR Code">';
+                            
+                            // Generate QR code data
+                            $qrData = "Parking Area: " . htmlspecialchars($space['ps_area']) . "\nParking ID: " . htmlspecialchars($space['ps_id']) . "\nCategory: " . htmlspecialchars($space['ps_category']) . "\nStatus: " . htmlspecialchars($space['ps_availableStat']);
+                            // Output QR code as a base64 encoded image
+                            ob_start();
+                            QRcode::png($qrData, null, QR_ECLEVEL_L, 10);
+                            $imageString = base64_encode(ob_get_contents());
+                            ob_end_clean();
+                            echo '<img src="data:image/png;base64,' . $imageString . '" alt="QR Code">';
+                            
                             echo '</div>';
                             echo '</div>';
                         }
