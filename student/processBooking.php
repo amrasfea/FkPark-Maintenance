@@ -1,7 +1,3 @@
-<!-- hanlde booking  -->
-<!-- by auni -->
-
-
 <?php
 require '../session_check.php';
 require '../config.php'; // Database connection
@@ -47,11 +43,11 @@ if ($stmt->execute()) {
     // Booking successful, generate QR code
     $b_id = $stmt->insert_id;
 
-    // Generate QR code with URL
-    $local_ip = '192.168.0.113'; // Replace with your local IP address
-    $url = "http://$local_ip/FKPark/student/updateBooking.php?b_id=$b_id";
+    // Generate QR code with URL to update booking page
+    $local_ip = '192.168.0.113'; // Replace with your local IP address or domain
+    $updateBookingUrl = "http://$local_ip/FKPark/student/updateBooking.php?b_id=$b_id";
     $qrFileName = "../qrcodes/booking_$b_id.png";
-    QRcode::png($url, $qrFileName, 'L', 4, 2);
+    QRcode::png($updateBookingUrl, $qrFileName, 'L', 4, 2);
     ?>
     <!DOCTYPE html>
     <html lang="en">
