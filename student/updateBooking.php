@@ -83,6 +83,10 @@ if ($result && $row = $result->fetch_assoc()) {
             <input type="text" id="vehicle_model" name="vehicle_model" class="form-control" value="<?php echo htmlspecialchars($row['v_model']); ?>" readonly>
         </div>
         <div class="form-group">
+            <label for="b_parkStart">Parking Start Time:</label>
+            <input type="time" id="b_parkStart" name="b_parkStart" class="form-control" value="<?php echo htmlspecialchars($row['b_parkStart']); ?>" required>
+        </div>
+        <div class="form-group">
             <label for="b_duration">Duration (in hours):</label>
             <input type="number" id="b_duration" name="b_duration" class="form-control" value="<?php echo htmlspecialchars($row['b_duration']); ?>" required>
         </div>
