@@ -1,3 +1,4 @@
+<!-- by umairah -->
 <?php
 include '../config.php';
 require '../phpqrcode/qrlib.php';
