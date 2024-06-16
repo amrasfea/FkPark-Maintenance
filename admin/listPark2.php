@@ -104,7 +104,7 @@ mysqli_close($conn);
                 <label for="searchArea">Park Area:</label>
                 <div class="search-input-group">
                     <input type="text" class="form-control" id="searchArea" name="searchArea" value="<?php echo htmlspecialchars($searchArea); ?>">
-                    <button type="submit" name="search" class="search-button">Search</button>
+                    <button type="submit" name="search" class="btn btn-primary">Search</button>
                 </div>
             </div>
         </form>
@@ -158,9 +158,9 @@ mysqli_close($conn);
                         <td>
                             <form method="post" action="editPark2.php" style="display:inline;">
                                 <input type="hidden" name="pID" value="<?php echo $space['ps_id']; ?>">
-                                <button type="submit" name="edit" class="edit-button">Edit</button>
+                                <button type="submit" name="edit" class="btn btn-warning">Edit</button>
                             </form>
-                            <button onclick="deleteParkingSpace('<?php echo $space['ps_id']; ?>')" class="delete-button">Delete</button>
+                            <button onclick="deleteParkingSpace('<?php echo $space['ps_id']; ?>')" class="btn btn-danger">Delete</button>
                         </td>
                     </tr>
                 <?php endforeach; ?>

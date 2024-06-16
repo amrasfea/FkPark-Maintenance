@@ -29,7 +29,7 @@
                 <div class="input-group">
                     <label for="searchArea" class="label-inline">Park Area:</label>
                     <input type="text" class="form-control" id="searchArea" name="searchArea" required>
-                    <button type="submit" name="search" class="search-button">Search</button>
+                    <button type="submit" name="search" class="btn btn-primary">Search</button>
                 </div>
             </div>
         </form>

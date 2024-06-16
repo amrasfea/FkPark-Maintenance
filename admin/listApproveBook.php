@@ -46,8 +46,8 @@ $result = $conn->query($sql);
             echo "<td>" . htmlspecialchars($row["b_platenum"]) . "</td>";
             echo "<td>" . htmlspecialchars($row["ps_availableStat"]) . "</td>";
             echo "<td>";
-            echo "<a href='approveBook.php?b_id=" . htmlspecialchars($row["b_id"]) . "' class='btn btn-success btn-sm'>Approve</a> ";
-            echo "<a href='rejectBook.php?b_id=" . htmlspecialchars($row["b_id"]) . "' class='btn btn-danger btn-sm'>Reject</a>";
+            echo "<a href='approveBook.php?b_id=" . htmlspecialchars($row["b_id"]) . "' class='btn btn-success'>Approve</a> ";
+            echo "<a href='rejectBook.php?b_id=" . htmlspecialchars($row["b_id"]) . "' class='btn btn-danger'>Reject</a>";
             echo "</td>";
             echo "</tr>";
         }
