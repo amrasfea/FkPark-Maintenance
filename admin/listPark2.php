@@ -172,6 +172,8 @@ mysqli_close($conn);
     <script>
         function deleteParkingSpace(parkingSpaceId) {
             if (confirm('Are you sure you want to delete this park space?')) {
+                console.log('Attempting to delete parking space with ID:', parkingSpaceId);
+
                 const formData = new FormData();
                 formData.append('pID', parkingSpaceId);
 
@@ -181,20 +183,23 @@ mysqli_close($conn);
                 })
                 .then(response => response.text())
                 .then(responseText => {
+                    console.log('Response from server:', responseText);
                     if (responseText.trim() === 'success') {
                         const row = document.getElementById('row-' + parkingSpaceId);
                         if (row) {
                             row.parentNode.removeChild(row); // Remove row from table
+                            console.log('Row removed:', parkingSpaceId);
                         }
                     } else {
-                        console.error('Error deleting park space: ' + responseText);
+                        console.error('Error deleting park space:', responseText);
                     }
                 })
                 .catch(error => {
-                    console.error('Error deleting park space: ' + error);
+                    console.error('Error deleting park space:', error);
                 });
             }
         }
+
     </script>
 
 </body>
