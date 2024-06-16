@@ -97,8 +97,8 @@ if (!$selectedSpace) {
                 </div>
             </div>
             <div class="button-group">
-                <button type="button" name="cancel" onclick="cancelEdit()">Cancel</button>
-                <button type="submit" name="save">Save</button>
+                <button type="button" name="cancel" onclick="cancelEdit()" class="btn btn-danger">Cancel</button>
+                <button type="submit" name="save" class="btn btn-primary">Save</button>
             </div>
         </form>
     </div>

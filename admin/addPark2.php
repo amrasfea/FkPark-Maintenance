@@ -90,8 +90,8 @@ if (isset($_POST['save'])) {
                 <input type="text" class="form-control" id="ps_availableStat" name="ps_availableStat" value="available" required>
             </div>
             <div class="button-group">
-                <button type="button" name="cancel" onclick="clearForm()">Cancel</button>
-                <button type="submit" name="save">Save</button>
+                <button type="button" name="cancel" onclick="clearForm()" class="btn btn-danger">Cancel</button>
+                <button type="submit" name="save" class="btn btn-primary">Save</button>
             </div>
         </form>
     </div>
