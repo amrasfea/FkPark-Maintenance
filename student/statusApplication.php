@@ -30,21 +30,20 @@ while ($row = $result->fetch_assoc()) {
 $stmt->close();
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Status Application</title>
-    <link rel="stylesheet" href="../css/park.css">
+    <link rel="stylesheet" href="../css/statusApplication.css">
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
 </head>
 <body>
     <?php include('../navigation/studentNav.php'); ?>
-    <div class="container mt-5">
+    <div class="container">
         <h2>Status Application</h2>
-        <table class="table mt-4">
+        <table>
             <thead>
                 <tr>
                     <th>Name</th>
@@ -74,11 +73,10 @@ $stmt->close();
                     <td><a href="../uploads/<?php echo htmlspecialchars($vehicle['v_vehicleGrant']); ?>" target="_blank">View Grant</a></td>
                     <td><?php echo htmlspecialchars($vehicle['v_approvalStatus']); ?></td>
                     <td>
-    <?php if ($vehicle['v_approvalStatus'] === 'Approve'): ?>
-        <a href="../student/generateQRCode.php?v_id=<?php echo htmlspecialchars($vehicle['v_id']); ?>" target="_blank">View QR Code</a>
-    <?php endif; ?>
-</td>
-
+                        <?php if ($vehicle['v_approvalStatus'] === 'Approve'): ?>
+                            <a href="../student/generateQRCode.php?v_id=<?php echo htmlspecialchars($vehicle['v_id']); ?>" target="_blank">View QR Code</a>
+                        <?php endif; ?>
+                    </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
