@@ -1,3 +1,8 @@
+<!-- view dettail booking-->
+<!-- by auni -->
+
+
+
 <?php
 require '../session_check.php';
 require '../config.php'; // Database connection
@@ -63,10 +68,24 @@ if ($result && $row = $result->fetch_assoc()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Booking</title>
+    <link rel="stylesheet" href="../css/park.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
+    
         .qr-code {
             margin-top: 20px;
+            text-align: center;
+        }
+        .booking-details {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .booking-details h2 {
+            margin-bottom: 20px;
+        }
+        .booking-details p {
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -75,23 +94,25 @@ if ($result && $row = $result->fetch_assoc()) {
 <?php include('../navigation/studentNav.php'); ?>
 
 <div class="container mt-5">
-    <h2>Booking Details</h2>
-    <p><strong>Booking ID:</strong> <?php echo htmlspecialchars($row['b_id']); ?></p>
-    <p><strong>Parking Space ID:</strong> <?php echo htmlspecialchars($row['ps_id']); ?></p>
-    <p><strong>Parking Date:</strong> <?php echo htmlspecialchars($row['b_date']); ?></p>
-    <p><strong>Parking Time:</strong> <?php echo htmlspecialchars($row['b_time']); ?></p>
-    <p><strong>Vehicle Plate Number:</strong> <?php echo htmlspecialchars($row['v_plateNum']); ?></p>
-    <p><strong>Vehicle Brand:</strong> <?php echo htmlspecialchars($row['v_brand']); ?></p>
-    <p><strong>Vehicle Model:</strong> <?php echo htmlspecialchars($row['v_model']); ?></p>
-    <p><strong>Name:</strong> <?php echo htmlspecialchars($row['p_name']); ?></p>
-    
-    <!-- Display QR code -->
-    <div class="qr-code">
-        <h4>QR Code</h4>
-        <img src="<?php echo $qrFilename; ?>" alt="Booking QR Code" class="img-fluid">
+    <div class="booking-details">
+        <h2>Booking Details</h2>
+        <p><strong>Booking ID:</strong> <?php echo htmlspecialchars($row['b_id']); ?></p>
+        <p><strong>Parking Space ID:</strong> <?php echo htmlspecialchars($row['ps_id']); ?></p>
+        <p><strong>Parking Date:</strong> <?php echo htmlspecialchars($row['b_date']); ?></p>
+        <p><strong>Parking Time:</strong> <?php echo htmlspecialchars($row['b_time']); ?></p>
+        <p><strong>Vehicle Plate Number:</strong> <?php echo htmlspecialchars($row['v_plateNum']); ?></p>
+        <p><strong>Vehicle Brand:</strong> <?php echo htmlspecialchars($row['v_brand']); ?></p>
+        <p><strong>Vehicle Model:</strong> <?php echo htmlspecialchars($row['v_model']); ?></p>
+        <p><strong>Name:</strong> <?php echo htmlspecialchars($row['p_name']); ?></p>
+        
+        <!-- Display QR code -->
+        <div class="qr-code">
+            <h4>QR Code</h4>
+            <img src="<?php echo $qrFilename; ?>" alt="Booking QR Code" class="img-fluid">
+        </div>
+        
+        <a href="bookList.php" class="btn btn-primary mt-3">Go to Booking List</a>
     </div>
-    
-    <a href="bookList.php" class="btn btn-primary mt-3">Go to Booking List</a>
 </div>
 
 </body>

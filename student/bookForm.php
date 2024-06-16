@@ -14,15 +14,15 @@ if (!isset($_SESSION['u_id'])) {
 $u_id = $_SESSION['u_id'];
 
 // Initialize variables to prevent undefined variable warnings
-$ps_id = $_GET['ps_id'] ?? '';
-$parking_date = $_GET['parking_date'] ?? '';
-$parking_time = $_GET['parking_time'] ?? '';
+$ps_id = $_GET['ps_id'] ?? $_POST['ps_id'] ?? '';
+$parking_date = $_GET['parking_date'] ?? $_POST['parking_date'] ?? '';
+$parking_time = $_GET['parking_time'] ?? $_POST['parking_time'] ?? '';
 $vehicle_plate_number = $_POST['vehicle_plate_number'] ?? '';
 
 // Debugging: Print out received parameters
-echo "ps_id: $ps_id<br>";
-echo "parking_date: $parking_date<br>";
-echo "parking_time: $parking_time<br>";
+//echo "ps_id: $ps_id<br>";
+//echo "parking_date: $parking_date<br>";
+//echo "parking_time: $parking_time<br>";
 
 // Get parking area from parkspace table using ps_id
 if (!empty($ps_id)) {
@@ -44,6 +44,7 @@ if (!empty($ps_id)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking Form</title>
+    <link rel="stylesheet" href="../css/park.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>

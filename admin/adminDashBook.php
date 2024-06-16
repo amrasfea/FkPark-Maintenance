@@ -12,7 +12,22 @@ $pendingApprovalsQuery = "SELECT COUNT(*) AS pending FROM bookinfo WHERE b_statu
 $pendingApprovalsResult = $conn->query($pendingApprovalsQuery);
 $pendingApprovals = $pendingApprovalsResult->fetch_assoc()['pending'];
 
+// Fetch weekday and weekend bookings data
+$weekdaysQuery = "
+    SELECT 
+        SUM(CASE WHEN DAYOFWEEK(b_date) IN (2, 3, 4, 5, 6) THEN 1 ELSE 0 END) AS weekdays,
+        SUM(CASE WHEN DAYOFWEEK(b_date) IN (1, 7) THEN 1 ELSE 0 END) AS weekends
+    FROM 
+        bookinfo
+";
+$weekdaysResult = $conn->query($weekdaysQuery);
+$weekdaysData = $weekdaysResult->fetch_assoc();
+
 $conn->close();
+
+// Prepare data for Chart.js
+$labels = json_encode(['Weekdays', 'Weekends']);
+$bookings = json_encode([$weekdaysData['weekdays'], $weekdaysData['weekends']]);
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +37,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <?php include('../navigation/adminNav.php'); ?>
@@ -46,6 +62,12 @@ $conn->close();
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="mt-5">
+            <h2>Bookings: Weekdays vs. Weekends</h2>
+            <canvas id="bookingsChart" width="400" height="200"></canvas>
         </div>
 
         <!-- Recent Bookings -->
@@ -101,6 +123,34 @@ $conn->close();
         </table>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const ctx = document.getElementById('bookingsChart').getContext('2d');
+            const labels = <?php echo $labels; ?>;
+            const bookings = <?php echo $bookings; ?>;
+            
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Bookings',
+                        data: bookings,
+                        backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(75, 192, 192, 0.2)'],
+                        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

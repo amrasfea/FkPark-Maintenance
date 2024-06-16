@@ -1,3 +1,7 @@
+<!--handle process booking -->
+<!-- by auni -->
+
+
 <?php
 require '../session_check.php';
 require '../config.php'; // Database connection
@@ -55,6 +59,7 @@ if ($stmt->execute()) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Booking Confirmation</title>
+        <link rel="stylesheet" href="../css/park.css">
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>

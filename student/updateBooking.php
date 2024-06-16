@@ -1,4 +1,4 @@
-<!-- update booking -->
+<!-- update booking page-->
 <!-- by auni -->
 
 
@@ -17,6 +17,7 @@ if (empty($b_id)) {
 $query = "
     SELECT 
         b.*, 
+        v.v_id,
         v.v_plateNum, 
         v.v_brand, 
         v.v_model, 
@@ -28,7 +29,8 @@ $query = "
     JOIN 
         profiles p ON b.u_id = p.u_id
     WHERE 
-        b.b_id = ?
+        b.b_id = ? AND
+        b.b_status = 'Approved' 
 ";
 $stmt = $conn->prepare($query);
 $stmt->bind_param('i', $b_id);
@@ -38,7 +40,7 @@ $result = $stmt->get_result();
 if ($result && $row = $result->fetch_assoc()) {
     // Data is fetched successfully
 } else {
-    die("Error: Booking not found.");
+    die("Error: Booking not found or not approved.");
 }
 ?>
 
@@ -48,6 +50,7 @@ if ($result && $row = $result->fetch_assoc()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Booking</title>
+    <link rel="stylesheet" href="../css/park.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -56,7 +59,7 @@ if ($result && $row = $result->fetch_assoc()) {
 
 <div class="container mt-5">
     <h2>Update Booking</h2>
-    <form action="processUpdateBooking.php" method="post">
+    <form id="updateBookingForm" action="processUpdateBooking.php" method="post">
         <input type="hidden" name="b_id" value="<?php echo htmlspecialchars($row['b_id']); ?>">
         <div class="form-group">
             <label for="ps_id">Parking Space ID:</label>
@@ -72,15 +75,31 @@ if ($result && $row = $result->fetch_assoc()) {
         </div>
         <div class="form-group">
             <label for="vehicle_plateNum">Vehicle Plate Number:</label>
-            <input type="text" id="vehicle_plateNum" name="vehicle_plateNum" class="form-control" value="<?php echo htmlspecialchars($row['v_plateNum']); ?>" readonly>
+            <select id="vehicle_plateNum" name="vehicle_plateNum" class="form-control" required>
+                <option value="">Select Plate Number</option>
+                <!-- Populate options dynamically with PHP -->
+                <?php
+                // Fetch vehicle plate numbers for the current user
+                $query = "SELECT v_plateNum, v_id FROM vehicle WHERE u_id = ?";
+                $stmt_select = $conn->prepare($query);
+                $stmt_select->bind_param('i', $_SESSION['u_id']);
+                $stmt_select->execute();
+                $result_select = $stmt_select->get_result();
+                while ($vehicle = $result_select->fetch_assoc()) {
+                    $selected = ($vehicle['v_id'] === $row['v_id']) ? 'selected' : '';
+                    echo "<option value=\"" . htmlspecialchars($vehicle['v_id']) . "\" $selected>" . htmlspecialchars($vehicle['v_plateNum']) . "</option>";
+                }
+                $stmt_select->close(); // Close the statement after fetching options
+                ?>
+            </select>
         </div>
         <div class="form-group">
             <label for="vehicle_brand">Vehicle Brand:</label>
-            <input type="text" id="vehicle_brand" name="vehicle_brand" class="form-control" value="<?php echo htmlspecialchars($row['v_brand']); ?>" readonly>
+            <input type="text" id="vehicle_brand" name="vehicle_brand" class="form-control" value="<?php echo htmlspecialchars($row['v_brand']); ?>" required readonly>
         </div>
         <div class="form-group">
             <label for="vehicle_model">Vehicle Model:</label>
-            <input type="text" id="vehicle_model" name="vehicle_model" class="form-control" value="<?php echo htmlspecialchars($row['v_model']); ?>" readonly>
+            <input type="text" id="vehicle_model" name="vehicle_model" class="form-control" value="<?php echo htmlspecialchars($row['v_model']); ?>" required readonly>
         </div>
         <div class="form-group">
             <label for="b_parkStart">Parking Start Time:</label>
@@ -92,14 +111,54 @@ if ($result && $row = $result->fetch_assoc()) {
         </div>
 
         <button type="submit" class="btn btn-primary">Update Booking</button>
-    </form>
-    <a href="bookList.php" class="btn btn-secondary mt-2">Go to Booking List</a>
+    </form><br>
+    <a href="bookList.php" class="btn btn-primary">Go to Booking List</a>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Handle change event for vehicle plate number dropdown
+    $('#vehicle_plateNum').change(function() {
+        var v_id = $(this).val();
+        if (v_id) {
+            // AJAX request to fetch vehicle details
+            $.ajax({
+                type: 'POST',
+                url: 'fetchVehicleDetails.php',
+                data: { v_id: v_id },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Update vehicle details fields
+                        $('#vehicle_brand').val(response.data.v_brand);
+                        $('#vehicle_model').val(response.data.v_model);
+                    } else {
+                        alert('Vehicle details not found.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching vehicle details:', error);
+                    alert('Failed to fetch vehicle details.');
+                }
+            });
+        } else {
+            // Clear vehicle details fields if no plate number selected
+            $('#vehicle_brand').val('');
+            $('#vehicle_model').val('');
+        }
+    });
+
+    // Trigger change event on page load if a vehicle is pre-selected
+    $('#vehicle_plateNum').trigger('change');
+});
+</script>
 
 </body>
 </html>
 
 <?php
+// Close the main statement after using it to fetch data
 $stmt->close();
 $conn->close();
 ?>

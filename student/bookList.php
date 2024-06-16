@@ -24,6 +24,7 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking List</title>
+    <link rel="stylesheet" href="../css/park.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -47,9 +48,9 @@ $result = $conn->query($sql);
             echo "<td>" . $row["v_id"] . "</td>";
             echo "<td>" . $row["b_platenum"] . "</td>";
             echo "<td>";
-            echo "<a href='viewBooking.php?b_id=" . $row["b_id"] . "' class='btn btn-info btn-sm'>View</a> ";
-            echo "<a href='updateBooking.php?b_id=" . $row["b_id"] . "' class='btn btn-warning btn-sm'>Update</a> ";
-            echo "<a href='deleteBooking.php?b_id=" . $row["b_id"] . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this booking?\")'>Delete</a>";
+            echo "<a href='viewBooking.php?b_id=" . $row["b_id"] . "' class='btn btn-primary'>View</a> ";
+            echo "<a href='updateBooking.php?b_id=" . $row["b_id"] . "' class='btn btn-primary'>Update</a> ";
+            echo "<a href='deleteBooking.php?b_id=" . $row["b_id"] . "' class='btn btn-danger' onclick='return confirm(\"Are you sure you want to delete this booking?\")'>Delete</a>";
             echo "</td>";
             echo "</tr>";
         }
