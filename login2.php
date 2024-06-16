@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } elseif ($userType === "Unit Keselamatan Staff") {
             header("Location: ./staff/staffHome.php");
         } else {
-            header("Location: ./student/studentProfile.php");
+            header("Location: ./student/studentHome.php");
         }
         exit();
     } else {

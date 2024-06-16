@@ -240,10 +240,6 @@
                         <li class="sidebar-item">
                             <a href="../admin/adminDashBook.php" class="sidebar-link">Book Dashboard</a>
                         </li>
-
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">mm</a>
-                        </li>
                     </ul>
                 </li>
             </ul>

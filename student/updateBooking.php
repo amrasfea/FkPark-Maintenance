@@ -21,13 +21,16 @@ $query = "
         v.v_plateNum, 
         v.v_brand, 
         v.v_model, 
-        p.p_name 
+        p.p_name,
+        ps.ps_availableStat 
     FROM 
         bookinfo b
     JOIN 
         vehicle v ON b.v_id = v.v_id
     JOIN 
         profiles p ON b.u_id = p.u_id
+    JOIN 
+        parkspace ps ON b.ps_id = ps.ps_id
     WHERE 
         b.b_id = ? AND
         b.b_status = 'Approved' 
@@ -108,6 +111,13 @@ if ($result && $row = $result->fetch_assoc()) {
         <div class="form-group">
             <label for="b_duration">Duration (in hours):</label>
             <input type="number" id="b_duration" name="b_duration" class="form-control" value="<?php echo htmlspecialchars($row['b_duration']); ?>" required>
+        </div>
+        <div class="form-group">
+            <label for="ps_availableStat">Parking Space Availability:</label>
+            <select id="ps_availableStat" name="ps_availableStat" class="form-control" required>
+                <option value="Available" <?php echo ($row['ps_availableStat'] === 'Available') ? 'selected' : ''; ?>>Available</option>
+                <option value="Occupied" <?php echo ($row['ps_availableStat'] === 'Occupied') ? 'selected' : ''; ?>>Occupied</option>
+            </select>
         </div>
 
         <button type="submit" class="btn btn-primary">Update Booking</button>
