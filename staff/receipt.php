@@ -119,6 +119,7 @@ $sum_status = $_GET['sum_status'] ?? '';
             <label>Location: <span><?php echo htmlspecialchars($sum_location); ?></span></label>
             <label>Status: <span><?php echo htmlspecialchars($sum_status); ?></span></label>
         </div>
+        <a href="../staff/summonList.php" class="btn btn-primary">Back</a>
         <div class="receipt-footer">
             <p>Copy &copy Unit Keselamatan UMPSA</p>
         </div>

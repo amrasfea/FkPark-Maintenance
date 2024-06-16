@@ -97,7 +97,6 @@ if (isset($_POST['search']) && !empty($_POST['date'])) {
     $query .= " WHERE summon.sum_date = ?";
 }
 
-
 // Prepare and execute the query
 $stmt = $conn->prepare($query);
 if (isset($search_date)) {
@@ -128,6 +127,11 @@ if (!$result) {
     <?php include('../navigation/staffNav.php'); ?>
     <div class="container mt-3">
         <h2>Summon List</h2>
+        <?php
+        if (isset($_GET['message']) && $_GET['message'] == 'update_success') {
+            echo "<div class='alert alert-success'>Update successful</div>";
+        }
+        ?>
         <form method="post" action="" class="summon-list">
             <div class="form-group">
                 <div class="search-input-group">
@@ -166,9 +170,9 @@ if (!$result) {
                         echo "<td>";
                         echo "<form method='post' action='' style='display:inline-block;'>";
                         echo "<input type='hidden' name='sum_id' value='" . htmlspecialchars($row['sum_id']) . "'>";
-                        //echo "<button type='submit' name='edit' class='edit-button'>Edit</button>";
                         echo "<button type='submit' name='delete' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</button>";
                         echo "</form>";
+                        echo "<a href='edit_SumForm.php?sum_id=" . urlencode($row['sum_id']) . "'><button class='btn btn-warning'>Edit</button></a>";
                         echo "<a href='../staff/receipt.php?sum_date=" . urlencode($row['sum_date']) . "&sum_id=" . urlencode($row['sum_id']) . "&p_name=". urlencode($row['p_name']) . "&sum_vPlate=" . urlencode($row['sum_vPlate']) . "&p_matricNum=" . urlencode($row['p_matricNum']) . "&sum_location=" . urlencode($row['sum_location']) . "&sum_status=" . urlencode($row['sum_status']) . "'><button class='edit-button'>View</button></a>";
                         echo "</td>";
                         echo "</tr>";
