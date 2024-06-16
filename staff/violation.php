@@ -104,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <td>Revoke of in campus vehicle permission for entire study duration</td>
             </tr>
         </table>
-        <button type="submit" name="edit">Print guide</button>
+        
     </div>
     <script>
         document.getElementById("button").addEventListener("click", function() {
