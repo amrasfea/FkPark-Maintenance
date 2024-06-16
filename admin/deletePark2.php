@@ -1,8 +1,6 @@
-<!-- by umairah -->
 <?php
 require '../session_check.php';
 require '../config.php'; // Database connection
-
 
 if (isset($_POST['pID'])) {
     $pID = $_POST['pID']; // Get the ID to delete
@@ -29,5 +27,3 @@ if (isset($_POST['pID'])) {
 // Close connection
 mysqli_close($conn);
 ?>
-
-
