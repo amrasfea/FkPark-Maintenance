@@ -172,7 +172,7 @@ if (!$result) {
                         echo "<input type='hidden' name='sum_id' value='" . htmlspecialchars($row['sum_id']) . "'>";
                         echo "<button type='submit' name='delete' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</button>";
                         echo "</form>";
-                        echo "<a href='edit_form.php?sum_id=" . urlencode($row['sum_id']) . "'><button class='edit-button'>Edit</button></a>";
+                        echo "<a href='edit_SumForm.php?sum_id=" . urlencode($row['sum_id']) . "'><button class='btn btn-warning'>Edit</button></a>";
                         echo "<a href='../staff/receipt.php?sum_date=" . urlencode($row['sum_date']) . "&sum_id=" . urlencode($row['sum_id']) . "&p_name=". urlencode($row['p_name']) . "&sum_vPlate=" . urlencode($row['sum_vPlate']) . "&p_matricNum=" . urlencode($row['p_matricNum']) . "&sum_location=" . urlencode($row['sum_location']) . "&sum_status=" . urlencode($row['sum_status']) . "'><button class='edit-button'>View</button></a>";
                         echo "</td>";
                         echo "</tr>";

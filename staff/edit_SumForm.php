@@ -80,6 +80,7 @@ if (isset($_GET['sum_id'])) {
                 <input type="text" class="form-control" id="sum_status" name="sum_status" value="<?php echo htmlspecialchars($row['sum_status']); ?>" required>
             </div>
             <button type="submit" class="btn btn-primary" name="update">Update</button>
+            <a href="../staff/summonList.php" class="btn btn-primary">Back</a>
         </form>
     </div>
 </body>

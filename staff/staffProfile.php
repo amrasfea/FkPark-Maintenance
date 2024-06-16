@@ -56,7 +56,7 @@ if (!$userData) {
                      <div class="profile-header-info">
                         <h4 class="m-t-10 m-b-5"><?php echo htmlspecialchars($userData['p_name']); ?></h4>
                         <p class="m-b-10" style="color: black;"><?php echo htmlspecialchars($userData['u_type']); ?></p>
-                        <a href="editstaffProfile.php" class="btn btn-sm btn-info mb-2" style="background-color:#063970; color:whitesmoke">Edit Profile</a>
+                        <a href="editstaffProfile.php" class="btn btn-warning mb-2" >Edit Profile</a>
                      </div>
                   </div>
                   <ul class="profile-header-tab nav nav-tabs">
