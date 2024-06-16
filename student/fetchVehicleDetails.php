@@ -1,8 +1,3 @@
-
-<!-- ambik data vehicle untuk auto display -->
-<!-- by auni -->
-
-
 <?php
 require '../config.php'; // Database connection
 
