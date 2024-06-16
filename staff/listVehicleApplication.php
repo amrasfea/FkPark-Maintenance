@@ -108,8 +108,8 @@ $stmt->close();
                     if ($row['v_approvalStatus'] == 'Pending') {
                         echo "<form method='post' action='' onsubmit='confirmApproval(event, this.action.value)'>
                                 <input type='hidden' name='v_id' value='{$row['v_id']}'>
-                                <button type='submit' name='action' value='approve' class='view-button'>Approve</button>
-                                <button type='submit' name='action' value='reject' class='edit-button'>Reject</button>
+                                <button type='submit' name='action' value='approve' class='btn btn-success'>Approve</button>
+                                <button type='submit' name='action' value='reject' class='btn btn-danger'>Reject</button>
                                 <a href='../staff/viewVehicleApplication.php?v_id={$row['v_id']}' class='view-button'>View</a>
                             </form>";
                     } else {
