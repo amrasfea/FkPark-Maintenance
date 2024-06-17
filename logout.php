@@ -22,7 +22,7 @@ session_destroy();
 </head>
 <body>
 <header>
-    <img src="../FKPark/uploads/img.png" style="height:200px; width:1520px;">
+    <img src="./img/images.png" style="height:200px; width:1520px;">
 </header>
 <h1 align="center">See you again, bye!!! </h1>
 <h4 align="center" class="err">You have been logged out.</h4>
