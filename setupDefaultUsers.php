@@ -3,6 +3,7 @@ require 'config.php'; // Database connection
 
 function createUser($conn, $email, $password, $role, $name, $icNumber, $phoneNum, $department, $bodyNumber, $position) {
     // Hash the password
+    //test
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Create new user with the specified role
@@ -43,3 +44,4 @@ createUser($conn, "Akmal@gmail.com", "staff123", "Unit Keselamatan Staff", "Akma
 
 echo "Default users created successfully.";
 ?>
+
