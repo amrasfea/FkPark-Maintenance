@@ -93,6 +93,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <input name="login" type="submit" value="Login" />
             </div>
           </div>
+          <div class="row">
+            <div class="col mb-3">
+                <a href="reset_password.php" style="color: blue; text-decoration: underline;">Forgot Password?</a>
+           </div>
+          </div>
         </form>
       </div>
     </div>
