@@ -70,6 +70,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="SOFTWARE ENGINEERING">Software Engineering</option>
                     <option value="NETWORKING">Networking</option>
                     <option value="GRAPHIC DESIGN">Graphic Design</option>
+                    <option value="CYBER SECURITY">Cyber Security</option>
+
+                    
                 </select>
             </div>
             <div class="form-group">
