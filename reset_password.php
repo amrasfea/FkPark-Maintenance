@@ -1,30 +1,40 @@
 <?php
 require 'config.php'; // Database connection
-
 $message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
-    $newPass = password_hash($_POST["new_password"], PASSWORD_DEFAULT);
+    $newPassword = $_POST["new_password"];
+    $confirmPassword = $_POST["confirm_password"];
 
-    // Check if the user exists
-    $stmt = $conn->prepare("SELECT u_id FROM user WHERE u_email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
-
-    if ($stmt->num_rows > 0) {
-        $stmt->close();
-
-        // Update the password
-        $stmt = $conn->prepare("UPDATE user SET u_password = ? WHERE u_email = ?");
-        $stmt->bind_param("ss", $newPass, $email);
-        $stmt->execute();
-        $stmt->close();
-
-        $message = "✅ Password reset successfully! <a href='login2.php'>Login here</a>";
+    // Check if passwords match
+    if ($newPassword !== $confirmPassword) {
+        $message = "❌ Passwords do not match.";
     } else {
-        $message = "❌ Email not found.";
+        // Check if user exists
+        $stmt = $conn->prepare("SELECT u_id FROM user WHERE u_email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $stmt->close();
+
+            // Hash the new password
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+            // Update the password
+            $updateStmt = $conn->prepare("UPDATE user SET u_password = ? WHERE u_email = ?");
+            $updateStmt->bind_param("ss", $hashedPassword, $email);
+            if ($updateStmt->execute()) {
+                $message = "✅ Password successfully updated! <a href='login2.php'>Login here</a>";
+            } else {
+                $message = "❌ Failed to update password.";
+            }
+            $updateStmt->close();
+        } else {
+            $message = "❌ Email not found in the system.";
+        }
     }
 }
 ?>
@@ -33,49 +43,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Reset Password</title>
-    <link rel="stylesheet" href="css/login2.css">
-    <link rel="icon" type="image/x-icon" href="../img/logo.png">
+    <link rel="stylesheet" href="css/login2.css"> <!-- Use your login CSS -->
+    <link rel="icon" href="../img/logo.png">
 </head>
 <body>
     <div class="container">
         <div class="form">
-            <a>
-                <img src="img/logo.png" alt="Logo" width="180" height="100">
-            </a>
+            <img src="img/logo.png" alt="Logo" width="180" height="100">
             <h1 class="title"><i>FKPark Management System</i></h1>
             <div class="content">
-                <div class="row">
-                    <h2>Reset Password</h2>
-                </div>
+                <h2>Reset Password</h2>
 
                 <?php if ($message): ?>
-                    <div class="row">
-                        <p style="color: <?= strpos($message, '✅') !== false ? 'green' : 'red' ?>;">
-                            <?= $message ?>
-                        </p>
-                    </div>
+                    <p style="color: <?= strpos($message, '✅') !== false ? 'green' : 'red' ?>;">
+                        <?= $message ?>
+                    </p>
                 <?php endif; ?>
 
-                <form method="post">
+                <form method="POST">
                     <div class="row">
-                        <div class="col mb-3">
-                            Email: <input type="email" name="email" placeholder="Email" required />
-                        </div>
+                        <label>Email:</label>
+                        <input type="email" name="email" required>
                     </div>
                     <div class="row">
-                        <div class="col mb-3">
-                            New Password: <input type="password" name="new_password" placeholder="New Password" required />
-                        </div>
+                        <label>New Password:</label>
+                        <input type="password" name="new_password" required>
                     </div>
                     <div class="row">
-                        <div class="col mb-3">
-                            <input type="submit" value="Reset Password" />
-                        </div>
+                        <label>Confirm Password:</label>
+                        <input type="password" name="confirm_password" required>
                     </div>
                     <div class="row">
-                        <div class="col mb-3">
-                            <a href="login2.php" style="color: blue; text-decoration: underline;">Back to Login</a>
-                        </div>
+                        <input type="submit" value="Reset Password">
+                    </div>
+                    <div class="row">
+                        <a href="login2.php" style="color: blue;">Back to Login</a>
                     </div>
                 </form>
             </div>
