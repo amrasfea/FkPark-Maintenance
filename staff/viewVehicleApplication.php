@@ -122,7 +122,7 @@ a.pdf {
 <body>
     <?php include('../navigation/staffNav.php'); ?>
     <div class="container mt-5">
-        <h2>View Vehicle Application</h2>
+        <h2>Application Details</h2>
 
         <!-- Student Information Section -->
         <div class="section">
