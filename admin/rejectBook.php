@@ -25,6 +25,13 @@ if ($stmt->execute()) {
     echo "Error: " . $stmt->error;
 }
 
+// After success and before redirect:
+session_start();
+$_SESSION['flash'] = "Booking rejected.";
+header('Location: listApproveBook.php');
+exit;
+
+
 $stmt->close();
 $conn->close();
 ?>

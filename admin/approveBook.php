@@ -2,59 +2,102 @@
 require '../session_check.php';
 require '../config.php'; // Database connection
 
-// Check if user_id is set in the session and if the user is an admin
+// Ensure user is admin
 if (!isset($_SESSION['u_id']) || $_SESSION['role'] !== 'Administrators') {
     die("Error: You do not have permission to view this page.");
 }
 
-// Retrieve booking ID from query string
-$b_id = $_GET['b_id'] ?? '';
+session_start();
 
+// Get booking ID
+$b_id = $_GET['b_id'] ?? '';
 if (empty($b_id)) {
     die("Error: Booking ID is not set.");
 }
 
-// Begin a transaction
+// Start transaction
 $conn->begin_transaction();
 
 try {
-    // Update the booking status to 'Approved'
-    $sql = "UPDATE bookinfo SET b_status = 'Approved' WHERE b_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('i', $b_id);
-
-    if (!$stmt->execute()) {
-        throw new Exception("Error: " . $stmt->error);
-    }
-
-    // Retrieve the parking space ID associated with this booking
-    $sql = "SELECT ps_id FROM bookinfo WHERE b_id = ?";
-    $stmt = $conn->prepare($sql);
+    // 1. Get booking details
+    $stmt = $conn->prepare("SELECT ps_id, b_date, b_time FROM bookinfo WHERE b_id = ?");
     $stmt->bind_param('i', $b_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    $ps_id = $row['ps_id'];
+    $booking = $result->fetch_assoc();
 
-    // Update the parking space status to 'Not Available'
-    $sql = "UPDATE parkspace SET ps_availableStat = 'occupied' WHERE ps_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $ps_id);
-
-    if (!$stmt->execute()) {
-        throw new Exception("Error: " . $stmt->error);
+    if (!$booking) {
+        throw new Exception("Booking not found.");
     }
 
-    // Commit the transaction
-    $conn->commit();
+    $ps_id = $booking['ps_id'];
+    $b_date = $booking['b_date'];
+    $b_time = $booking['b_time'];
 
-    echo "<script>alert('Booking Approved'); window.location.href='listApproveBook.php';</script>";
+    // 2. Check if parking space is already occupied
+    $stmt = $conn->prepare("SELECT ps_availableStat FROM parkspace WHERE ps_id = ?");
+    $stmt->bind_param('s', $ps_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $ps = $result->fetch_assoc();
+
+    if (!$ps) {
+        throw new Exception("Parking space not found.");
+    }
+
+    if (strtolower($ps['ps_availableStat']) === 'occupied') {
+        $_SESSION['flash'] = "Error: Parking space is already occupied.";
+        $conn->rollback();
+        header('Location: listApproveBook.php');
+        exit;
+    }
+
+    // 3. Check for booking clash at the same date & time
+    $stmt = $conn->prepare("
+        SELECT COUNT(*) AS clash_count
+        FROM bookinfo 
+        WHERE ps_id = ? AND b_date = ? AND b_time = ? AND b_status = 'Approved'
+    ");
+    $stmt->bind_param('sss', $ps_id, $b_date, $b_time);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $clash = $result->fetch_assoc();
+
+    if ($clash['clash_count'] > 0) {
+        $_SESSION['flash'] = "Error: Booking clash detected. Another booking is already approved for this slot.";
+        $conn->rollback();
+        header('Location: listApproveBook.php');
+        exit;
+    }
+
+    // 4. Approve booking
+    $stmt = $conn->prepare("UPDATE bookinfo SET b_status = 'Approved' WHERE b_id = ?");
+    $stmt->bind_param('i', $b_id);
+    if (!$stmt->execute()) {
+        throw new Exception("Error approving booking: " . $stmt->error);
+    }
+
+    // 5. Mark parking space as occupied
+    $stmt = $conn->prepare("UPDATE parkspace SET ps_availableStat = 'occupied' WHERE ps_id = ?");
+    $stmt->bind_param('s', $ps_id);
+    if (!$stmt->execute()) {
+        throw new Exception("Error updating parking space status: " . $stmt->error);
+    }
+
+    // 6. Commit transaction
+    $conn->commit();
+    $_SESSION['flash'] = "Booking approved successfully.";
+    header('Location: listApproveBook.php');
+    exit;
+
 } catch (Exception $e) {
-    // Rollback the transaction if an error occurs
     $conn->rollback();
-    echo $e->getMessage();
+    $_SESSION['flash'] = "Error: " . $e->getMessage();
+    header('Location: listApproveBook.php');
+    exit;
 }
 
+// Cleanup
 $stmt->close();
 $conn->close();
 ?>
