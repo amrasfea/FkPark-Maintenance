@@ -5,7 +5,7 @@ $password = "";
 $dbname = "fkpark";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli("127.0.0.1", "root", "", "fkpark", 3307);
 
 // Check connection
 if ($conn->connect_error) {

@@ -1,48 +1,81 @@
 <?php
 require '../session_check.php';
-require '../config.php'; // Database connection
+require '../config.php';
 
-// Check if the current user is an administrator
 if ($_SESSION['role'] !== 'Unit Keselamatan Staff') {
     header("Location: ../login2.php");
     exit();
 }
 
 $message = "";
+$vehicleData = null;
+$userData = null;
+$showSummonForm = false;
 
+// 1. Handle plate search
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['search'])) {
+    $plate = $_POST['search_plate'];
+    $stmt = $conn->prepare("SELECT * FROM vehicle WHERE v_PlateNum = ?");
+    $stmt->bind_param("s", $plate);
+    $stmt->execute();
+    $vehicleResult = $stmt->get_result();
+
+    if ($vehicleResult->num_rows > 0) {
+        $vehicleData = $vehicleResult->fetch_assoc();
+                $user_id = $vehicleData['u_id'];
+
+        // Fetch user info + profile (JOIN)
+        $userStmt = $conn->prepare("
+            SELECT user.u_id, user.u_email, profiles.p_name
+            FROM user 
+            INNER JOIN profiles ON user.u_id = profiles.u_id 
+            WHERE user.u_id = ?
+        ");
+        $userStmt->bind_param("i", $user_id);  
+
+        $userStmt->execute();
+        $userResult = $userStmt->get_result();
+        if ($userResult->num_rows > 0) {
+            $userData = $userResult->fetch_assoc();
+            $showSummonForm = true;
+        }
+    } else {
+        $message = "Vehicle not found.";
+    }
+}
+
+
+// 2. Handle summon submission
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save'])) {
-    $type = $_POST["sum_vType"];
-    $date = $_POST["sum_date"];
-    $model = $_POST["sum_vModel"];
-    $brand = $_POST["sum_vBrand"];
     $plate = $_POST["sum_vPlate"];
     $location = $_POST["sum_location"];
     $violation = $_POST["sum_violationType"];
     $demerit = $_POST["sum_demerit"];
+    $date = $_POST["sum_date"];
 
-    // Check if the provided plate number exists in the vehicle table
-    $stmt = $conn->prepare("SELECT v_id FROM vehicle WHERE v_PlateNum = ?");
+    // Retrieve vehicle data again
+    $stmt = $conn->prepare("SELECT * FROM vehicle WHERE v_PlateNum = ?");
     $stmt->bind_param("s", $plate);
     $stmt->execute();
     $result = $stmt->get_result();
-    // if data exist baru dia akan simpan data. 
-    // Check if a matching record is found
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $v_id = $row['v_id'];
 
-        // Insert summon data along with the retrieved v_id
-        $summon = "INSERT INTO summon (sum_date, sum_vModel, sum_vBrand, sum_vPlate, sum_location, sum_violationType, sum_demerit, v_id, sum_vType) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($summon);
+    if ($result->num_rows > 0) {
+        $vehicle = $result->fetch_assoc();
+        $v_id = $vehicle['v_id'];
+        $model = $vehicle['v_model'];
+        $brand = $vehicle['v_brand'];
+        $type = $vehicle['v_vehicleType'];
+
+        $insert = "INSERT INTO summon (sum_date, sum_vModel, sum_vBrand, sum_vPlate, sum_location, sum_violationType, sum_demerit, v_id, sum_vType)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($insert);
         $stmt->bind_param("sssssssis", $date, $model, $brand, $plate, $location, $violation, $demerit, $v_id, $type);
         $stmt->execute();
         $stmt->close();
 
-        $message = "issued successfully";
-
+        $message = "Summon issued successfully.";
     } else {
-        // Handle case where the provided plate number does not exist in the vehicle table
-        $message = "Vehicle with plate number $plate not found. Proceed with manual summon";
+        $message = "Vehicle not found. Cannot issue summon.";
     }
 }
 ?>
@@ -51,100 +84,99 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summon</title>
-    <!--EXTERNAL CSS-->
+    <title>Summon Ticket</title>
     <link rel="stylesheet" href="../css/summon.css">
-    <!--FAVICON-->
-    <link rel="icon" type="image/x-icon" href="../img/logo.png">
+    <link rel="icon" href="../img/logo.png">
     <style>
-        .hidden {
-            display: none;
-        }
+        .readonly { background-color: #f2f2f2; }
     </style>
 </head>
 <body>
-    <?php include('../navigation/staffNav.php'); ?>
-    <div class="container mt-5">
-        <h2>Ticket Summon Form</h2>
+<?php include('../navigation/staffNav.php'); ?>
+<div class="container mt-5">
+    <h2>Summon Ticket</h2>
+
+    <!-- 1. Plate Search Form -->
+    <form method="post" action="summon.php">
+        <input type="text" name="search_plate" placeholder="Enter Plate Number" required>
+        <button type="submit" name="search">Summon</button>
+        <button type="button" onclick="window.location.href='violation.php'">Guidelines</button>
+    </form>
+
+    <!-- 2. Summon Form (if plate found) -->
+    <?php if ($showSummonForm && $vehicleData && $userData): ?>
         <form method="post" action="summon.php">
+            <h4>Vehicle Info</h4>
+            <input type="hidden" name="sum_vPlate" value="<?= htmlspecialchars($vehicleData['v_plateNum']) ?>">
+
+            <b><label>Plate Number:</label></b>
+            <input type="text" readonly class="readonly" value="<?= htmlspecialchars($vehicleData['v_plateNum']) ?>"><br>
+
+            <b><label>Model:</label></b>
+            <input type="text" readonly class="readonly" value="<?= htmlspecialchars($vehicleData['v_model']) ?>"><br>
+
+            <b><label>Brand:</label></b>
+            <input type="text" readonly class="readonly" value="<?= htmlspecialchars($vehicleData['v_brand']) ?>"><br>
+
+            <b><label>Type:</label></b>
+            <input type="text" readonly class="readonly" value="<?= htmlspecialchars($vehicleData['v_vehicleType']) ?>"><br><br>
+
+            <h4>User Info</h4>
+            <b><label>Owner Name:</label></b>
+            <input type="text" readonly class="readonly" value="<?= htmlspecialchars($userData['p_name']) ?>"><br>
+
+            <b><label>Owner Email:</label></b>
+            <input type="email" readonly class="readonly" value="<?= htmlspecialchars($userData['u_email']) ?>"><br>
+
+            <b><label>Date:</label></b>
+            <input type="date" name="sum_date" id="sum_date" required><br>
+
+            <b><label>Location:</label></b>
+            <select name="sum_location" required>
+                <option value="Zone A">Zone A</option>
+                <option value="Zone B">Zone B</option>
+            </select><br>
+
+            <b><label>Violation Type:</label></b>
+            <select name="sum_violationType" id="violation" onchange="fillDemerit()" required>
+                <option value="Parking">Parking Violation</option>
+                <option value="Traffic">Not comply in campus traffic regulations</option>
+                <option value="Accident">Caused accidents</option>
+            </select>
+
+            <b><label>Demerit Points:</label></b>
+            <input type="number" name="sum_demerit" id="demerit" readonly required><br><br>
+
             <div class="button-group">
-                <button type="button" id="newFormBtn">New Form</button>
-                <input type="date" name="sum_date" required>
-                <!--input type="time" name="summonTime"-->
-            </div>
-            <div id="formFields" class="form-group hidden">
-                <label for="sum_vType">Vehicle type:</label>
-                <select name="sum_vType" id="sum_vType">
-                    <option value="car">Car</option>
-                    <option value="motorcycle">Motorcycle</option>
-                </select>
-
-                <label for="vModel">Vehicle Model:</label>
-                <input type="text" class="form-control" id="vModel" name="sum_vModel" required>
-
-                <label for="vBrand">Vehicle Brand:</label>
-                <input type="text" class="form-control" id="vBrand" name="sum_vBrand" required>
-
-                <label for="vPlate">Vehicle Plate Number:</label>
-                <input type="text" class="form-control" id="vPlate" name="sum_vPlate" required>
-
-                <label for="parkLoc">Parking Location:</label>
-                <select name="sum_location" id="summonLoc">
-                    <option value="Zone A">Zone A</option>
-                    <option value="Zone B">Zone B</option>
-                </select>
-
-
-                <label for="violation">Violation type:</label>
-                <select name="sum_violationType" id="violation" onchange="fillDemerit()">
-                    <option value="Parking">Parking Violation</option>
-                    <option value="Traffic">Not comply in campus traffic regulations</option>
-                    <option value="Accident">Caused accidents</option>
-                </select>
-                <label for="demerit">Demerit:</label>
-                <input type="number" class="form-control" id="demerit" name="sum_demerit" readonly>
-            </div>
-            <div class="button-group">
-                <button type="button" id="guideBtn">Traffic Violation Guide and Demerit</button>
-            </div>
-
-            <div class="button-group">
-                <button type="submit" name="save" id="saveBtn">Save</button>
+                <button type="submit" name="save">Submit</button>
             </div>
         </form>
-        <?php
-        if (!empty($message)) {
-            echo "<script>alert('$message');</script>";
-        }
-        ?>
-    </div>
+    <?php endif; ?>
 
-    <script>
-        document.getElementById("newFormBtn").addEventListener("click", function() {
-            document.getElementById("formFields").classList.remove("hidden");
-        });
+    <!-- Message -->
+    <?php if (!empty($message)) echo "<script>alert('$message');</script>"; ?>
+</div>
 
-        function fillDemerit() {
-            var violationType = document.getElementById("violation").value;
-            var demeritInput = document.getElementById("demerit");
-            // Set demerit points based on violation type
-            switch (violationType) {
-                case "Parking":
-                    demeritInput.value = 10;
-                    break;
-                case "Traffic":
-                    demeritInput.value = 15;
-                    break;
-                case "Accident":
-                    demeritInput.value = 20;
-                    break;
-                default:
-                    demeritInput.value = "";
-                    break;
-            }
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const dateInput = document.getElementById("sum_date");
+        if (dateInput) {
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.value = today;
         }
-    </script>
-    <script src="../js/staff.js"></script>
+    });
+
+    function fillDemerit() {
+        const type = document.getElementById("violation").value;
+        const demerit = document.getElementById("demerit");
+        switch (type) {
+            case "Parking": demerit.value = 10; break;
+            case "Traffic": demerit.value = 15; break;
+            case "Accident": demerit.value = 20; break;
+            default: demerit.value = "";
+        }
+    }
+</script>
+<script src="../js/staff.js"></script>
 </body>
 </html>

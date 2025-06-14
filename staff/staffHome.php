@@ -1,6 +1,8 @@
 <?php
 require '../session_check.php'; //session
 require '../config.php'; 
+require_once(__DIR__ . '/../config.php');
+
 
 // Check if the current user is an UK Staff
 if ($_SESSION['role'] !== 'Unit Keselamatan Staff') {
@@ -14,7 +16,7 @@ $registered_vehicle = 0;
 $pending_approval = 0; 
 
 // Connection to the database
-$conn = new mysqli($servername, $username, $password, $dbname);
+//$conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);

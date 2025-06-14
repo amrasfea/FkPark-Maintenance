@@ -1,7 +1,6 @@
 <?php
 require '../session_check.php';
-require '../config.php';
-require '../phpqrcode/qrlib.php'; // Path to the PHP QR Code library
+require '../config.php'; // Database connection
 
 // Check if the current user is a student
 if ($_SESSION['role'] !== 'Student') {
@@ -9,58 +8,116 @@ if ($_SESSION['role'] !== 'Student') {
     exit();
 }
 
-// Retrieve the summon ID from the URL and validate it
-$sumId = isset($_GET['sum_id']) ? intval($_GET['sum_id']) : 0;
+// Validate and sanitize input
+$sum_id = $_GET['sum_id'] ?? '';
+$student_id = $_SESSION['u_id']; // assuming session 'id' = p_matricNum or unique student ID
 
-// Check if the user ID is set in the session
-$userId = isset($_SESSION['u_id']) ? intval($_SESSION['u_id']) : 0;
-
-// Check if $sumId and $userId are valid
-if ($sumId == 0 || $userId == 0) {
-    die("Invalid request");
+if (empty($sum_id)) {
+    echo "Invalid request. No Summon ID provided.";
+    exit();
 }
 
-// Prepare the SQL statement to fetch summon details
-if ($stmt = $conn->prepare("SELECT summon.*, vehicle.*, user.*, profiles.*
-                            FROM summon 
-                            INNER JOIN vehicle ON summon.v_id = vehicle.v_id 
-                            INNER JOIN user ON vehicle.u_id = user.u_id 
-                            INNER JOIN profiles ON user.u_id = profiles.u_id
-                            WHERE user.u_id = ? AND summon.sum_id = ?")) {
-    $stmt->bind_param("ii", $userId, $sumId);
+// Prepare and execute the query to fetch summon details
+if ($sum_id) {
+    $stmt = $conn->prepare("
+        SELECT s.*, v.v_plateNum, u.u_email, p.p_name, p.p_matricNum
+        FROM summon s
+        JOIN vehicle v ON s.v_id = v.v_id
+        JOIN user u ON v.u_id = u.u_id
+        JOIN profiles p ON p.u_id = u.u_id
+        WHERE s.sum_id = ?
+    ");
+    $stmt->bind_param("s", $sum_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    $summon = $result->fetch_assoc();
-    $stmt->close();
 
-    // Check if summon data is found
-    if (!$summon) {
-        die("Summon not found");
+    if ($row = $result->fetch_assoc()) {
+        $sum_date = $row['sum_date'];
+        $p_name = $row['p_name'];
+        $sum_vPlate = $row['v_plateNum'];
+        $matricNum = $row['p_matricNum'];
+        $sum_location = $row['sum_location'];
+        $sum_status = $row['sum_status'];
+    } else {
+        // No data found
+        echo "<script>alert('Summon not found.');window.location.href='inboxSum.php';</script>";
+        exit();
     }
-
-    // Concatenate summon information into a string
-    $summonInfo = "Name: " . $summon['p_name'] . "\n" .
-                  "Course: " . $summon['p_course'] . "\n" .
-                  "IC Number: " . $summon['p_icNumber'] . "\n" .
-                  "Vehicle Type: " . $summon['v_vehicleType'] . "\n" .
-                  "Brand: " . $summon['v_brand'] . "\n" .
-                  "Model: " . $summon['v_model'] . "\n" .
-                  "Plate Number: " . $summon['v_plateNum'] . "\n" .
-                  "Summon Date: " . $summon['sum_date'] . "\n" .
-                  "Violation Type: " . $summon['sum_violationType'] . "\n" . 
-                  "Demerit Point: " . $summon['sum_demerit'] . "\n". 
-                  "Current Status: " . $summon['sum_status'] . "\n";
-
-    // Filepath to save the QR code image
-    $qrCodeFilePath = '../qrcodes/summon_' . $sumId . '.png';
-
-    // Generate the QR code and save it to a file
-    QRcode::png($summonInfo, $qrCodeFilePath, QR_ECLEVEL_L, 10);
-
-    // Redirect to the HTML page to display the QR code
-    header("Location: displaySumQR.php?file=" . urlencode($qrCodeFilePath));
-    exit();
 } else {
-    die("Failed to prepare the SQL statement.");
+    echo "<script>alert('Invalid Summon ID.');window.location.href='inboxSum.php';</script>";
+    exit();
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Summon Receipt</title>
+    <link rel="icon" type="image/x-icon" href="../img/logo.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f4f8;
+            padding: 20px;
+        }
+        .receipt-container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .receipt-header {
+            text-align: center;
+        }
+        .receipt-header img {
+            max-width: 80px;
+        }
+        .receipt-header h2 {
+            color: #0056b3;
+        }
+        .receipt-details label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #0056b3;
+        }
+        .receipt-details span {
+            font-weight: normal;
+            color: #333;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #0056b3;
+            color: #fff;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #003d82;
+        }
+    </style>
+</head>
+<body>
+<?php include('../navigation/studentNav.php'); ?>
+<div class="receipt-container">
+    <div class="receipt-header">
+        <img src="../img/logo.png" alt="Logo">
+        <h2>Summon Receipt</h2>
+    </div>
+    <div class="receipt-details">
+        <label>Date: <span><?= htmlspecialchars($sum_date) ?></span></label>
+        <label>Summon ID: <span><?= htmlspecialchars($sum_id) ?></span></label>
+        <label>Vehicle Owner: <span><?= htmlspecialchars($p_name) ?></span></label>
+        <label>Plate Number: <span><?= htmlspecialchars($sum_vPlate) ?></span></label>
+        <label>Matric ID: <span><?= htmlspecialchars($matricNum) ?></span></label>
+        <label>Location: <span><?= htmlspecialchars($sum_location) ?></span></label>
+        <label>Status: <span><?= htmlspecialchars($sum_status) ?></span></label>
+    </div>
+    <a href="../student/inboxSum.php" class="btn">Back</a>
+</div>
+</body>
+</html>
