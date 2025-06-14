@@ -237,6 +237,17 @@
     </ul>
 </li>
 
+
+         <li class="sidebar-item">
+                    <a href="../staff/vehicle_report.php" class="sidebar-link">
+                        <i class="lni lni-agenda"></i>
+                        <span >Vehicle Report</span>
+                    </a>
+                </li>
+   
+</li>
+
+
 <li class="sidebar-item">
     <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
         data-bs-target="#progressDropdown" aria-expanded="false" aria-controls="progressDropdown">
